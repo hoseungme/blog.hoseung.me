@@ -12,7 +12,7 @@ const BlogIndex = ({ data, location }) => {
 
   return (
     <Layout location={location}>
-      <Seo title="All posts" />
+      <Seo title="Home | blog.hoseung.me" />
       <ul className="post-list">
         {posts.map((post) => (
           <li key={post.fields.slug} className="post-list-item">
