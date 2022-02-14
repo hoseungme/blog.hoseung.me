@@ -1,28 +1,32 @@
 import * as React from "react";
+import { useInView } from "react-intersection-observer";
 import { Link } from "gatsby";
 
 import "../styles/components/layout.scss";
 
 export default function ({ location, children }) {
-  const isRootPath = location.pathname === "/";
+  const [ref, isScrollTop] = useInView({ initialInView: true });
 
   return (
-    <div className="global-wrapper" data-is-root-path={isRootPath}>
-      <header>
-        <Link className="link-to-home" to="/">
-          blog.hoseung.me
-        </Link>
-        <a className="link-to-github" href="https://github.com/HoseungJang/blog.hoseung.me">
-          <GithubIcon />
-        </a>
-      </header>
-      <main>{children}</main>
-      <footer>
-        ©<a href="https://github.com/HoseungJang">HoseungJang</a>, Built with
-        {` `}
-        <a href="https://www.gatsbyjs.com">Gatsby</a>
-      </footer>
-    </div>
+    <>
+      <div ref={ref} />
+      <div className="global-wrapper">
+        <header className={!isScrollTop ? "scrolled" : undefined}>
+          <Link className="link-to-home" to="/">
+            blog.hoseung.me
+          </Link>
+          <a className="link-to-github" href="https://github.com/HoseungJang/blog.hoseung.me">
+            <GithubIcon />
+          </a>
+        </header>
+        <main>{children}</main>
+        <footer>
+          ©<a href="https://github.com/HoseungJang">HoseungJang</a>, Built with
+          {` `}
+          <a href="https://www.gatsbyjs.com">Gatsby</a>
+        </footer>
+      </div>
+    </>
   );
 }
 

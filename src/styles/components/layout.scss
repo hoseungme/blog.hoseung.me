@@ -1,22 +1,39 @@
 .global-wrapper {
   width: 100%;
-  max-width: 630px;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 0 1em;
-  box-sizing: border-box;
+
+  > * {
+    padding: 1rem;
+    box-sizing: border-box;
+  }
 
   > header {
+    position: sticky;
+    top: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
     font-size: 2.2rem;
     font-weight: 700;
+    backdrop-filter: blur(8px);
+    background-color: var(--white0);
+    transition: background-color 0.4s, box-shadow 0.4s;
+
+    @media screen and (min-width: 800px) {
+      top: 0.5rem;
+      border-radius: 20px;
+    }
+
+    &.scrolled {
+      background-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 1px 15px var(--grey3);
+    }
 
     > .link-to-home {
       color: var(--grey0);
-      transition: color 0.1s;
+      transition: color 0.15s;
 
       &:hover {
         color: var(--grey1);
@@ -35,7 +52,7 @@
         width: 100%;
         height: 100%;
         color: var(--grey0);
-        transition: color 0.1s;
+        transition: color 0.15s;
       }
     }
   }
@@ -43,7 +60,6 @@
   > footer {
     width: 100%;
     text-align: center;
-    padding: 1rem 0;
     font-size: 1.2rem;
 
     > a {
