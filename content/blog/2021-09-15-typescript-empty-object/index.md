@@ -1,7 +1,7 @@
 ---
-title: 타입스크립트의 {} 타입
+title: "타입스크립트의 {} 타입"
 date: 2021-09-15
-description: '빈 객체'를 타입으로 정의하는 방법을 알아봅시다.
+description: "'빈 객체'를 타입으로 정의하는 방법을 알아봅시다."
 tags:
   - Typescript
 ---
