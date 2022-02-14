@@ -30,5 +30,28 @@
     li {
       margin: 0.3rem 0;
     }
+
+    a {
+      color: var(--blue0);
+      font-weight: 700;
+      transition: color 0.2s;
+
+      @media screen and (min-width: 800px) {
+        &:hover {
+          color: var(--blue1);
+        }
+      }
+    }
+
+    blockquote {
+      margin: 0;
+      padding: 0.1rem 1.5rem;
+      border-radius: 10px;
+      background-color: var(--grey4);
+    }
+
+    pre {
+      border-radius: 10px;
+    }
   }
 }
