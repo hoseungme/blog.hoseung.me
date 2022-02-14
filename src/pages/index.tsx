@@ -1,59 +1,37 @@
-import * as React from "react";
+import React from "react";
 import { Link, graphql } from "gatsby";
+import dayjs from "dayjs";
 
-import Bio from "../components/bio";
 import Layout from "../components/layout";
 import Seo from "../components/seo";
 
-const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`;
-  const posts = data.allMarkdownRemark.nodes;
+import "../styles/pages/index.scss";
 
-  if (posts.length === 0) {
-    return (
-      <Layout location={location}>
-        <Seo title="All posts" />
-        <Bio />
-        <p>
-          No blog posts found. Add markdown posts to "content/blog" (or the directory you specified for the
-          "gatsby-source-filesystem" plugin in gatsby-config.js).
-        </p>
-      </Layout>
-    );
-  }
+const BlogIndex = ({ data, location }) => {
+  const posts = data.allMarkdownRemark.nodes;
 
   return (
     <Layout location={location}>
       <Seo title="All posts" />
-      <Bio />
-      <ol style={{ listStyle: `none` }}>
-        {posts.map((post) => {
-          const title = post.frontmatter.title || post.fields.slug;
-
-          return (
-            <li key={post.fields.slug}>
-              <article className="post-list-item" itemScope itemType="http://schema.org/Article">
+      <ul className="post-list">
+        {posts.map((post) => (
+          <li key={post.fields.slug} className="post-list-item">
+            <Link to={post.fields.slug} itemProp="url">
+              <article itemScope itemType="http://schema.org/Article">
                 <header>
-                  <h2>
-                    <Link to={post.fields.slug} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
+                  <h2 className="title">
+                    <span itemProp="headline">{post.frontmatter.title}</span>
                   </h2>
-                  <small>{post.frontmatter.date}</small>
+                  <p className="published-at">{dayjs(post.frontmatter.date).format("YYYY년 M월 D일")}</p>
                 </header>
                 <section>
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: post.frontmatter.description || post.excerpt,
-                    }}
-                    itemProp="description"
-                  />
+                  <p className="description">{post.frontmatter.description || post.excerpt}</p>
                 </section>
               </article>
-            </li>
-          );
-        })}
-      </ol>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Layout>
   );
 };
