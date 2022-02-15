@@ -6,6 +6,7 @@ module.exports = {
       summary: `웹 프론트엔드, 백엔드 개발을 즐기는 주니어 개발자입니다. 자동화를 통한 DX, Serverless 인프라에 관심이 많습니다.`,
     },
     description: `개발자로 살며 보고 느끼고 배운 것들을 모두 기록하고 공유합니다.`,
+    siteUrl: `https://blog.hoseung.me`,
   },
   plugins: [
     `gatsby-plugin-sass`,
