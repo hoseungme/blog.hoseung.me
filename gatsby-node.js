@@ -4,14 +4,11 @@ const { createFilePath } = require(`gatsby-source-filesystem`);
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
 
-  // Define a template for blog post
   const Post = path.resolve(`./src/templates/post.tsx`);
-
-  // Get all markdown blog posts sorted by date
-  const result = await graphql(
+  const postResult = await graphql(
     `
       {
-        allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }, limit: 1000) {
+        allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
           nodes {
             id
             fields {
@@ -22,20 +19,38 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       }
     `
   );
-
-  if (result.errors) {
-    reporter.panicOnBuild(`There was an error loading your blog posts`, result.errors);
-    return;
-  }
-
-  const posts = result.data.allMarkdownRemark.nodes;
-
+  const posts = postResult.data.allMarkdownRemark.nodes;
   if (posts.length > 0) {
     posts.forEach((post) => {
       createPage({
         path: post.fields.slug,
         component: Post,
         context: { id: post.id },
+      });
+    });
+  }
+
+  const Tag = path.resolve(`./src/templates/tag.tsx`);
+  const tagResult = await graphql(
+    `
+      {
+        allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+          nodes {
+            frontmatter {
+              tags
+            }
+          }
+        }
+      }
+    `
+  );
+  const tags = tagResult.data.allMarkdownRemark.nodes.map((node) => node.frontmatter.tags).flat();
+  if (tags.length > 0) {
+    tags.forEach((tag) => {
+      createPage({
+        path: `/tags/${tag}`,
+        component: Tag,
+        context: { tag },
       });
     });
   }
