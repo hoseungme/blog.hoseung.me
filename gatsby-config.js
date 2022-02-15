@@ -9,6 +9,7 @@ module.exports = {
     siteUrl: `https://blog.hoseung.me`,
   },
   plugins: [
+    `gatsby-plugin-sitemap`,
     `gatsby-plugin-sass`,
     `gatsby-plugin-image`,
     {
