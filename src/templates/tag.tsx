@@ -44,7 +44,10 @@ interface QueryResult {
 
 export const pageQuery = graphql`
   query ($tag: String!) {
-    allMarkdownRemark(filter: { frontmatter: { tags: { in: [$tag] } } }) {
+    allMarkdownRemark(
+      sort: { fields: [frontmatter___date], order: DESC }
+      filter: { frontmatter: { tags: { in: [$tag] } } }
+    ) {
       nodes {
         fields {
           slug
