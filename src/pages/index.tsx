@@ -5,7 +5,7 @@ import { Post } from "../models/post";
 
 import Layout from "../components/layout";
 import Seo from "../components/seo";
-import PostCard from "../components/post";
+import PostList from "../components/post";
 
 import "../styles/pages/index.scss";
 
@@ -22,13 +22,7 @@ export default function ({ data, location }: { data: QueryResult; location: any 
   return (
     <Layout location={location}>
       <Seo title="Home | blog.hoseung.me" />
-      <ul className="post-list">
-        {posts.map((post) => (
-          <li key={post.url} className="post-list-item">
-            <PostCard {...post} />
-          </li>
-        ))}
-      </ul>
+      <PostList posts={posts} />
     </Layout>
   );
 }
