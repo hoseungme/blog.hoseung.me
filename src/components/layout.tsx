@@ -15,6 +15,9 @@ export default function ({ location, children }) {
           <Link className="link-to-home" to="/">
             blog.hoseung.me
           </Link>
+          <Link className="link-to-tags" to="/tags">
+            Tags
+          </Link>
           <a className="link-to-github" href="https://github.com/HoseungJang/blog.hoseung.me">
             <GithubIcon />
           </a>

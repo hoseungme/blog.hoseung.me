@@ -14,10 +14,7 @@
     z-index: 99999999;
     width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 2.2rem;
-    font-weight: 700;
     backdrop-filter: blur(8px);
     background-color: var(--white0);
     transition: background-color 0.4s, box-shadow 0.4s;
@@ -33,7 +30,22 @@
     }
 
     > .link-to-home {
+      margin-right: auto;
       color: var(--grey0);
+      font-size: 2.2rem;
+      font-weight: 700;
+      transition: color 0.15s;
+
+      &:hover {
+        color: var(--grey1);
+      }
+    }
+
+    > .link-to-tags {
+      margin-right: 1.2rem;
+      color: var(--grey0);
+      font-size: 1.3rem;
+      font-weight: 400;
       transition: color 0.15s;
 
       &:hover {
