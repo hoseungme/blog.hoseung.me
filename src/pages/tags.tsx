@@ -8,7 +8,7 @@ import Seo from "../components/seo";
 
 import "../styles/pages/tags.scss";
 
-export default function ({ data, location }: PageProps<QueryResult>) {
+export default function ({ data }: PageProps<QueryResult>) {
   const tags = React.useMemo<Tag[]>(() => {
     const countMap: { [k: string]: number } = {};
     data.allMarkdownRemark.nodes.forEach((node) =>
@@ -20,7 +20,7 @@ export default function ({ data, location }: PageProps<QueryResult>) {
   }, [data]);
   return (
     <Layout>
-      <Seo title="Home | blog.hoseung.me" />
+      <Seo title="태그 목록" />
       <ul className="tag-list">
         {tags.map((tag) => (
           <li key={tag.name} className="tag-list-item">

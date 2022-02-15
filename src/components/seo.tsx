@@ -37,7 +37,7 @@ export default function ({ title, description, thumbnail, url }: SeoProps) {
   return (
     <Helmet
       title={meta.title}
-      titleTemplate={`%s | ${meta.title}`}
+      titleTemplate={`%s | ${defaultMeta.title}`}
       link={[
         {
           rel: "canonical",

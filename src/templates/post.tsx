@@ -6,7 +6,7 @@ import Seo from "../components/seo";
 
 import "../styles/templates/post.scss";
 
-export default function ({ data, location }: PageProps<QueryResult>) {
+export default function ({ data }: PageProps<QueryResult>) {
   const post = data.markdownRemark;
   return (
     <Layout>
