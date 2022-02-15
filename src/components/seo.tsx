@@ -1,88 +1,95 @@
-/**
- * SEO component that queries for data with
- *  Gatsby's useStaticQuery React hook
- *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
- */
-
 import * as React from "react";
-import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 
-const Seo = ({ description, lang, meta, title }) => {
-  const { site } = useStaticQuery(
+import { SiteMetadata } from "../models/site-metadata";
+
+interface SeoProps {
+  title?: string;
+  description?: string;
+  thumbnail?: string;
+  url?: string;
+}
+
+export default function ({ title, description, thumbnail, url }: SeoProps) {
+  const defaultMeta = useStaticQuery(
     graphql`
       query {
         site {
           siteMetadata {
             title
             description
+            siteUrl
           }
         }
       }
     `
-  );
+  ).site.siteMetadata as SiteMetadata;
 
-  const metaDescription = description || site.siteMetadata.description;
-  const defaultTitle = site.siteMetadata?.title;
+  const meta = {
+    title: title ?? defaultMeta.title,
+    description: description ?? defaultMeta.description,
+    thumbnail,
+    url: url ?? defaultMeta.siteUrl,
+  };
 
   return (
     <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : undefined}
+      title={meta.title}
+      titleTemplate={`%s | ${meta.title}`}
+      link={[
+        {
+          rel: "canonical",
+          href: meta.url,
+        },
+      ]}
       meta={[
         {
-          name: `description`,
-          content: metaDescription,
+          name: "description",
+          content: meta.description,
         },
         {
-          property: `og:title`,
-          content: title,
+          property: "og:locale",
+          content: "ko_KR",
         },
         {
-          property: `og:description`,
-          content: metaDescription,
+          property: "og:type",
+          content: "website",
         },
         {
-          property: `og:type`,
-          content: `website`,
+          property: "og:title",
+          content: meta.title,
         },
         {
-          name: `twitter:card`,
-          content: `summary`,
+          property: "og:description",
+          content: meta.description,
         },
         {
-          name: `twitter:creator`,
-          content: site.siteMetadata?.social?.twitter || ``,
+          property: "og:image",
+          content: meta.thumbnail,
         },
         {
-          name: `twitter:title`,
-          content: title,
+          property: "og:url",
+          content: meta.url,
+        },
+
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
         },
         {
-          name: `twitter:description`,
-          content: metaDescription,
+          name: "twitter:title",
+          content: meta.title,
         },
-      ].concat(meta)}
+        {
+          name: "twitter:description",
+          content: meta.description,
+        },
+        {
+          name: "twitter:image",
+          content: meta.thumbnail,
+        },
+      ]}
     />
   );
-};
-
-Seo.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
-};
-
-Seo.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
-};
-
-export default Seo;
+}
