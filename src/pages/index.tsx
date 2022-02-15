@@ -20,7 +20,7 @@ export default function ({ data, location }: { data: QueryResult; location: any 
     }));
   }, [data]);
   return (
-    <Layout location={location}>
+    <Layout>
       <Seo title="Home | blog.hoseung.me" />
       <PostList posts={posts} />
     </Layout>

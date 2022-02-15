@@ -4,9 +4,8 @@ import { Link } from "gatsby";
 
 import "../styles/components/layout.scss";
 
-export default function ({ location, children }) {
+export default function ({ children }) {
   const [ref, isScrollTop] = useInView({ initialInView: true });
-
   return (
     <>
       <div ref={ref} />

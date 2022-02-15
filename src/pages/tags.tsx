@@ -19,7 +19,7 @@ export default function ({ data, location }: { data: QueryResult; location: any 
       .sort((a, b) => b.numberOfPosts - a.numberOfPosts);
   }, [data]);
   return (
-    <Layout location={location}>
+    <Layout>
       <Seo title="Home | blog.hoseung.me" />
       <ul className="tag-list">
         {tags.map((tag) => (

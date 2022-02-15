@@ -9,7 +9,7 @@ import "../styles/templates/post.scss";
 export default function ({ data, location }: { data: QueryResult; location: any }) {
   const post = data.markdownRemark;
   return (
-    <Layout location={location}>
+    <Layout>
       <Seo title={post.frontmatter.title} description={post.frontmatter.description} />
       <article className="blog-post" itemScope itemType="http://schema.org/Article">
         <header>
