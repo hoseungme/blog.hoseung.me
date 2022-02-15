@@ -8,7 +8,7 @@ import "../styles/pages/index.scss";
 export default function (post: Post) {
   return (
     <Link to={post.url} itemProp="url">
-      <article itemScope itemType="http://schema.org/Article">
+      <article className="post-container" itemScope itemType="http://schema.org/Article">
         <header>
           <h2 className="title">
             <span itemProp="headline">{post.title}</span>
