@@ -6,6 +6,8 @@ const siteMetadata = {
   },
   description: `개발자로 살며 보고 느끼고 배운 것들을 모두 기록하고 공유합니다.`,
   siteUrl: `https://blog.hoseung.me`,
+  icon: `content/assets/favicon.png`,
+  thumbnail: `https://blog.hoseung.me/thumbnail.png`,
 };
 
 module.exports = {
@@ -24,8 +26,8 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        path: `${__dirname}/content/assets`,
         name: `images`,
-        path: `${__dirname}/src/images`,
       },
     },
     {
@@ -114,7 +116,7 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#ffffff`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`,
+        icon: siteMetadata.icon,
       },
     },
     `gatsby-plugin-react-helmet`,
