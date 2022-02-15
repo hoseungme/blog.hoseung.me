@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, Link } from "gatsby";
+import { graphql, Link, PageProps } from "gatsby";
 
 import { Tag } from "../models/tag";
 
@@ -8,7 +8,7 @@ import Seo from "../components/seo";
 
 import "../styles/pages/tags.scss";
 
-export default function ({ data, location }: { data: QueryResult; location: any }) {
+export default function ({ data, location }: PageProps<QueryResult>) {
   const tags = React.useMemo<Tag[]>(() => {
     const countMap: { [k: string]: number } = {};
     data.allMarkdownRemark.nodes.forEach((node) =>

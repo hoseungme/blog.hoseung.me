@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql } from "gatsby";
+import { graphql, PageProps } from "gatsby";
 
 import { Post } from "../models/post";
 
@@ -9,7 +9,7 @@ import PostList from "../components/post";
 
 import "../styles/pages/index.scss";
 
-export default function ({ data, location }: { data: QueryResult; location: any }) {
+export default function ({ data, location }: PageProps<QueryResult>) {
   const posts = React.useMemo<Post[]>(() => {
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,

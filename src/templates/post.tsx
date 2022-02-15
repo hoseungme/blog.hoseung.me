@@ -1,12 +1,12 @@
 import * as React from "react";
-import { graphql } from "gatsby";
+import { graphql, PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import Seo from "../components/seo";
 
 import "../styles/templates/post.scss";
 
-export default function ({ data, location }: { data: QueryResult; location: any }) {
+export default function ({ data, location }: PageProps<QueryResult>) {
   const post = data.markdownRemark;
   return (
     <Layout>
