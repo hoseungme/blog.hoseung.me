@@ -19,6 +19,7 @@ export default function ({ title, description, thumbnail, url }: SeoProps) {
           siteMetadata {
             title
             description
+            thumbnail
             siteUrl
           }
         }
@@ -29,8 +30,8 @@ export default function ({ title, description, thumbnail, url }: SeoProps) {
   const meta = {
     title: title ?? defaultMeta.title,
     description: description ?? defaultMeta.description,
-    thumbnail,
-    url: url ?? defaultMeta.siteUrl,
+    thumbnail: thumbnail ?? `${defaultMeta.thumbnail}`,
+    url: url ?? `${defaultMeta.siteUrl}${window.location.pathname}`,
   };
 
   return (
