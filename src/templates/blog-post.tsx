@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link, graphql } from "gatsby";
-import dayjs from "dayjs";
 
 import Layout from "../components/layout";
 import Seo from "../components/seo";
@@ -16,7 +15,7 @@ const BlogPostTemplate = ({ data, location }) => {
       <article className="blog-post" itemScope itemType="http://schema.org/Article">
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{dayjs(post.frontmatter.date).format("YYYY년 M월 D일")}</p>
+          <p>{post.frontmatter.date}</p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
       </article>
@@ -39,7 +38,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY년 M월 D일")
         description
       }
     }
