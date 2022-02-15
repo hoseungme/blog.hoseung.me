@@ -1,13 +1,15 @@
-module.exports = {
-  siteMetadata: {
-    title: `blog.hoseung.me`,
-    author: {
-      name: `Hoseung Jang`,
-      summary: `웹 프론트엔드, 백엔드 개발을 즐기는 주니어 개발자입니다. 자동화를 통한 DX, Serverless 인프라에 관심이 많습니다.`,
-    },
-    description: `개발자로 살며 보고 느끼고 배운 것들을 모두 기록하고 공유합니다.`,
-    siteUrl: `https://blog.hoseung.me`,
+const siteMetadata = {
+  title: `blog.hoseung.me`,
+  author: {
+    name: `Hoseung Jang`,
+    summary: `웹 프론트엔드, 백엔드 개발을 즐기는 주니어 개발자입니다. 자동화를 통한 DX, Serverless 인프라에 관심이 많습니다.`,
   },
+  description: `개발자로 살며 보고 느끼고 배운 것들을 모두 기록하고 공유합니다.`,
+  siteUrl: `https://blog.hoseung.me`,
+};
+
+module.exports = {
+  siteMetadata,
   plugins: [
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-sass`,
@@ -50,12 +52,6 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    // {
-    //   resolve: `gatsby-plugin-google-analytics`,
-    //   options: {
-    //     trackingId: `ADD YOUR TRACKING ID HERE`,
-    //   },
-    // },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
@@ -112,20 +108,15 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: siteMetadata.title,
+        short_name: siteMetadata.title,
         start_url: `/`,
         background_color: `#ffffff`,
-        // This will impact how browsers show your PWA/website
-        // https://css-tricks.com/meta-theme-color-and-trickery/
-        // theme_color: `#663399`,
+        theme_color: `#ffffff`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/gatsby-icon.png`,
       },
     },
     `gatsby-plugin-react-helmet`,
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
   ],
 };
