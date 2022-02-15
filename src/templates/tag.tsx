@@ -8,6 +8,7 @@ import Seo from "../components/seo";
 import PostList from "../components/post";
 
 export default function ({ data, pageContext }: PageProps<QueryResult>) {
+  const tag = (pageContext as any).tag;
   const posts = React.useMemo<Post[]>(() => {
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,
@@ -19,7 +20,7 @@ export default function ({ data, pageContext }: PageProps<QueryResult>) {
   }, [data]);
   return (
     <Layout>
-      <Seo title={`${(pageContext as any).tag} 태그의 포스트`} />
+      <Seo title={`${tag} 태그의 포스트`} url={`https://blog.hoseung.me/tags/${encodeURIComponent(tag)}`} />
       <PostList posts={posts} />
     </Layout>
   );

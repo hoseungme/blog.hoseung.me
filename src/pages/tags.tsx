@@ -20,7 +20,7 @@ export default function ({ data }: PageProps<QueryResult>) {
   }, [data]);
   return (
     <Layout>
-      <Seo title="태그 목록" />
+      <Seo title="태그 목록" url="https://blog.hoseung.me/tags" />
       <ul className="tag-list">
         {tags.map((tag) => (
           <li key={tag.name} className="tag-list-item">

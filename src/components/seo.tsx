@@ -31,7 +31,7 @@ export default function ({ title, description, thumbnail, url }: SeoProps) {
     title: title ?? defaultMeta.title,
     description: description ?? defaultMeta.description,
     thumbnail: thumbnail ?? `${defaultMeta.thumbnail}`,
-    url: url ?? `${defaultMeta.siteUrl}${window.location.pathname}`,
+    url: url ?? defaultMeta.siteUrl,
   };
 
   return (

@@ -13,7 +13,9 @@ const NotFoundPage = () => {
       <div className="error-404-wrapper">
         <img className="image" src="/404.png" alt="404 NOT FOUND" />
         <p className="message">아무 것도 없어요..</p>
-        <Link className="link-to-home" to="/">홈으로</Link>
+        <Link className="link-to-home" to="/">
+          홈으로
+        </Link>
       </div>
     </Layout>
   );
