@@ -1,11 +1,11 @@
 {
-  "name": "gatsby-starter-blog",
+  "name": "blog.hoseung.me",
   "private": true,
-  "description": "A starter for a blog powered by Gatsby and Markdown",
+  "description": "Development Blog Of Hoseung Jang",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Hoseung Jang <hsjang.dev@gmail.com>",
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/HoseungJang/blog.hoseung.me/issues"
   },
   "dependencies": {
     "gatsby": "^4.7.1",
@@ -41,15 +41,11 @@
     "@types/react-helmet": "^6.1.5",
     "prettier": "^2.5.1"
   },
-  "homepage": "https://github.com/gatsbyjs/gatsby-starter-blog#readme",
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "0BSD",
-  "main": "n/a",
+  "homepage": "https://github.com/HoseungJang/blog.hoseung.me#readme",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
+    "url": "git+https://github.com/HoseungJang/blog.hoseung.me.git"
   },
   "scripts": {
     "build": "gatsby build",
@@ -57,7 +53,6 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,scss}\"",
     "start": "gatsby develop",
     "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "clean": "gatsby clean"
   }
 }
