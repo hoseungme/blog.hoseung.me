@@ -1,0 +1,45 @@
+.tag-list {
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+
+  > .tag-list-item {
+    flex-shrink: 0;
+
+    > .link {
+      display: flex;
+      align-items: center;
+      margin: 0 0.8rem 1rem 0;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid var(--grey2);
+      border-radius: 24px;
+      transition: box-shadow 0.25s;
+
+      @media screen and (min-width: 800px) {
+        &:hover {
+          box-shadow: 0px 0px 6px var(--grey3);
+
+          > .name,
+          > .number-of-posts {
+            text-shadow: 1px 1px 3px var(--grey3);
+          }
+        }
+      }
+
+      > .name {
+        margin-right: 0.4rem;
+        font-size: 1.2rem;
+        transition: text-shadow 0.25s;
+      }
+
+      > .number-of-posts {
+        color: var(--grey1);
+        font-size: 0.9rem;
+        transition: text-shadow 0.25s;
+      }
+    }
+  }
+}
