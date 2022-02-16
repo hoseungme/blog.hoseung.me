@@ -7,7 +7,7 @@ import Layout from "../components/layout";
 import Seo from "../components/seo";
 import PostList from "../components/post";
 
-export default function ({ data, pageContext }: PageProps<QueryResult>) {
+export default function ({ data, pageContext, location }: PageProps<QueryResult>) {
   const tag = (pageContext as any).tag;
   const posts = React.useMemo<Post[]>(() => {
     return data.allMarkdownRemark.nodes.map((node) => ({
@@ -21,7 +21,7 @@ export default function ({ data, pageContext }: PageProps<QueryResult>) {
   return (
     <Layout>
       <Seo title={`${tag} 태그의 포스트`} url={`https://blog.hoseung.me/tags/${encodeURIComponent(tag)}`} />
-      <PostList posts={posts} />
+      <PostList posts={posts} pathname={location.pathname} />
     </Layout>
   );
 }

@@ -9,7 +9,7 @@ import PostList from "../components/post";
 
 import "../styles/pages/index.scss";
 
-export default function ({ data }: PageProps<QueryResult>) {
+export default function ({ data, location }: PageProps<QueryResult>) {
   const posts = React.useMemo<Post[]>(() => {
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,
@@ -22,7 +22,7 @@ export default function ({ data }: PageProps<QueryResult>) {
   return (
     <Layout>
       <Seo title="최신 글" />
-      <PostList posts={posts} />
+      <PostList posts={posts} pathname={location.pathname} />
     </Layout>
   );
 }
