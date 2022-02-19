@@ -12,10 +12,13 @@ export default function ({ children }) {
       <div className="global-wrapper">
         <header className={!isScrollTop ? "scrolled" : undefined}>
           <Link className="link-to-home" to="/">
-            blog.hoseung.me
+            hoseung.me
           </Link>
+          <a className="link-to-about" href="https://about.hoseung.me">
+            ABOUT
+          </a>
           <Link className="link-to-tags" to="/tags">
-            Tags
+            TAGS
           </Link>
           <a className="link-to-github" href="https://github.com/HoseungJang/blog.hoseung.me">
             <GithubIcon />

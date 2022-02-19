@@ -32,7 +32,7 @@
     > .link-to-home {
       margin-right: auto;
       color: var(--grey0);
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       transition: color 0.15s;
 
@@ -41,8 +41,9 @@
       }
     }
 
-    > .link-to-tags {
-      margin-right: 1.2rem;
+    > .link-to-tags,
+    > .link-to-about {
+      margin-right: 1rem;
       color: var(--grey0);
       font-size: 1.3rem;
       font-weight: 400;
