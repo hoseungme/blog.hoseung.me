@@ -3,6 +3,7 @@ import { graphql, PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import Seo from "../components/seo";
+import Utterances from "../components/utterances";
 
 import "../styles/templates/post.scss";
 
@@ -21,6 +22,7 @@ export default function ({ data }: PageProps<QueryResult>) {
           <p>{post.frontmatter.date}</p>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
+        <Utterances />
       </article>
     </Layout>
   );
