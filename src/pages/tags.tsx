@@ -21,16 +21,18 @@ export default function ({ data }: PageProps<QueryResult>) {
   return (
     <Layout>
       <Seo title="태그 목록" url="https://blog.hoseung.me/tags" />
-      <ul className="tag-list">
-        {tags.map((tag) => (
-          <li key={tag.name} className="tag-list-item">
-            <Link className="link" to={`/tags/${tag.name}`}>
-              <div className="name">{tag.name}</div>
-              <div className="number-of-posts">{tag.numberOfPosts}</div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="tags-page-wrapper">
+        <ul className="tag-list">
+          {tags.map((tag) => (
+            <li key={tag.name} className="tag-list-item">
+              <Link className="link" to={`/tags/${tag.name}`}>
+                <div className="name">{tag.name}</div>
+                <div className="number-of-posts">{tag.numberOfPosts}</div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Layout>
   );
 }

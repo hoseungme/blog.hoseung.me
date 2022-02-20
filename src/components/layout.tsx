@@ -9,7 +9,7 @@ export default function ({ children }) {
   return (
     <>
       <div ref={ref} />
-      <div className="global-wrapper">
+      <div className="layout-wrapper">
         <header className={!isScrollTop ? "scrolled" : undefined}>
           <Link className="link-to-home" to="/">
             hoseung.me
