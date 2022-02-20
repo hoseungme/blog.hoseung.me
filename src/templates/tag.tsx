@@ -13,6 +13,7 @@ export default function ({ data, pageContext, location }: PageProps<QueryResult>
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,
       description: node.frontmatter.description,
+      thumbnail: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback,
       tags: node.frontmatter.tags,
       url: node.fields.slug,
       publishedAt: node.frontmatter.date,
@@ -36,6 +37,19 @@ interface QueryResult {
         title: string;
         date: string;
         description: string;
+        thumbnail: {
+          childImageSharp: {
+            gatsbyImageData: {
+              images: {
+                fallback: {
+                  src: string;
+                  srcSet: string;
+                  sizes: string;
+                };
+              };
+            };
+          };
+        } | null;
         tags: string[];
       };
     }[];
@@ -56,6 +70,11 @@ export const pageQuery = graphql`
           title
           date(formatString: "YYYY년 M월 D일")
           description
+          thumbnail {
+            childImageSharp {
+              gatsbyImageData
+            }
+          }
           tags
         }
       }

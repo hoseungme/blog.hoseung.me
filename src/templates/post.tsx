@@ -9,12 +9,16 @@ import "../styles/templates/post.scss";
 
 export default function ({ data }: PageProps<QueryResult>) {
   const post = data.markdownRemark;
+  const thumbnail = post.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback;
   return (
     <Layout>
       <Seo
         title={post.frontmatter.title}
         description={post.frontmatter.description}
-        url={`https://blog.hoseung.me/${post.fields.slug}`}
+        url={`https://blog.hoseung.me${post.fields.slug}`}
+        thumbnail={
+          post.frontmatter.thumbnail ? `https://blog.hoseung.me${post.frontmatter.thumbnail.publicURL}` : undefined
+        }
       />
       <article className="blog-post-wrapper" itemScope itemType="http://schema.org/Article">
         <header>
@@ -31,6 +35,9 @@ export default function ({ data }: PageProps<QueryResult>) {
               </li>
             ))}
           </ul>
+          {thumbnail && (
+            <img className="thumbnail" src={thumbnail.src} srcSet={thumbnail.srcSet} sizes={thumbnail.sizes} />
+          )}
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
         <Utterances />
@@ -49,6 +56,20 @@ interface QueryResult {
       title: string;
       date: string;
       description: string;
+      thumbnail: {
+        publicURL: string;
+        childImageSharp: {
+          gatsbyImageData: {
+            images: {
+              fallback: {
+                src: string;
+                srcSet: string;
+                sizes: string;
+              };
+            };
+          };
+        };
+      } | null;
       tags: string[];
     };
   };
@@ -65,6 +86,12 @@ export const pageQuery = graphql`
         title
         date(formatString: "YYYY년 M월 D일")
         description
+        thumbnail {
+          publicURL
+          childImageSharp {
+            gatsbyImageData
+          }
+        }
         tags
       }
     }

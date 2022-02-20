@@ -33,6 +33,14 @@ export default function ({ posts, pathname }: { posts: Post[]; pathname: string 
             <Link to={post.url} itemProp="url">
               <article itemScope itemType="http://schema.org/Article">
                 <header>
+                  {post.thumbnail && (
+                    <div className="responsive-thumbnail-wrapper">
+                      <div className="padding" />
+                      <div className="content">
+                        <img className="thumbnail" src={post.thumbnail.src} />
+                      </div>
+                    </div>
+                  )}
                   <h2 className="title">
                     <span itemProp="headline">{post.title}</span>
                   </h2>
