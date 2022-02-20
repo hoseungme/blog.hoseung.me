@@ -2,6 +2,7 @@
 title: RxJS로 React 렌더링 성능 개선하기
 date: 2021-10-09
 description: react-router를 사용할 때 생길 수 있는 성능 문제를 RxJS로 개선해봅시다.
+thumbnail: ./thumbnail.png
 tags:
   - 프론트엔드
   - React

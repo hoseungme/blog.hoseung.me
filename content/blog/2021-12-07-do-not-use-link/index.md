@@ -2,6 +2,7 @@
 title: react-router의 Link를 쓰지 마세요!
 date: 2021-12-07
 description: react-router의 불필요한 리렌더링 깨부수기
+thumbnail: ./thumbnail.png
 tags:
   - 프론트엔드
   - React

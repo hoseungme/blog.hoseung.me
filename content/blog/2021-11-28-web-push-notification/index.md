@@ -2,6 +2,7 @@
 title: 서비스 워커로 웹 브라우저에서 푸시 알림받기
 date: 2021-11-28
 description: PWA를 향한 가벼운 한걸음
+thumbnail: ./thumbnail.png
 tags:
   - 프론트엔드
   - 백엔드

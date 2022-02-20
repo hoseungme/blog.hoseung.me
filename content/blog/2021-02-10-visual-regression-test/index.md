@@ -2,6 +2,7 @@
 title: Visual Regression Test 도입기
 date: 2021-02-10
 description: 예기치 못한 UI 사이드 이펙트를 위한 Visual Regression Test의 도입기를 정리합니다.
+thumbnail: ./thumbnail.png
 tags:
   - 프론트엔드
   - 테스트
