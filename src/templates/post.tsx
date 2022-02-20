@@ -1,5 +1,5 @@
 import * as React from "react";
-import { graphql, PageProps } from "gatsby";
+import { graphql, Link, PageProps } from "gatsby";
 
 import Layout from "../components/layout";
 import Seo from "../components/seo";
@@ -16,10 +16,21 @@ export default function ({ data }: PageProps<QueryResult>) {
         description={post.frontmatter.description}
         url={`https://blog.hoseung.me/${post.fields.slug}`}
       />
-      <article className="blog-post" itemScope itemType="http://schema.org/Article">
+      <article className="blog-post-wrapper" itemScope itemType="http://schema.org/Article">
         <header>
-          <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <h1 className="title" itemProp="headline">
+            {post.frontmatter.title}
+          </h1>
+          <p className="published-at">{post.frontmatter.date}</p>
+          <ul className="tag-list">
+            {post.frontmatter.tags.map((tag) => (
+              <li key={tag} className="tag-list-item">
+                <Link className="link" to={`/tags/${tag}`}>
+                  {tag}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
         <Utterances />
@@ -54,6 +65,7 @@ export const pageQuery = graphql`
         title
         date(formatString: "YYYY년 M월 D일")
         description
+        tags
       }
     }
   }
