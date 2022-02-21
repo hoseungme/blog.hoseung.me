@@ -68,9 +68,20 @@ interface Post {
 Elasticsearch처럼 별도로 분리된 서비스를 백엔드에서 호출하는 방식은 크게 두 가지로 정리할 수 있었습니다.
 
 1. 백엔드 라우터에서 직접 호출
-2. AWS SQS같은 메시징 큐 서비스 등을 사용해 따로 호출
+2. 메시징 큐 등을 사용해 따로 호출
 
 ### 1. 백엔드 라우터에서 직접 호출
+
+```typescript
+// 예시
+const post = Post.get(postId);
+post.content = newContent;
+await post.save();
+
+elasticsearch.index(post);
+
+res.status(200).json({ post });
+```
 
 이 방식의 장점은 제가 생각하기엔 구현이 간단해 작업 비용이 작다는 점 말고는 딱히 없는 것 같습니다. 장점을 처참히 밟아버리는 단점들이 많이 존재하는데요.
 
@@ -80,25 +91,25 @@ Elasticsearch처럼 별도로 분리된 서비스를 백엔드에서 호출하�
 
 그리고 이 때 해당 에러를 try-catch 등을 사용해 넘어가더라도, Elasticsearch에 문제가 발생한 시간 동안 일어난 모든 변경사항은 인덱싱되지 않은채 유실되게 됩니다. 또한 별도의 retry로직을 작성하는 것도 꽤나 큰 비용이라고 판단됩니다.
 
-### 2. AWS SQS같은 메시징 큐 서비스 등을 사용해 따로 호출
+### 2. 메시징 큐 등을 사용해 따로 호출
 
 이 방식으로 1번 방식의 단점을 상쇄할 수 있습니다.
 
-변경사항이 담긴 메시지를 대기열에 넣기만 하고 바로 응답하므로, 클라이언트 단에서는 인덱싱을 기다릴 필요가 없어집니다. 이와 함께 Elasticsearch에서 발생한 장애와도 연결고리가 끊어지게 됩니다.
+우선 클라이언트 단에서는 Elasticsearch 인덱싱을 기다릴 필요가 없어지므로 응답 시간이 절약되고, 이와 함께 Elasticsearch에서 장애가 발생하더라도 영향을 받지 않게 됩니다.
 
-또한 AWS의 메시징 큐 서비스들은 consumer(대기열의 메시지를 받아서 처리하는 주체)에서 에러를 throw할 경우, 다음 메시지로 넘어가지 않고 retry하기 때문에 변경 사항이 유실될 가능성도 1번에 비해 매우 적습니다.
+또한 AWS의 메시징 큐 서비스들은 consumer(대기열의 메시지를 받아서 처리하는 주체)에서 에러를 throw할 경우, 해당 위치에서 지속적으로 retry하기 때문에 변경 사항이 반영되지 않고 유실될 가능성도 1번 방식에 비해 매우 적습니다.
 
-또한 트래픽이 급격히 몰리는 경우 이를 분산해주는 역할도 하는데요. 1번 방식의 경우 Elasticsearch를 직접적으로 호출하기 때문에, 해당 백엔드에 몰린 트래픽이 그대로 전달되게 됩니다.
+그리고 트래픽이 급격히 몰리는 경우 이를 분산해주는 역할도 하는데요. 1번 방식의 경우 Elasticsearch를 직접적으로 호출하기 때문에, 백엔드에 트래픽이 몰릴 경우 Elasticsearch에도 그대로 전달되게 됩니다.
 
-하지만 메시징 큐 등을 사용하면 consumer가 한번에 처리할 수 있는 작업의 사이즈를 정해둘 수 있기 때문에, 트래픽 증가로 인해 메시지가 급격히 늘어나더라도 지정한 단위로 쪼개서 처리할 수 있습니다.
+하지만 메시징 큐 같은 대기열을 사용하면 일반적으로 consumer가 한번에 처리할 수 있는 작업의 사이즈를 정해둘 수 있기 때문에, 트래픽 증가로 인해 메시지가 급격히 늘어나더라도 지정한 단위로 쪼개서 처리할 수 있습니다.
 
 따라서 2번 방식으로 처리하는 것이 더 적합하다고 판단했습니다.
 
 ## DynamoDB의 변경을 감지하는 방법?
 
-데이터베이스에는 Change Data Capture(줄여서 CDC)라는 개념이 있는데요. 말 그대로 데이터베이스에 일어난 변경 사항을 캡쳐하여, 그에 필요한 후속 처리(Elastic search에 인덱싱, Read Replica와 싱크)를 자동화할 수 있도록 하는 기술입니다.
+데이터베이스에는 Change Data Capture(줄여서 CDC)라는 개념이 있는데요. 말 그대로 데이터베이스에 일어난 변경 사항을 캡쳐하여, 그에 필요한 후속 처리(Elastic search에 인덱싱, Read Replica와 싱크 등)를 자동화할 수 있도록 하는 기술입니다.
 
-AWS RDS에서는 대표적으로 AWS Data Migration Service + Kinesis Stream을 사용해 S3에 저장허거나, Lambda Function을 트리거하는 등 여러 처리를 할 수 있습니다.
+AWS RDS에서는 대표적으로 AWS Database Migration Service + Kinesis Stream을 사용해 S3에 저장허거나, Lambda Function을 트리거하는 등 여러 처리를 할 수 있습니다.
 
 DynamoDB도 DynamoDB Stream이라는 기능으로 CDC를 지원합니다. DynamoDB 테이블에 일어난 변경(추가/수정/삭제)을 Stream 형태로 제공하여 순차적으로 처리할 수 있게 돕는 기능입니다.
 
@@ -257,7 +268,7 @@ await Promise.all(
 
 DynamoDB Stream과 Lambda Function을 통해 변경 데이터를 싱크하는 것은 구현했지만, 기존에 존재하는 모든 포스트 데이터를 Elasticsearch에 인덱싱하는 과정도 한 번 필요했습니다.
 
-포스트 데이터 자체가 650개 정도로 매우 적었기 때문에, 간단한 스크립트를 작성해서 중단 없이 마이그레이션할 수 있었습니다. 마이그레이션 스크립트에서도 저희 개발팀의 오픈소스인 [dynamorm](https://github.com/serverless-seoul/dynamorm)을 사용합니다.
+포스트 데이터 자체가 650개 정도로 매우 적었기 때문에, 간단한 스크립트를 작성해서 빠르게 Elasticsearch에 인덱싱할 수 있었습니다. 스크립트에서도 저희 개발팀의 오픈소스인 [dynamorm](https://github.com/serverless-seoul/dynamorm)을 사용합니다.
 
 ```typescript
 import { Post } from "../src/models/dynamodb/post";
@@ -315,10 +326,19 @@ async function indexAllPosts() {
 indexAllPosts();
 ```
 
+## DynamoDB Stream 활성화
+DynamoDB Stream은 AWS 콘솔에서 매우 쉽게 활성화할 수 있는데요.
+
+DynamoDB 테이블 세팅에서 ```Exports and streams```탭으로 이동한 후, ```DynamoDB stream details```에서 [공식 문서](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html#Streams.Enabling)를 참고하여 Enable하면 됩니다.
+
+그리고 위에서 만들었던 AWS Lambda Function을 트리거에 추가해주면, 테이블에 변경이 일어날 때마다 변경 사항이 전달됩니다.
+
+![](./dynamodb-stream-enable.png)
+
 ## 마무리
 
 저는 기존에 AWS Lambda 같은 서비스를 프론트엔드 서포트용(SEO)이나 백엔드 배포용으로만 사용했었는데요. 이번 작업을 하면서 Lambda를 AWS기반의 분산 처리 아키텍처에도 무궁무진하게 응용할 수 있다는 것을 배울 수 있어 좋았습니다.
 
 그리고 서로 독립적인 여러 서비스가 통신을 주고받을 때, 바람직한 호출 과정은 무엇인가에 대해 고민해볼 수 있었던 것도 좋았습니다. RDB와 NoSQL DB를 비교하여 적합한 결정을 내린 경험도 좋았구요. 배운게 정말 많은 작업이었습니다.
 
-사실 이런 스케일의 백엔드 작업은 제 1.5년의 커리어에서 처음이었기에 미숙한 점이 많았을 것이고, 그런 점들이 이 글에도 그대로 스며들었을 것으로 예상됩니다. 잘못된 점이나 개선할 점은 바로 피드백 주시면 감사드리겠습니다.
+마지막으로, 잘못된 점이나 추가하면 좋을 듯한 내용, 개선할 점 등은 바로 피드백 주시면 감사드리겠습니다.
