@@ -11,13 +11,13 @@ tags:
 
 리액트를 사용하시는 프론트엔드 개발자 분들이라면, 서버에서 HTML을 렌더링해서 보내주는게 아닌 브라우저에서 Javascript가 실행되어 렌더링되는 CSR 방식이 굉장히 익숙하실겁니다.
 
-하지만 CSR 환경은 기본적으로 SEO에 불리한데, 크롤링 봇이 Javascript 실행까지 지원하지 않는 경우가 많기 때문입니다.
+하지만 CSR 환경은 기본적으로 SEO에 불리한데, 크롤링 봇이 Javascript 실행까지 지원하지 않는 경우가 있기 때문입니다.
 
-검색 엔진의 경우 Javascript까지 실행한 결과를 파싱하는 것들이 있어서, [react-helmet](https://github.com/nfl/react-helmet) 등으로 meta 태그를 추가해 SEO를 핸들링할 수 있지만, Javascript 실행을 지원하지 않는 검색 엔진이나, SNS에 링크를 공유하는 등의 상황(대부분 HTML만 읽어옴)에서는 처리가 힘듭니다.
+검색 엔진의 경우 Javascript까지 실행한 결과를 파싱하는 것들이 있어서, [react-helmet](https://github.com/nfl/react-helmet) 등으로 meta 태그를 추가해 SEO를 핸들링할 수 있지만, Javascript 실행을 지원하지 않는 검색 엔진이나, SNS에 링크를 공유하는 등의 상황에서는 처리가 힘듭니다.
 
 빌드 시점에 특정 페이지의 HTML을 미리 생성하는 pre-rendering 방식도 있지만, 포스트 조회 페이지처럼 path parameter가 달라지는 페이지의 경우, 포스트 ID 마다 다르게 렌더링하는 등의 섬세한 처리는 힘듭니다.
 
-이 때 AWs CloudFront를 통해 웹 사이트를 제공하는 경우, Lambda@Edge를 사용해서 간편하고 SEO를 핸들링할 수 있습니다.
+이 때 AWS CloudFront를 통해 웹 사이트를 제공하는 경우, Lambda@Edge를 사용해서 간편하고 SEO를 핸들링할 수 있습니다.
 
 이 글에서는 SEO 처리를 다 하는건 아니지만, Lambda@Edge를 활용해 Open Grapth meta 태그들을 렌더링 해보겠습니다.
 
@@ -25,7 +25,7 @@ tags:
 
 우선 이 글을 읽기 위해 필요한 기본적인 내용들부터 짚고 넘어가봅시다.
 
-### CloudFront와 Lambda@Edge의 동작 방식
+## CloudFront와 Lambda@Edge의 동작 방식
 
 Lambda@Edge(이하 람다엣지)는 기본적으로 일반 Lambda function(이하 람다함수)과 동일합니다.
 
