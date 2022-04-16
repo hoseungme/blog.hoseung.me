@@ -1,21 +1,22 @@
 import React from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "gatsby";
+import { wrapSessionStorage } from "storage-cover";
 
 import { Post } from "../models/post";
 
-import { Storage } from "../utils/storage";
-
 import "../styles/components/post.scss";
+
+const sessionStorage = wrapSessionStorage();
 
 export default function ({ posts, pathname }: { posts: Post[]; pathname: string }) {
   const [ref, inView] = useInView();
 
   const [fetchedCount, fetchMore] = React.useReducer((prev) => {
     const next = prev + 1;
-    Storage.session.set(`POST_FETCHED_COUNT${pathname}`, next);
+    sessionStorage.set(`POST_FETCHED_COUNT${pathname}`, next);
     return next;
-  }, Storage.session.get(`POST_FETCHED_COUNT${pathname}`) ?? 0);
+  }, sessionStorage.get(`POST_FETCHED_COUNT${pathname}`) ?? 0);
 
   const slicedPosts = React.useMemo(() => posts.slice(0, 10 * (fetchedCount + 1)), [posts, fetchedCount]);
 
