@@ -327,9 +327,10 @@ indexAllPosts();
 ```
 
 ## DynamoDB Stream 활성화
+
 DynamoDB Stream은 AWS 콘솔에서 매우 쉽게 활성화할 수 있는데요.
 
-DynamoDB 테이블 세팅에서 ```Exports and streams```탭으로 이동한 후, ```DynamoDB stream details```에서 [공식 문서](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html#Streams.Enabling)를 참고하여 Enable하면 됩니다.
+DynamoDB 테이블 세팅에서 `Exports and streams`탭으로 이동한 후, `DynamoDB stream details`에서 [공식 문서](https://docs.aws.amazon.com/ko_kr/amazondynamodb/latest/developerguide/Streams.html#Streams.Enabling)를 참고하여 Enable하면 됩니다.
 
 그리고 위에서 만들었던 AWS Lambda Function을 트리거에 추가해주면, 테이블에 변경이 일어날 때마다 변경 사항이 전달됩니다.
 
