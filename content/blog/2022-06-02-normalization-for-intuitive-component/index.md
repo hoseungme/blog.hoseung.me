@@ -85,35 +85,37 @@ function ClassesRanking() {
 }
 ```
 
-위 컴포넌트는 읽는 사람 입장에서 어떤 문제가 있을까요? 제가 생각한 문제는:
+위 컴포넌트는 읽는 사람 입장에서 어떤 문제가 있을까요? 제가 생각한 문제는 읽는 입장에서 이해해야할 맥락이 너무 많다는 점입니다.
 
-- 이해해야할 맥락이 많다는 점
-  - myClassRanking과 top5Ranking이 분리되어있지만, top5Ranking안에 myClassRanking이 포함되있을 수 있다.
-  - 학급 데이터의 유일한 식별자는 학교 이름 + 학년 + 반을 합친 것이다.
-  - myClassRanking은 nullable하다.
-  - myClassRanking이 5위 아래일 경우, TOP 5 리스트 바깥에 따로 보여준다.
-- 그 맥락이 코드에 직관적으로 표현되지 못하고 있는 점
+- myClassRanking과 top5Ranking이 분리되어있지만, top5Ranking안에 myClassRanking이 포함되있을 수 있다.
+- 학급 데이터의 유일한 식별자는 학교 이름 + 학년 + 반을 합친 것이다.
+- myClassRanking은 nullable하다.
+- myClassRanking이 5위 아래일 경우, TOP 5 리스트 바깥에 따로 보여준다.
 
 저는 근본적으로 이 문제가 잘못된 데이터 설계로부터 발생했다고 생각했습니다.
 
-이를 해결하기 위해 필요한 것이 데이터를 **정규화**하는 것입니다.
+즉, 이 문제를 해결하기 위해선 데이터를 적절히 **정규화**해야 합니다.
 
 ## 데이터 정규화하기
 
-제가 생각하는 정규화의 의미는 데이터를 적절한 형태로 바꾸어주는 과정입니다.
+제가 생각하는 정규화의 의미는 데이터를 적절한 형태로 바꾸어주는 과정입니다. 프론트엔드에선 API 응답을 UI 렌더링을 위한 데이터로 사용하기 위해 많이 거치는 과정입니다.
 
-데이터의 '적절한' 형태란 무엇일까요? 그건 제품의 요구사항에 따라 매우 크게 달라질 것이고, 사람 마다 자신이 생각하는 적절한 형태가 다를 수 있습니다.
+데이터의 **적절한 형태**란 무엇일까요? 그건 제품의 요구사항에 따라 매우 크게 달라질 것이고, 사람 마다 자신이 생각하는 적절한 형태는 다를겁니다.
 
 저는 보통 아래의 원칙에 기반하여 생각합니다.
 
 - 이 컴포넌트가 본질적으로 무엇을 보여주는 컴포넌트인가?
 - 그것을 보여주기 위한 가장 쉬운 방법은 무엇인가?
 
-그렇다면 위에서 작성한 `ClassesRanking`컴포넌트가 본질적으로 보여주려는 것은 무엇일까요? 네이밍에도 담겨있듯이 순전히 '학급의 랭킹'을 보여주려는 것이 아닐까요?
+그렇다면 위에서 작성한 `ClassesRanking`컴포넌트가 본질적으로 보여주려는 것은 무엇일까요? 네이밍에도 담겨있듯이 **학급의 랭킹**을 보여주려는 것이 아닐까요?
 
-하지만 막상 `ClassesRanking`의 구현을 보면 요구사항과 구현의 거리감이 꽤 있어보입니다. 그럼 여기서 코드를 작성하는 쪽, 읽는 쪽 모두에게 쉬운 데이터 구조가 무엇일까요?
+하지만 막상 `ClassesRanking`의 구현을 보면 그 본질과 실제 구현의 거리감이 꽤 있어보입니다. 그럼 여기서 코드를 작성하는 쪽, 읽는 쪽 모두에게 쉬운 데이터 구조가 무엇일까요?
 
-저는 '랭킹 순으로 정렬된 학급의 배열'의 형태가 된다면 좋을 것 같다고 생각했습니다. 그러면 `ClassesRanking`이 좀더 '학급의 랭킹'을 보여주는 컴포넌트 다워지지 않을까요?
+저는 `ClassesRanking`이 **랭킹 순으로 정렬된 학급의 배열** 하나만 받을 수 있다면 좋을 것 같다고 생각했습니다.
+
+그리고 배열의 각 아이템에 **유저의 학급인지에 대한 데이터**만 있다면 현재 `ClassesRanking`의 본질과 거리가 먼 로직들이 숨겨지고, 조금 더 직관적으로 변하지 않을까요?
+
+따라서 위에서 정의했던 Class interface에 isMyClass(유저의 학급인지에 대한 데이터)를 추가하고, API fetcher에서 응답 데이터를 제가 원하는 형태로 정규화 해줬습니다.
 
 ```typescript
 interface NormalizedClass extends Class {
@@ -125,10 +127,8 @@ interface NormalizedClassesRanking {
 }
 ```
 
-배열 하나에 TOP 5 랭킹(top5Ranking)과 유저의 학급(myClassRanking)을 한번에 보여주기 위해, isMyClass 프로퍼티를 추가하고, API fetcher에서 간단히 normalize 해줬습니다.
-
 ```typescript
-async function fetcher(): NormalizedClassesRanking {
+async function fetch(): NormalizedClassesRanking {
   const { myClassRanking, top5Ranking } = await get("/classes/ranking");
 
   const normalize = (item: Class) => {
@@ -211,41 +211,43 @@ function ClassesRanking() {
 
 위에서 적었던 제품의 요구사항을 다시 보고 돌아와봅시다. **제품의 복잡한 요구사항이 코드에 그대로 흘러들어온** 안좋은 모습입니다.
 
-하지만 우리는 제품에 요구사항에서 벗어나 ```ClassesRanking```이 본질적으로 보여주려는 것이 무엇인지 사고하고, 데이터를 그에 맞춰 정규화 함으로써, 위 문제를 해결할 수 있었습니다.
+하지만 우리는 제품에 요구사항에서 벗어나 `ClassesRanking`이 본질적으로 보여주려는 것이 무엇인지 사고하고, 데이터를 그에 맞춰 정규화 함으로써, 위 문제를 해결할 수 있었습니다.
 
-데이터를 ranking이라는 배열 하나만 받음으로써, '학급의 랭킹'을 보여주는 ```ClassesRanking``` 컴포넌트의 본질과 가까워질 수 있었습니다.
+데이터를 ranking이라는 배열 하나만 받음으로써, '학급의 랭킹'을 보여주는 `ClassesRanking` 컴포넌트의 본질과 가까워질 수 있었습니다.
 
-또한, 학급 랭킹을 TOP 5와 그 아래로 나누어서 보여준다는 점 외에 딱히 더 이해할 맥락이 없고, 그게 ```ClassesRanking``` 컴포넌트의 구현에 있는 것이 어색하지도 않습니다.
+또한, 학급 랭킹을 TOP 5와 그 아래로 나누어서 보여준다는 점 외에 딱히 더 이해할 맥락이 없고, 그게 `ClassesRanking` 컴포넌트의 구현에 있는 것이 어색하지도 않습니다.
 
 또한 isMyClass를 추가함으로써 코드의 이해가 훨씬 빨라졌습니다.
 
 > "item.isMyClass, 즉 이 학급이 유저의 학급이면 '우리 반'이라고 표시하네."
 
-그리고 혹시 느끼셨나요? 기존과 다르게 ```li```로 감싸진 부분이 모두 동일한 구조를 보입니다.
+그리고 혹시 느끼셨나요? 기존과 다르게 `li`로 감싸진 부분이 모두 동일한 구조를 보입니다.
 
 ```tsx
 // 기존 모습 (TOP 5와 그 아래의 렌더링 로직이 서로 다름)
 <li key={index}>
   {myClassRanking &&
     `${myClassRanking.schoolName}/${myClassRanking.grade}/${myClassRanking.className}` ===
-    `${item.schoolName}/${item.grade}/${item.className}` && <div>우리 반</div>}
+      `${item.schoolName}/${item.grade}/${item.className}` && <div>우리 반</div>}
   <div>
     {item.schoolName} {item.grade}학년 {item.className}반
   </div>
   <div>{item.ranking}등</div>
   <div>{item.registeredCount}명</div>
-</li>
+</li>;
 
-{myClassRanking && myClassRanking.ranking > 5 && (
-  <li>
-    <div>우리 반</div>
-    <div>
-      {myClassRanking.schoolName} {myClassRanking.grade}학년 {myClassRanking.className}반
-    </div>
-    <div>{myClassRanking.ranking}등</div>
-    <div>{myClassRanking.registeredCount}명</div>
-  </li>
-)}
+{
+  myClassRanking && myClassRanking.ranking > 5 && (
+    <li>
+      <div>우리 반</div>
+      <div>
+        {myClassRanking.schoolName} {myClassRanking.grade}학년 {myClassRanking.className}반
+      </div>
+      <div>{myClassRanking.ranking}등</div>
+      <div>{myClassRanking.registeredCount}명</div>
+    </li>
+  );
+}
 ```
 
 ```tsx
@@ -260,7 +262,7 @@ function ClassesRanking() {
 </li>
 ```
 
-따라서 기존과 다르게 ```ClassesRanking```컴포넌트를 한 단계 더 추상화할 수 있게됩니다.
+따라서 기존과 다르게 `ClassesRanking`컴포넌트를 한 단계 더 추상화할 수 있게됩니다.
 
 ```tsx
 function ClassesRanking() {
@@ -300,9 +302,10 @@ function ClassRankingItem(item: NormalizedClass) {
 }
 ```
 
-이제 ```ClassesRanking```을 읽는 입장에서는 isMyClass 조차도 이해할 필요가 사라졌습니다. 읽는 입장에서 ```ClassesRanking```은 단순히 학급 랭킹을 TOP 5와 그 아래로 나뉘어 보여주는 컴포넌트일 뿐입니다.
+이제 `ClassesRanking`을 읽는 입장에서는 isMyClass 조차도 이해할 필요가 사라졌습니다. 읽는 입장에서 `ClassesRanking`은 단순히 학급 랭킹을 TOP 5와 그 아래로 나뉘어 보여주는 컴포넌트일 뿐입니다.
 
 ## 마무리
+
 지금까지 데이터 정규화를 통해 요구사항에 비해 복잡한 컴포넌트를 직관적으로 만드는 과정에 대해 정리해 보았습니다.
 
 이 글에서 말하려는 내용을 다시 정리하면:
@@ -311,8 +314,4 @@ function ClassRankingItem(item: NormalizedClass) {
 - 컴포넌트가 본질적으로 보여주려는게 무엇인지 생각하기
 - 가장 직관적이고 올바른 데이터 스키마에 대해 생각하고, 데이터 정규화 하기
 
-프론트엔드 개발자가 데이터 정규화를 통해 코드를 깔끔히 만드는 것도 중요한 역량이겠지만, 사실 근본적으로는 이런 데이터 정규화를 하지 않는게 가장 좋은 것 같습니다.
-
-그걸 위해서 프론트엔드 개발자와 백엔드 개발자는 개인 플레이를 하지 않아야 하고, UI 플로우에 대해 함께 자세하게 이해하고, API 설계를 함께 하는게 가장 중요한 것 같습니다.
-
-글에 부족한 부분이 있다면 댓글로 알려주세요!
+코드 퀄리티에 대한 글은 처음 남겨보는데, 글에 부족한 부분이 있다면 댓글로 알려주세요!
