@@ -43,7 +43,12 @@ interface ClassesRanking {
 }
 ```
 
-사실 이 부분은 API 설계 자체가 잘못되었다는 생각이 듭니다. 저였다면 유저의 학급 랭킹을 내려주는 API와 학급을 랭킹 순으로 내려주는 API를 따로 만들고, isMySchool 등의 필드를 추가했을 것 같습니다.
+사실 이 부분은 API 설계 자체가 잘못되었다는 생각이 듭니다. 저였다면 유저의 학급 랭킹을 내려주는 API와 학급을 랭킹 순으로 내려주는 API를 따로 만들고, isMyClass 등의 필드를 추가했을 것 같습니다.
+
+```
+GET /users/{userId}/class // 유저 학급 API
+GET /classes?count=5 // TOP 5 학급 리스트 API
+```
 
 다만 시간 관계상 트레이드 오프가 필요했습니다.
 
