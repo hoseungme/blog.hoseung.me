@@ -14,7 +14,7 @@ export default function ({ data, location }: PageProps<QueryResult>) {
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,
       description: node.frontmatter.description,
-      thumbnail: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback,
+      thumbnail: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback ?? null,
       tags: node.frontmatter.tags,
       url: node.fields.slug,
       publishedAt: node.frontmatter.date,
@@ -22,7 +22,7 @@ export default function ({ data, location }: PageProps<QueryResult>) {
   }, [data]);
   return (
     <Layout>
-      <Seo title="최신 글" />
+      <Seo title="장호승 기술 블로그" description="글을 잘 쓰고 싶어요" />
       <PostList posts={posts} pathname={location.pathname} />
     </Layout>
   );
