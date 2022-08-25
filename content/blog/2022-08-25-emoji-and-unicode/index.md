@@ -28,13 +28,13 @@ tags:
 
 - 특정 범위의 연속된 유니코드 코드 포인트의 집합입니다.
 - 각 영역에는 고유한 이름이 존재하고, 각 영역의 코드 포인트는 중복되지 않습니다.
-    - 예시: U+1F300 ~ U+1F5FF 범위의 [Miscellaneous Symbols and Pictographs 영역](https://en.wikipedia.org/wiki/Miscellaneous_Symbols_and_Pictographs#Emoji_modifiers)
+  - 예시: U+1F300 ~ U+1F5FF 범위의 [Miscellaneous Symbols and Pictographs 영역](https://en.wikipedia.org/wiki/Miscellaneous_Symbols_and_Pictographs#Emoji_modifiers)
 
 ### 유니코드 평면 (Unicode plane)
 
 - 유니코드 문자 전체를 여러 개의 평면으로 논리적으로 나눈 것입니다.
 - 0 ~ 16번까지 총 17개의 평면이 존재하며, 각 평면은 2^16개(65536개)의 코드로 구성됩니다.
-    - 여기서 0번 평면을 다국어 기본 평면(Basic multilingual plane, BMP)이라고 합니다.
+  - 여기서 0번 평면을 다국어 기본 평면(Basic multilingual plane, BMP)이라고 합니다.
 
 ### 유니코드 인코딩 (Unicode encoding)
 
@@ -104,7 +104,7 @@ const TextSkeleton = styled.div`
 `;
 
 // height는 font-size에 맞춰 알아서 늘어남
-<TextSkeleton style={{ width: 100, fontSize: 16 }} />
+<TextSkeleton style={{ width: 100, fontSize: 16 }} />;
 ```
 
 ## 그럼 자바스크립트에서 유니코드 코드 포인트를 추출하려면?
@@ -149,13 +149,13 @@ console.log(getCodePoints("✋🏿")); // [ '270b', '1f3ff' ]
 ## 결론
 
 - 유니코드는 세상 모든 문자를 컴퓨터에서 표현하기 위해 만들어진 표준이다.
-    - 유니코드 문자들은 영역, 평면 같은 논리적인 공간으로 분류된다.
-    - 유니코드 문자는 UTF-8, UTF-16 등으로 인코딩 된다.
-        - UTF-16은 2바이트로 표현이 불가능한 유니코드 문자에 대해 Surrogate Pair라는 규칙을 적용한다.
+  - 유니코드 문자들은 영역, 평면 같은 논리적인 공간으로 분류된다.
+  - 유니코드 문자는 UTF-8, UTF-16 등으로 인코딩 된다.
+    - UTF-16은 2바이트로 표현이 불가능한 유니코드 문자에 대해 Surrogate Pair라는 규칙을 적용한다.
 - 이모지들도 모두 유니코드 문자이다.
-    - 피부색 처리는 Emoji Modifier를 활용한다.
+  - 피부색 처리는 Emoji Modifier를 활용한다.
 - 자바스크립트 문자열은 기본적으로 UTF-16으로 인코딩된다.
-    - String.prototype.codePointAt 메소드로 쉽게 UTF-16으로 인코딩된 문자의 유니코드 코드 포인트를 얻을 수 있다.
+  - String.prototype.codePointAt 메소드로 쉽게 UTF-16으로 인코딩된 문자의 유니코드 코드 포인트를 얻을 수 있다.
 
 현재 다니고있는 회사에서 [토스페이스](https://toss.im/tossface)라는 자체 이모지를 사용하고 있기 때문에, 원래부터 유니코드에 관련해 궁금증이 있었습니다. 이번 기회에 확실히 알아갈 수 있어서 좋았어요.
 
