@@ -10,11 +10,11 @@ export default function () {
     element.setAttribute("repo", "HoseungJang/blog.hoseung.me");
     element.setAttribute("issue-term", "pathname");
     element.setAttribute("label", "comment");
-    element.setAttribute("theme", "github-light");
+    element.setAttribute("theme", window.matchMedia("(prefers-color-scheme: dark)").matches ? "github-dark" : "github-light");
     element.setAttribute("crossorigin", "anonymous");
     element.async = true;
 
-    root.current.appendChild(element);
+    root.current?.appendChild(element);
   }, []);
 
   return <div ref={root} />;

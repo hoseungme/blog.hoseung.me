@@ -1,22 +1,39 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
-  --white0: #ffffff;
-  --black0: #000000;
-  --grey0: #848484;
-  --grey1: #a4a4a4;
-  --grey2: #bdbdbd;
-  --grey3: #d8d8d8;
-  --grey4: #efefef;
-  --grey5: #f2f2f2;
-  --blue0: #58acfa;
-  --blue1: #81bef7;
+  --white0: rgba(255,255,255, 1);
+  --white0_t70: rgba(255,255,255, 1);
+  --black0: rgba(36,36,36,1);
+  --grey0: rgba(132, 132, 132, 1);
+  --grey1: rgba(164, 164, 164, 1);
+  --grey2: rgba(189, 189, 189, 1);
+  --grey3: rgba(216, 216, 216, 1);
+  --grey4: rgba(239, 239, 239, 1);
+  --grey5: rgba(242, 242, 242, 1);
+  --blue0: rgba(88, 172, 250, 1);
+  --blue1: rgba(129, 190, 247, 1);
+
+  @media (prefers-color-scheme: dark) {
+    --white0: rgba(36,36,36,1);
+    --white0_t70: rgba(36,36,36, 0.7);
+    --black0: rgba(255,255,255, 1);
+    --grey0: rgba(160, 160, 160, 1);
+    --grey1: rgba(140, 140, 140, 1);
+    --grey2: rgba(120, 120, 120, 1);
+    --grey3: rgba(100, 100, 100, 1);
+    --grey4: rgba(80, 80, 80, 1);
+    --grey5: rgba(60, 60, 60, 1);
+    --blue0: rgba(88, 172, 250, 1);
+    --blue1: rgba(129, 190, 247, 1);
+  }
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--white0);
+  color: var(--black0);
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 
