@@ -13,7 +13,7 @@ export default function ({ data, pageContext, location }: PageProps<QueryResult>
     return data.allMarkdownRemark.nodes.map((node) => ({
       title: node.frontmatter.title,
       description: node.frontmatter.description,
-      thumbnail: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback,
+      thumbnail: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback ?? null,
       tags: node.frontmatter.tags,
       url: node.fields.slug,
       publishedAt: node.frontmatter.date,
