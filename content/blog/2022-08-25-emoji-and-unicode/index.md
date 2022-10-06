@@ -5,7 +5,7 @@ description: 그리고 자바스크립트
 thumbnail: ./thumbnail.png
 tags:
   - 유니코드
-  - 자바스크립트
+  - Javascript
 ---
 
 최근에 이모지에 배경색을 입혀서 PNG로 뽑아주는 이미지 생성기를 만들 일이 있었는데요.
