@@ -34,21 +34,23 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          `gatsby-remark-copy-linked-files`,
+          {
+            resolve: `gatsby-remark-vscode`,
+            options: {
+              theme: {
+                default: "Github Light Theme",
+                dark: "Dark Github",
+              },
+              extensions: ["vscode-theme-github-light", "dark-theme-github"],
+            },
+          },
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 630,
+              linkImagesToOriginal: false,
             },
           },
-          {
-            resolve: `gatsby-remark-responsive-iframe`,
-            options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
-            },
-          },
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-smartypants`,
         ],
       },
     },

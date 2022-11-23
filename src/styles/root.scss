@@ -4,7 +4,7 @@
   --white_fixed: rgba(255, 255, 255, 1);
   --black_fixed: rgba(36, 36, 36, 1);
   --white0: rgba(255, 255, 255, 1);
-  --white0_t70: rgba(255, 255, 255, 1);
+  --white0_t70: rgba(255, 255, 255, 0.7);
   --black0: rgba(36, 36, 36, 1);
   --grey0: rgba(132, 132, 132, 1);
   --grey1: rgba(164, 164, 164, 1);
@@ -38,6 +38,7 @@ body {
   color: var(--black0);
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+  line-height: 1.65;
 
   font-size: 12px;
   @media screen and (min-width: 800px) {

@@ -74,7 +74,9 @@ Fitzpatrick scale은 피부색을 6가지로 분류하지만, Emoji Modifier는 
 
 그래서 아래 동영상처럼, 아무 것도 적용되지 않은 사람 또는 신체 이모지 뒤에 Emoji Modifier를 붙이면 피부색이 바뀌어요!
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/n0Bq8YYYQCw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="iframe-container">
+  <iframe src="https://www.youtube.com/embed/n0Bq8YYYQCw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 ---
 

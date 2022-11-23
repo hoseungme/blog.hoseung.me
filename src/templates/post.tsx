@@ -56,7 +56,7 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
             />
           )}
         </header>
-        <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
+        <section className="markdown" dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
         <Utterances />
       </article>
     </Layout>

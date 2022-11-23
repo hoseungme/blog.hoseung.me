@@ -4,7 +4,6 @@
   margin: 0 auto;
 
   > * {
-    padding: 1rem;
     box-sizing: border-box;
   }
 
@@ -15,6 +14,7 @@
     width: 100%;
     display: flex;
     align-items: center;
+    padding: 1rem;
     backdrop-filter: blur(8px);
     background-color: var(--white0);
     transition: background-color 0.4s, box-shadow 0.4s;
@@ -69,6 +69,11 @@
         transition: color 0.15s;
       }
     }
+  }
+
+  > main {
+    padding: 1.6rem;
+    overflow-x: hidden;
   }
 
   > footer {

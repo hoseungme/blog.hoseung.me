@@ -8,6 +8,7 @@
     "url": "https://github.com/HoseungJang/blog.hoseung.me/issues"
   },
   "dependencies": {
+    "dark-theme-github": "github:remorses/dark-github-theme",
     "date-fns": "^2.29.3",
     "gatsby": "^4.7.1",
     "gatsby-plugin-feed": "^4.7.0",
@@ -20,11 +21,9 @@
     "gatsby-plugin-sass": "^5.7.0",
     "gatsby-plugin-sharp": "^4.7.0",
     "gatsby-plugin-sitemap": "^5.7.0",
-    "gatsby-remark-copy-linked-files": "^5.7.0",
+    "gatsby-remark-copy-linked-files": "^5.24.0",
     "gatsby-remark-images": "^6.7.0",
-    "gatsby-remark-prismjs": "^6.7.0",
-    "gatsby-remark-responsive-iframe": "^5.7.0",
-    "gatsby-remark-smartypants": "^5.7.0",
+    "gatsby-remark-vscode": "^3.3.1",
     "gatsby-source-filesystem": "^4.7.0",
     "gatsby-transformer-remark": "^5.7.0",
     "gatsby-transformer-sharp": "^4.7.0",
@@ -37,7 +36,8 @@
     "storage-cover": "^1.0.1",
     "styled-components": "^5.3.3",
     "typeface-merriweather": "0.0.72",
-    "typeface-montserrat": "0.0.75"
+    "typeface-montserrat": "0.0.75",
+    "vscode-theme-github-light": "github:yunlingz/vscode-theme-github-light"
   },
   "devDependencies": {
     "@types/react-helmet": "^6.1.5",
