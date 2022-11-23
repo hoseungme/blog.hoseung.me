@@ -1,6 +1,6 @@
 ---
 title: Github Actions와 env-cmd 패키지로 React에서 현재 커밋의 해쉬값 접근하기
-date: 2021-01-13
+date: 2021-01-13T00:00:00+09:00
 description: React 배포에 버전을 부여한 과정을 정리합니다.
 tags:
   - 프론트엔드

@@ -1,6 +1,6 @@
 ---
 title: Github Pages에 HashRouter로 SPA 적용하기
-date: 2021-05-20
+date: 2021-05-20T00:00:00+09:00
 description: react-router의 HashRouter로 Github Pages에 SPA를 적용하는 방법을 소개합니다.
 tags:
   - 프론트엔드

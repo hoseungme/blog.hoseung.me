@@ -1,6 +1,6 @@
 ---
 title: Javascript에서 정규표현식 group name으로 string replace하기
-date: 2021-01-05
+date: 2021-01-05T00:00:00+09:00
 description: 정규표현식으로 replace할 때 좋은 팁
 tags:
   - Javascript

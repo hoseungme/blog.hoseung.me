@@ -1,6 +1,6 @@
 ---
 title: 서비스 워커로 웹 브라우저에서 푸시 알림받기
-date: 2021-11-28
+date: 2021-11-28T00:00:00+09:00
 description: PWA를 향한 가벼운 한걸음
 thumbnail: ./thumbnail.png
 tags:

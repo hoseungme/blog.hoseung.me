@@ -1,9 +1,11 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
-  --white0: rgba(255,255,255, 1);
-  --white0_t70: rgba(255,255,255, 1);
-  --black0: rgba(36,36,36,1);
+  --white_fixed: rgba(255, 255, 255, 1);
+  --black_fixed: rgba(36, 36, 36, 1);
+  --white0: rgba(255, 255, 255, 1);
+  --white0_t70: rgba(255, 255, 255, 1);
+  --black0: rgba(36, 36, 36, 1);
   --grey0: rgba(132, 132, 132, 1);
   --grey1: rgba(164, 164, 164, 1);
   --grey2: rgba(189, 189, 189, 1);
@@ -12,19 +14,19 @@
   --grey5: rgba(242, 242, 242, 1);
   --blue0: rgba(88, 172, 250, 1);
   --blue1: rgba(129, 190, 247, 1);
+  --orange0: rgba(219, 169, 1, 1);
+  --orange1: rgba(247, 211, 88, 1);
 
   @media (prefers-color-scheme: dark) {
-    --white0: rgba(36,36,36,1);
-    --white0_t70: rgba(36,36,36, 0.7);
-    --black0: rgba(255,255,255, 1);
+    --white0: rgba(36, 36, 36, 1);
+    --white0_t70: rgba(36, 36, 36, 0.7);
+    --black0: rgba(255, 255, 255, 1);
     --grey0: rgba(160, 160, 160, 1);
     --grey1: rgba(140, 140, 140, 1);
     --grey2: rgba(120, 120, 120, 1);
     --grey3: rgba(100, 100, 100, 1);
     --grey4: rgba(80, 80, 80, 1);
     --grey5: rgba(60, 60, 60, 1);
-    --blue0: rgba(88, 172, 250, 1);
-    --blue1: rgba(129, 190, 247, 1);
   }
 }
 

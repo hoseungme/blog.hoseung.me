@@ -1,6 +1,6 @@
 ---
 title: Docker로 테스트 환경 분리하기
-date: 2021-02-10
+date: 2021-02-10T00:00:00+09:00
 description: Docker를 사용해 테스트에 필요한 것들을 가상화해봅시다.
 tags:
   - 개인 블로그

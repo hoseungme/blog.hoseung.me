@@ -1,6 +1,6 @@
 ---
 title: 1년차 개발자 2021년 회고 - 고등학교 졸업, 회사, 운동, 영어, ...
-date: 2022-01-02
+date: 2022-01-02T00:00:00+09:00
 description: 이거라도 해서 나를 돌아보자
 thumbnail: ./thumbnail.png
 tags:

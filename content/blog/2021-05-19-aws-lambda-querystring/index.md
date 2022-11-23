@@ -1,6 +1,6 @@
 ---
 title: AWS Lambda에 query string으로 array 전달하기
-date: 2021-05-19
+date: 2021-05-19T00:00:00+09:00
 description: API Gateway가 query string을 어떻게 파싱하는지 알아보고, AWS Lambda에 query string으로 array를 보내는 방법을 소개합니다.
 tags:
   - 백엔드

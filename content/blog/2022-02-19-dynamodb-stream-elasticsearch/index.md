@@ -1,6 +1,6 @@
 ---
 title: AWS DynamoDB Stream으로 Elasticsearch에 안전하게 데이터 싱크하기
-date: 2022-02-19
+date: 2022-02-19T00:00:00+09:00
 description: 독립적인 서비스들이 모여 구성된 백엔드에서 트래픽 과부하와 장애 전파를 방지하려면 어떻게 해야할까요?
 thumbnail: ./thumbnail.png
 tags:

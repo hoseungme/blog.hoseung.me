@@ -1,42 +1,59 @@
+import { differenceInYears, format } from "date-fns";
 import * as React from "react";
-import { graphql, Link, PageProps } from "gatsby";
+import { Link, PageProps } from "gatsby";
 
-import Layout from "../components/layout";
-import Seo from "../components/seo";
-import Utterances from "../components/utterances";
+import { Post } from "../models/post";
+
+import { Layout } from "../components/Layout";
+import { Seo, SeoProps } from "../components/Seo";
+import { Utterances } from "../components/Utterances";
 
 import "../styles/templates/post.scss";
 
-export default function ({ data }: PageProps<QueryResult>) {
-  const post = data.markdownRemark;
-  const thumbnail = post.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback;
+interface PageContext {
+  og: SeoProps;
+  post: Post;
+}
+
+export default function Page({ pageContext }: PageProps<{}, PageContext>) {
+  const { og, post } = pageContext;
+
+  const yearsAfterPublished = differenceInYears(Date.now(), post.publishedAt);
+
   return (
     <Layout>
-      <Seo
-        title={post.frontmatter.title}
-        description={post.frontmatter.description}
-        url={`https://blog.hoseung.me${post.fields.slug}`}
-        thumbnail={
-          post.frontmatter.thumbnail ? `https://blog.hoseung.me${post.frontmatter.thumbnail.publicURL}` : undefined
-        }
-      />
-      <article className="blog-post-wrapper" itemScope itemType="http://schema.org/Article">
+      <Seo {...og} />
+      <article className="template-post" itemScope itemType="http://schema.org/Article">
         <header>
           <h1 className="title" itemProp="headline">
-            {post.frontmatter.title}
+            {post.title}
           </h1>
-          <p className="published-at">{post.frontmatter.date}</p>
+          <p className="published-at">{format(post.publishedAt, "yyyy년 M월 d일")}</p>
           <ul className="tag-list">
-            {post.frontmatter.tags.map((tag) => (
+            {post.tags.map((tag) => (
               <li key={tag} className="tag-list-item">
                 <Link className="link" to={`/tags/${tag}`}>
-                  {tag}
+                  #{tag}
                 </Link>
               </li>
             ))}
           </ul>
-          {thumbnail && (
-            <img className="thumbnail" src={thumbnail.src} srcSet={thumbnail.srcSet} sizes={thumbnail.sizes} />
+          {yearsAfterPublished >= 1 && (
+            <div className="outdated-note">
+              <p className="title">주의 ⛔️</p>
+              <ul className="descriptions">
+                <li>이 글이 작성된지 {yearsAfterPublished}년이 넘었어요.</li>
+                <li>누구나 숨기고 싶은 흑역사가 있답니다.</li>
+              </ul>
+            </div>
+          )}
+          {post.thumbnail && (
+            <img
+              className="thumbnail"
+              src={post.thumbnail.optimized.src}
+              srcSet={post.thumbnail.optimized.srcSet}
+              sizes={post.thumbnail.optimized.sizes}
+            />
           )}
         </header>
         <section dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
@@ -45,55 +62,3 @@ export default function ({ data }: PageProps<QueryResult>) {
     </Layout>
   );
 }
-
-interface QueryResult {
-  markdownRemark: {
-    html: string;
-    fields: {
-      slug: string;
-    };
-    frontmatter: {
-      title: string;
-      date: string;
-      description: string;
-      thumbnail: {
-        publicURL: string;
-        childImageSharp: {
-          gatsbyImageData: {
-            images: {
-              fallback: {
-                src: string;
-                srcSet: string;
-                sizes: string;
-              };
-            };
-          };
-        };
-      } | null;
-      tags: string[];
-    };
-  };
-}
-
-export const pageQuery = graphql`
-  query ($id: String!) {
-    markdownRemark(id: { eq: $id }) {
-      html
-      fields {
-        slug
-      }
-      frontmatter {
-        title
-        date(formatString: "YYYY년 M월 D일")
-        description
-        thumbnail {
-          publicURL
-          childImageSharp {
-            gatsbyImageData
-          }
-        }
-        tags
-      }
-    }
-  }
-`;

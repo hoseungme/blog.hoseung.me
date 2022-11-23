@@ -1,6 +1,6 @@
 ---
 title: 직관적인 컴포넌트를 위한 데이터 정규화
-date: 2022-06-02
+date: 2022-06-02T00:00:00+09:00
 description: 컴포넌트의 복잡도와 데이터 정규화의 연관성
 thumbnail: ./thumbnail.png
 tags:

@@ -8,6 +8,7 @@
     "url": "https://github.com/HoseungJang/blog.hoseung.me/issues"
   },
   "dependencies": {
+    "date-fns": "^2.29.3",
     "gatsby": "^4.7.1",
     "gatsby-plugin-feed": "^4.7.0",
     "gatsby-plugin-gatsby-cloud": "^4.7.0",

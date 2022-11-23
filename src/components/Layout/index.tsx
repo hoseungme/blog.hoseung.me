@@ -2,14 +2,14 @@ import * as React from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "gatsby";
 
-import "../styles/components/layout.scss";
+import "../../styles/components/layout.scss";
 
-export default function ({ children }) {
+export function Layout({ children }) {
   const [ref, isScrollTop] = useInView({ initialInView: true });
   return (
     <>
       <div ref={ref} />
-      <div className="layout-wrapper">
+      <div className="component-layout">
         <header className={!isScrollTop ? "scrolled" : undefined}>
           <Link className="link-to-home" to="/">
             hoseung.me
@@ -17,9 +17,6 @@ export default function ({ children }) {
           <a className="link-to-about" href="https://about.hoseung.me">
             ABOUT
           </a>
-          <Link className="link-to-tags" to="/tags">
-            TAGS
-          </Link>
           <a className="link-to-github" href="https://github.com/HoseungJang/blog.hoseung.me">
             <GithubIcon />
           </a>

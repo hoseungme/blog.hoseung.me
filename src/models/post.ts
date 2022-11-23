@@ -1,12 +1,17 @@
 export interface Post {
+  id: string;
   title: string;
   description: string;
   thumbnail: {
-    src: string;
-    srcSet: string;
-    sizes: string;
+    public: string;
+    optimized: {
+      src: string;
+      srcSet: string;
+      sizes: string;
+    };
   } | null;
   tags: string[];
   url: string;
-  publishedAt: string;
+  publishedAt: number;
+  html: string;
 }

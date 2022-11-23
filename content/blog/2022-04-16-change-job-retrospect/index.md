@@ -1,6 +1,6 @@
 ---
 title: 프론트엔드 이직 회고 - 당근마켓, 토스, 뱅크샐러드, 모두싸인
-date: 2022-04-16
+date: 2022-04-16T00:00:00+09:00
 description: 급하게 시작된 이직 여정 동안 느낀 것들을 기록합니다.
 thumbnail: ./thumbnail.png
 tags:

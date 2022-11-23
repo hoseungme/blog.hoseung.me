@@ -1,6 +1,6 @@
 ---
 title: Moment.js 대신 Day.js - 프론트엔드 번들 사이즈 줄이기
-date: 2022-03-13
+date: 2022-03-13T00:00:00+09:00
 description: 프론트엔드 번들 시점에서 Moment.js를 다시 바라보기
 thumbnail: ./thumbnail.png
 tags:
@@ -65,7 +65,7 @@ CRA를 사용해서 간단히 React 프로젝트를 생성하고, Moment.js로 �
 import moment from "moment";
 
 export function App() {
-  return <div>{moment().format("YYYY년 M월 D일 h시 m분 s초")}</div>;
+  return <div>{moment().format("yyyy년 M월 D일 h시 m분 s초")}</div>;
 }
 ```
 
@@ -140,7 +140,7 @@ Day.js를 선택한 아주 결정적인 이유는, 노션에 정리한 모든 us
 import dayjs from "dayjs";
 
 export function App() {
-  return <div>{dayjs().format("YYYY년 M월 D일 h시 m분 s초")}</div>;
+  return <div>{dayjs().format("yyyy년 M월 D일 h시 m분 s초")}</div>;
 }
 ```
 

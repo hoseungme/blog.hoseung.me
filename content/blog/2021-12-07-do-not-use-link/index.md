@@ -1,6 +1,6 @@
 ---
 title: react-router의 Link를 쓰지 마세요!
-date: 2021-12-07
+date: 2021-12-07T00:00:00+09:00
 description: react-router의 불필요한 리렌더링 깨부수기
 thumbnail: ./thumbnail.png
 tags:

@@ -2,16 +2,16 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 
-import { SiteMetadata } from "../models/site-metadata";
+import { SiteMetadata } from "../../models/site-metadata";
 
-interface SeoProps {
+export interface SeoProps {
   title?: string;
   description?: string;
   thumbnail?: string;
   url?: string;
 }
 
-export default function ({ title, description, thumbnail, url }: SeoProps) {
+export function Seo({ title, description, thumbnail, url }: SeoProps) {
   const defaultMeta = useStaticQuery(
     graphql`
       query {

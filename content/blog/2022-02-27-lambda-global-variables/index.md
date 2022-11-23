@@ -1,6 +1,6 @@
 ---
 title: "AWS Lambda의 동작 원리 - 전역 변수가 유지될까?"
-date: 2022-02-27
+date: 2022-02-27T00:00:00+09:00
 description: 간단한 질문으로부터 시작된 AWS Lambda 파헤치기
 thumbnail: ./thumbnail.png
 tags:

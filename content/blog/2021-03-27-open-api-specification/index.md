@@ -1,6 +1,6 @@
 ---
 title: OpenAPI Specification 3.0.1로 API 스펙 명세하기
-date: 2021-03-27
+date: 2021-03-27T00:00:00+09:00
 description: OpenAPI Specification을 알아보고, API를 명세합시다.
 tags:
   - 개인 블로그

@@ -1,6 +1,6 @@
 ---
 title: Template Literal Types로 Type-safe하게 express 라우터 작성하기
-date: 2022-01-06
+date: 2022-01-06T00:00:00+09:00
 description: Typescript 4.1부터 출시된 Template Literal Types로 express 프로젝트의 타입 안정성을 더 높혀봅시다.
 tags:
   - Typescript

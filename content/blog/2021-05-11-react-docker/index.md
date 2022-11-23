@@ -1,6 +1,6 @@
 ---
 title: Docker로 React 애플리케이션 배포하기
-date: 2021-05-11
+date: 2021-05-11T00:00:00+09:00
 description: Docker로 어드민 웹을 로컬에 배포하고 사용하기
 tags:
   - 개인 블로그

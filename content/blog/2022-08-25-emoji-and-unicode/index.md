@@ -1,6 +1,6 @@
 ---
 title: 이모지와 유니코드
-date: 2022-08-25
+date: 2022-08-25T00:00:00+09:00
 description: 그리고 자바스크립트
 thumbnail: ./thumbnail.png
 tags:

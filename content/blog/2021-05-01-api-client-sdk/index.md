@@ -1,6 +1,6 @@
 ---
 title: OpenAPI Specification으로 API client 자동 생성하기
-date: 2021-05-01
+date: 2021-05-01T00:00:00+09:00
 description: API Client SDK generator 만들기
 tags:
   - 개인 블로그

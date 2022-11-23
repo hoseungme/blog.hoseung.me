@@ -1,6 +1,6 @@
 ---
 title: AWS Lambda에서 Express 사용하기
-date: 2021-01-02
+date: 2021-01-02T00:00:00+09:00
 description: AWS Lambda에서 Express를 사용해 백엔드 API를 개발해봅시다.
 tags:
   - 개인 블로그

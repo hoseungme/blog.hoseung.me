@@ -1,6 +1,6 @@
 ---
 title: Chrome의 Back/Forward 캐시가 일으키는 문제와 해결법
-date: 2020-10-31
+date: 2020-10-31T00:00:00+09:00
 description: Cache-Control 헤더로 Back/Forward 캐시 제어하기
 tags:
   - 프론트엔드

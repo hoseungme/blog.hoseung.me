@@ -1,6 +1,6 @@
 ---
 title: Mocha, Chai, SuperTest로 BDD 기반의 테스트코드 작성하기
-date: 2021-02-27
+date: 2021-02-27T00:00:00+09:00
 description: BDD에 대해 알아보고, 테스트 작성하기
 tags:
   - 개인 블로그

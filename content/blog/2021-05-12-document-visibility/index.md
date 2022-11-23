@@ -1,6 +1,6 @@
 ---
 title: document.visibilityState로 유저가 탭을 보고 있는지 알아내기
-date: 2021-05-12
+date: 2021-05-12T00:00:00+09:00
 description: 유저가 다른 탭으로 이동했다는 것을 알아내려면?
 tags:
   - 프론트엔드

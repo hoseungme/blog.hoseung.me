@@ -1,6 +1,6 @@
 ---
 title: CloudFront로 S3의 private 컨텐츠 제공하기
-date: 2021-08-06
+date: 2021-08-06T00:00:00+09:00
 description: Origin Access Identity를 사용해 private 컨텐츠에 엑세스해봅시다.
 tags:
   - 개인 블로그

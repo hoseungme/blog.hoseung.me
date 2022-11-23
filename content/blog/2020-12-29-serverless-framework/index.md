@@ -1,6 +1,6 @@
 ---
 title: Serverless Framework로 AWS 인프라 구축하기
-date: 2020-12-29
+date: 2020-12-29T00:00:00+09:00
 description: Serverless Fremework로 AWS 인프라 구축을 자동화해봅시다.
 tags:
   - 개인 블로그

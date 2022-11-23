@@ -1,6 +1,6 @@
 ---
 title: AWS Lambda@Edge로 CSR 환경에서 SEO 처리하기
-date: 2021-11-28
+date: 2021-11-28T00:00:00+09:00
 description: SSR 없이 SEO 처리하기
 thumbnail: ./thumbnail.png
 tags:

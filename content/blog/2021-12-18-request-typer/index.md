@@ -1,6 +1,6 @@
 ---
 title: Fully-typed한 백엔드 시스템을 위한 오픈소스 프로젝트 개발기
-date: 2021-12-18
+date: 2021-12-18T00:00:00+09:00
 description: fully-typed 시스템의 완전한 자동화를 위한 발판 프로젝트
 tags:
   - 오픈소스

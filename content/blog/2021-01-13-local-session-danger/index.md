@@ -1,6 +1,6 @@
 ---
 title: Local Storage / Session Storage에 직접 접근하는 방식이 위험한 이유
-date: 2021-01-13
+date: 2021-01-13T00:00:00+09:00
 description: Local Storage, Session Storage의 예외상황들을 알아봅시다.
 tags:
   - 프론트엔드

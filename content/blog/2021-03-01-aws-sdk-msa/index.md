@@ -1,6 +1,6 @@
 ---
 title: AWS SDK로 AWS Lambda 기반의 마이크로 서비스끼리 호출하기
-date: 2021-03-01
+date: 2021-03-01T00:00:00+09:00
 description: AWS SDK로 마이크로서비스간 통신하기
 tags:
   - 개인 블로그

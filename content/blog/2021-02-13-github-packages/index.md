@@ -1,6 +1,6 @@
 ---
 title: Github Packages로 npm 패키지 배포하기
-date: 2021-02-13
+date: 2021-02-13T00:00:00+09:00
 description: npm 패키지를 Github Packages를 통해 private하게 사용해봅시다.
 tags:
   - 개인 블로그

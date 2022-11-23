@@ -1,6 +1,6 @@
 ---
 title: SSH로 GCP VM 인스턴스 접속하기
-date: 2021-02-06
+date: 2021-02-06T00:00:00+09:00
 description: SSH로 GCP 인스턴스에 간단히 접속해봅시다.
 tags:
   - 개인 블로그

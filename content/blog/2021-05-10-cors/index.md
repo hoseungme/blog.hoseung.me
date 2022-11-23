@@ -1,6 +1,6 @@
 ---
 title: Cross-Origin Resource Sharing (CORS) 이슈 해결하기
-date: 2021-05-10
+date: 2021-05-10T00:00:00+09:00
 description: CORS란 무엇이고, 어떻게 처리할까?
 tags:
   - 개인 블로그

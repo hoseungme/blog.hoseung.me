@@ -1,9 +1,8 @@
-.blog-post-wrapper {
+.template-post {
   width: 100%;
 
   > header {
     width: 100%;
-    margin-bottom: 2.4rem;
 
     > .title {
       margin-bottom: 0.8rem;
@@ -49,10 +48,43 @@
       }
     }
 
+    > .outdated-note {
+      position: relative;
+      margin: 2rem 0;
+      background-color: var(--orange1);
+      font-size: 1.2rem;
+      padding: 1.2rem;
+      padding-left: calc(10px + 1.2rem);
+      border-radius: 12px;
+      color: var(--black_fixed);
+      overflow: hidden;
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 10px;
+        background-color: var(--orange0);
+      }
+
+      > .title {
+        margin: 0;
+      }
+
+      > .descriptions {
+        margin: 0;
+        padding-left: 2rem;
+        margin-top: 0.6rem;
+      }
+    }
+
     > .thumbnail {
       width: 100%;
       border: 1px solid var(--grey5);
       border-radius: 12px;
+      margin: 2rem 0;
     }
   }
 

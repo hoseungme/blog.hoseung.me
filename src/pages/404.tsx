@@ -1,16 +1,16 @@
 import * as React from "react";
 import { Link } from "gatsby";
 
-import Layout from "../components/layout";
-import Seo from "../components/seo";
+import { Layout } from "../components/Layout";
+import { Seo } from "../components/Seo";
 
 import "../styles/pages/404.scss";
 
-const NotFoundPage = () => {
+export default function Page() {
   return (
     <Layout>
       <Seo title="Not Found" />
-      <div className="error-404-page-wrapper">
+      <div className="page-404">
         <img className="image" src="/404.png" alt="404 NOT FOUND" />
         <p className="message">아무 것도 없어요..</p>
         <Link className="link-to-home" to="/">
@@ -19,6 +19,4 @@ const NotFoundPage = () => {
       </div>
     </Layout>
   );
-};
-
-export default NotFoundPage;
+}

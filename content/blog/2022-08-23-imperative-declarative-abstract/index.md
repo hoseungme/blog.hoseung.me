@@ -1,6 +1,6 @@
 ---
 title: 명령형 코드와 선언형 코드, 그리고 추상화 다시보기
-date: 2022-08-23
+date: 2022-08-23T00:00:00+09:00
 description: 우리는 너무 단순하게 생각하고 있다
 thumbnail: ./thumbnail.png
 tags:
