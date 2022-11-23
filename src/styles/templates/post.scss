@@ -118,6 +118,7 @@
       padding: 0.1rem 1.5rem;
       border-radius: 10px;
       background-color: var(--grey4);
+      font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
     }
 
     --color-code: #f2f2f2;
@@ -143,7 +144,7 @@
       border: 1px solid var(--grey3);
     }
     pre.grvsc-container {
-      margin: var(--sizing-md) 0;
+      margin: 0.8rem 0;
     }
 
     .grvsc-line-highlighted::before {
