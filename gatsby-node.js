@@ -61,7 +61,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
             title: post.title,
             description: post.description,
             url: `https://blog.hoseung.me${post.id}`,
-            thumbnail: post.thumbnail != null ? `https://blog.hoseung.me${post.thumbnail.publicURL}` : undefined,
+            thumbnail: post.thumbnail != null ? `https://blog.hoseung.me${post.thumbnail.public}` : undefined,
           },
           post,
         },
