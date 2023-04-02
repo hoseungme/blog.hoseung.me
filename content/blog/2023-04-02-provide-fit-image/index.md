@@ -188,7 +188,7 @@ AWS와 Node.js 환경을 기반으로 이미지 리사이징 서버를 만들어
 1. HTTP API를 구성할 수 있고, 요청한 건에 대해서만 요금을 부과하는 Serverless 서비스
 2. 이미지 리사이징 결과를 반영구적으로 캐싱해둘 CDN
 
-1번을 충족하는 서비스는 [Lambda](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/welcome.html)입니다. Lambda는 인자로 event 객체를 받는 함수를 생성할 수 있는 서비스인데, 함수 하나는 AWS 내의 수많은 서비스에 연결되어 실행될 수 있습니다. 또한 어떤 서비스가 Lambda 함수를 실행했냐에 따라 다른 event 객체가 넘어옵니다.
+1번을 충족하는 서비스는 [Lambda](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/welcome.html)입니다. Lambda는 서버 구성 없이 간단하게 원격에 코드를 올려 실행할 수 있게 해주는 서비스입니다. 함수에 코드를 작성하는 개념이며, 그 함수는 HTTP 요청이나 다른 AWS 서비스에 의해 실행됩니다. 어떤 경로로 실행되었는지에 따라 함수에 넘어오는 인자 형태가 다릅니다.
 
 이전까지는 [API Gateway](https://docs.aws.amazon.com/ko_kr/apigateway/latest/developerguide/welcome.html)라는 서비스를 사용해 HTTP API를 구성하여 Lambda 함수를 연결했지만, 이제는 Lambda 내부적으로 [Function URL](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-urls.html)이라는게 생겨서, API Gateway를 사용하지 않고 매우 간단히 Lambda 함수를 실행시키는 HTTP 엔드포인트를 만들 수 있습니다.
 
@@ -198,9 +198,27 @@ AWS와 Node.js 환경을 기반으로 이미지 리사이징 서버를 만들어
 
 ## Lambda 함수 생성
 
-Lambda 함수 생성과 Function URL 생성 모두 [Serverless Framework](https://www.serverless.com/)를 사용해 정말 쉽게 할 수 있습니다. 이때 `serverless.yml`이라는 설정 파일 작성이 필요한데, [이 가이드](https://www.serverless.com/framework/docs/providers/aws/guide/functions)를 참고하시면 됩니다.
+먼저 Lambda 함수 부터 만들어 볼텐데, 이는 [Serverless Framework](https://www.serverless.com/)를 사용해 정말 쉽게 할 수 있습니다.
 
-간단히 `/hello-world`로 요청이 들어오면 응답하는 함수를 만들어 보겠습니다.
+아래의 간단한 설정 파일 하나면 함수 생성, Function URL 생성, 배포 모두 끝납니다.
+
+Lambda 관련 설정 파일 작성은 [이 가이드](https://www.serverless.com/framework/docs/providers/aws/guide/functions)를 참고하시면 됩니다.
+
+```yml
+service: image-optimize-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-northeast-2
+
+functions:
+  image-optimize:
+    handler: dst/index.handler
+    url: true
+```
+
+Lambda 함수 코드 작성도 매우 간단합니다. 아래는 `GET /hello-world` 요청에 대해 `"Hello, world!"` 메시지를 응답하는 예제입니다.
 
 ```typescript
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
@@ -226,135 +244,93 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 }
 ```
 
-Function URL을 통해 함수를 실행한 경우, event 객체는 [API Gateway Proxy Payload 2.0](https://docs.aws.amazon.com/lambda/latest/dg/urls-invocation.html#urls-payloads)과 똑같이 넘어오기 때문에 event 타입을 `APIGatewayProxyEventV2`로 잡았습니다.
+Lambda Function URL을 통해 함수가 실행되면 인자인 event 객체가 [이렇게](https://docs.aws.amazon.com/lambda/latest/dg/urls-invocation.html#urls-payloads) 넘어오므로, 타입을 `APIGatewayProxyEventV2`로 잡았습니다.
 
-`serverless.yml`은 아래와 같이 작성해 주었습니다. `ap-northeast-2` 리전(서울)에 Node.js 18.x 런타임에서 실행되는 `image-optimize` Lambda 함수를 생성하고, 그 함수의 Function URL도 생성하라는 뜻입니다.
-
-```yml
-service: image-optimize-lambda
-
-provider:
-  name: aws
-  runtime: nodejs18.x
-  region: ap-northeast-2
-
-functions:
-  image-optimize:
-    handler: dst/index.handler
-    url: true
-```
-
-생성된 Lambda Function URL로 실제로 요청을 보내보면, `/hello-world`로 들어온 요청에 대해 `"Hello, world!"` message를 응답합니다.
+위 예제를 배포하고 생성된 Function URL로 요청을 보내보면, `GET /hello-world`에 대해 아래와 같이 잘 응답합니다.
 
 ![](./lambda-hello-world-example.png)
 
 ## 이미지 리사이징 코드 작성
 
-Lambda에서 이미지 리사이징을 하기 위해서는 두 가지 라이브러리가 필요한데요.
+Lambda 함수와 Function URL까지 생성했으니, 이제 함수에 이미지를 리사이징하는 코드를 작성하여 배포해줄 차례입니다.
+
+이미지 리사이징을 위해 필요한 라이브러리는 두 가지인데요.
 
 1. 이미지를 다운로드하기 위한 HTTP client 라이브러리
 2. 다운로드 받은 이미지를 리사이징하기 위한 이미지 처리 라이브러리
 
-HTTP client 라이브러리로는 [axios](https://axios-http.com/)가 유명하고, 이미지 처리 라이브러리로는 [sharp](https://sharp.pixelplumbing.com)가 유명합니다.
+HTTP client 라이브러리로는 다들 익숙하신 [axios](https://axios-http.com/)를 사용하면 되고, 이미지 처리 라이브러리로는 [sharp](https://sharp.pixelplumbing.com)라는 유명한 라이브러리가 있습니다.
 
-두 라이브러리를 활용하여 아래와 같이 정말 간단하게 이미지를 리사이징할 수 있고, 화질 조정까지 가능합니다.
-
-아래는 다운로드 받은 PNG 이미지를 200 \* 200 크기로 리사이징 하고, 화질을 기존 대비 50% 수준으로 만드는 예제입니다.
+아래는 PNG 이미지를 `axios`로 다운로드하고, `sharp`를 사용해 200 \* 200 크기로 리사이징 하는 예제입니다.
 
 ```typescript
 const imageURL = "https://example.com/image.png";
 const { data } = await axios.get(imageURL, {
   responseType: "arraybuffer",
 });
-await sharp(data)
-  .resize({ fit: "fill", width: 200, height: 200 })
-  .toFormat("png", { quality: 50 })
-  .toFile("resized.png");
-```
-
-위 예제에서 imageURL, widht, height, quality만 쿼리 파라미터로 받아서 처리하면 리사이징 서버는 완성됩니다.
-
-이때 `metadata()` 메소드를 사용하여 format, width, height 등 원본 이미지에 대한 정보를 얻을 수 있는데, 이를 활용하여 코드를 작성해주면 됩니다.
-
-```typescript
-const { url } = event.queryStringParameters;
-
-const { data } = await axios.get(decodeURIComponent(url), {
-  responseType: "arraybuffer",
-});
-
 const image = sharp(data);
-const metadata = await image.metadata();
-
-const { w } = event.queryStringParameters;
-const width = parseInt(w);
-
-if (metadata.width > width) {
-  image.resize({ fit: "fill", width });
-}
-
-// ...
+image.resize({ width: 200, height: 200 });
 ```
 
-전체 예제 코드는 [여기](https://github.com/HoseungJang/blog.hoseung.me-example/tree/main/2023-03-25-provide-fit-image/image-optimizer-lambda)로 들어가시면 확인하실 수 있고, 결과적으로 아래와 같이 요청하도록 만들었습니다.
+위 예제에서 동적으로 변하는 정보들인 이미지 URL, 이미지 가로/세로 크기만 쿼리 파라미터로 받아 동적으로 바꿀 수 있게 하면 완성입니다.
+
+물론 실제로는 쿼리 파라미터 파싱, 화질 조정, base64 인코딩 및 Content-Type 헤더 추가 등 로직이 조금 더 필요합니다. 모두 반영된 함수 코드는 [여기](https://github.com/HoseungJang/blog.hoseung.me-example/blob/1d8f3f6bec1bfd4e5e04836b32ef5613f7a19409/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)서 확인하실 수 있습니다.
+
+아래와 같이 요청하도록 만들었습니다.
 
 ```
-/optimize-image?url={이미지URL}&w={가로크기}&h={세로크기}&q={화질(optional)}
+/optimize-image?url={이미지URL}&w={가로크기}&h={세로크기}&q={화질}
 ```
 
 ## CloudFront와 Lambda Function URL 연결하기
 
-이제 위에서 Lambda 함수와 함께 생성한 Function URL을 CloudFront와 연결해줘야 합니다.
+이제 위에서 생성한 Lambda 함수에서 리사이징한 결과물을 캐싱하기 위해, 함수의 Function URL을 CloudFront와 연결해야 합니다.
 
-CloudFront 콘솔에서 배포를 생성하려고 하면, 오리진의 도메인을 입력하는 필드가 있습니다.
+CloudFront 콘솔에서 배포 생성 페이지로 넘어가면, 오리진의 도메인을 입력하는 필드가 있습니다.
 
-거기에 위에서 생성했던 Lambda Function URL을 넣어주고, `뷰어 일치`를 선택해주면 오리진 연결은 끝납니다.
+거기에 Lambda Function URL의 도메인을 넣고 `뷰어 일치`를 선택해주면 오리진 연결은 끝납니다.
 
 ![](./create-cloudfront-distribution-origin.png)
 
-그리고 `캐시 키 및 원본 요청` 섹션으로 내려보면 `캐시 정책`과 `원본 요청 정책`을 설정할 수 있는데요.
+이제부터 핵심인데, CloudFront에 들어온 요청을 오리진에 어떤 방식으로 전달할지, 오리진에서 그 요청을 처리해 응답한 결과는 어떻게 캐싱할지에 대해 정책을 정해주어야 합니다.
 
-![](./create-cloudfront-distribution-default-cache-policy.png)
+![](./create-cloudfront-distribution-default-cache-policy.png.png)
 
-`캐시 정책`이 지금은 캐싱을 하지 않는다는 기본값으로 되어있는데요. 제가 원하는 것은 리사이징 결과물을 반영구적으로 캐싱해두는 것이기 때문에, 정책을 새로 생성할겁니다.
+`원본 요청 정책`은 `AllViewerExceptHostHeader`라고 되어있는데요. 오리진으로 요청을 넘길 때 Host를 제외한 다른 HTTP Request 헤더와 쿠키, 쿼리 파라미터를 모두 포함시킨다는 정책입니다. 우리는 Host 헤더는 필요 없고 쿼리 파라미터만 잘 넘어오면 되니까, 대충 기본값으로 써주겠습니다.
 
-`정책 생성`을 누르고, `image-optimizer-cache`로 이름을 설정한 후, TTL을 모두 31536000초로 설정하여, 1년 동안 응답이 캐싱되도록 설정했습니다.
+다만 `캐시 정책`이 `CachingDisabled`로 되어있는데요. 이는 오리진 응답을 캐싱하지 않는다는 정책인데, 우리는 리사이징 결과의 반영구적 캐싱을 원하기 때문에 정책을 새로 만들어 줄겁니다.
+
+`정책 생성`을 눌러 새 정책의 이름을 설정한 후, TTL을 모두 31536000초로 설정하여 1년 동안 응답이 캐싱되도록 설정했습니다.
+
+그리고 `TTL 설정` 아래의 `캐시 키 설정`에서 `쿼리 문자열`을 `모두`로 설정하여 쿼리 파라미터가 캐싱 기준에 포함되도록 설정했습니다.
+
+만약 쿼리 파라미터가 캐싱 기준에 포함되지 않으면, 쿼리 파라미터가 변경되더라도 유저에게 캐싱된 응답이 전달됩니다.
 
 ![](./create-cache-policy-ttl.png)
 
-이때 아래로 스크롤하면 `캐시 키 설정`이라는 것이 보이는데, `쿼리 문자열`을 `모두`로 설정해주어야 쿼리 파라미터가 캐싱 기준에 포함됩니다.
+이제 `배포 생성` 버튼을 누르고 조금 기다리면 이미지 리사이징 서버가 완성됩니다. 이제 Lambda Function URL 도메인이 아니라 CloudFront 배포와 연결된 도메인으로 요청을 보내면 됩니다.
 
-만약 `쿼리 문자열`을 `모두`로 설정하지 않으면, 쿼리 파라미터가 다른 요청끼리 같은 응답을 하게 되는데, 제 이미지 리사이징 서버는 쿼리 파라미터 값에 의존하고 있으므로 그렇게 되면 큰 일이 납니다.
+테스트 차원에서 제 블로그 글 중 하나인 [AWS Lambda의 동작 원리 - 전역 변수가 유지될까?](https://blog.hoseung.me/2022-02-27-lambda-global-variables)의 썸네일을 리사이징 해보겠습니다.
 
-`원본 요청 정책`은 기본값인 `AllViewerExceptHostHeader`를 유지해줍시다. 헤더, 쿠키, 쿼리 파라미터 모두 오리진에 전달한다는 정책입니다.
+현재 썸네일의 기본 크기가 현재 832 \* 512로 나오는데요. 아래는 이를 절반 줄여서 416 \* 256 크기로 리사이징한 결과입니다.
 
-이제 `배포 생성` 버튼을 누르고 조금 기다리면, 배포와 연결된 도메인으로 요청을 보낼 수 있습니다. 이제 Lambda Function URL 도메인이 아니라, CloudFront 배포의 도메인으로 요청을 보내면 됩니다.
-
-## 테스트
-
-테스트로 제 블로그 글 중 하나인 [AWS Lambda의 동작 원리 - 전역 변수가 유지될까?](https://blog.hoseung.me/2022-02-27-lambda-global-variables)의 썸네일을 리사이징 해보겠습니다.
+```
+/optimize-image?url={썸네일URL}&w=416&h=256
+```
 
 ![](./test-original-thumbnail.png)
 
-썸네일의 기본 크기가 현재 832 \* 512로 나오는데요. 이를 절반 줄여서 416 \* 256 크기로 렌더링 해보겠습니다.
-
-이미지 리사이징 서버로 아래와 같이 요청을 보내면 될겁니다. (썸네일 URL이 길어서 글에서는 썸네일이라고 쓰겠습니다)
-
-```
-/optimize-image?url=썸네일&w=416&h=256
-```
-
 ![](./test-resized-thumbnail.png)
 
-결과는 위 사진처럼 성공적으로 리사이징되어 내려왔습니다. 이때 CloudFront에 캐싱된 응답을 받은 것인지를 확인하려면, 응답 헤더에서 `x-cache`의 값이 `Hit from cloudfront`인지 확인하면 됩니다.
+응답이 CloudFront에 캐싱된 것인지 확인하고 싶으면, HTTP Response 헤더에서 `x-cache`의 값이 `Hit from cloudfront`인지 확인하면 됩니다.
 
 ![](./test-response-headers.png)
 
 # 여담 - Next.js
 
-Next.js를 사용하시는 경우, [빌트인 Image 컴포넌트](https://nextjs.org/docs/basic-features/image-optimization)를 사용하시면 원본 이미지를 내부적으로 리사이징하여 `srcset`으로 제공합니다.
+Next.js를 사용하시는 경우, [next/image의 Image 컴포넌트](https://nextjs.org/docs/basic-features/image-optimization)를 사용하시면 원본 이미지를 내부적으로 리사이징하여 `srcset`으로 제공합니다.
 
-이때 내부적으로 [빌트인 optimizer](https://github.com/vercel/next.js/blob/c8a5bd5ebaa7572f941dd6e8fb5ecd836b146e9f/packages/next/src/server/image-optimizer.ts#L398)를 사용하게 되는데, 이 방식은 CDN의 장점이 없고, 팀 니즈에 따라 커스텀도 어렵습니다.
+이때 Next.js에 내장된 [Image Optimizer](https://github.com/vercel/next.js/blob/c8a5bd5ebaa7572f941dd6e8fb5ecd836b146e9f/packages/next/src/server/image-optimizer.ts#L398)를 사용하게 되는데, 이렇게 되면 커스텀도 불가능하고 CDN의 이점도 누릴 수 없습니다.
 
 따라서 [loader prop](https://nextjs.org/docs/api-reference/next/image#loader)을 사용하여 커스텀 이미지 리사이징 서버를 직접 연결하는 것이 좋을 것 같습니다.
 
