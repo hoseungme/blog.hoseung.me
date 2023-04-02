@@ -169,7 +169,7 @@ Github의 [custom-device-emulation-chrome](https://github.com/amirshnll/custom-d
   width="300px"
   sizes="(max-width: 700px) 300px, (max-width: 1000px) 600px, 900px"
   src="300w.png"
-  alt="300w image"
+  alt=""
 />
 ```
 
@@ -323,6 +323,33 @@ CloudFront 콘솔에서 배포 생성 페이지로 넘어가면, 오리진의 �
 응답이 CloudFront에 캐싱된 것인지 확인하고 싶으면, HTTP Response 헤더에서 `x-cache`의 값이 `Hit from cloudfront`인지 확인하면 됩니다.
 
 ![](./test-response-headers.png)
+
+이제 `srcset` 작성을 위해 이미지를 크기 별로 준비할 필요 없이 이미지 리사이징 서버를 거치면 됩니다. 아래는 900 \* 900 이미지 하나를 리사이징하여 디바이스 해상도에 대응하는 예제입니다.
+
+```tsx
+function createResizedImageURL(url: string, width: number, height: number) {
+  return `https://api.example.com/optimize-image?url=${encodeURIComponent(url)}&w=${width}&h=${height}`;
+}
+
+const imageURL = "https://asset.example.com/900w.png";
+
+function Image() {
+  return (
+    <img
+      srcset={[
+        [createResizedImageURL(imageURL, 300, 300), 1],
+        [createResizedImageURL(imageURL, 600, 600), 2],
+        [imageURL, 3],
+      ]
+        .map(([url, dpr]) => `${url} ${dpr}x`)
+        .join(", ")}
+      src="900w.png"
+      alt=""
+      width={300}
+    />
+  );
+}
+```
 
 # 여담 - Next.js
 
