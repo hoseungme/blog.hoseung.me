@@ -20,7 +20,7 @@ tags:
 
 예를 들어, 유저가 업로드한 이미지를 데스크탑 용과 모바일 용으로 각각 리사이징하여 업로드 해뒀는데, 정작 그 이미지는 데스크탑 유저들만 조회했다면? 모바일 용으로 업로드한 이미지는 저장소 공간만 차지한 셈이 될 것입니다.
 
-즉, 하나의 이미지를 준비해둔 후, 실제로 요청이 들어온 시점에 해당 디바이스의 화면 스펙에 따라서 동적으로 리사이징하여 제공하는 것이 효율적입니다. 또한 한 번 리사이징한 이미지를 오랜 시간 캐싱해둔다면, 비용을 더 아낄 수 있을 것입니다.
+즉, 하나의 이미지를 준비해둔 후, 해당 디바이스의 화면 스펙에 따라서 실시간으로 리사이징하여 제공하는 것이 효율적입니다. 또한 한 번 리사이징한 이미지를 오랜 시간 캐싱해둔다면, 비용을 더 아낄 수 있을 것입니다.
 
 따라서 이 글에서 다뤄볼 주제는 아래와 같습니다.
 
@@ -159,7 +159,7 @@ Github의 [custom-device-emulation-chrome](https://github.com/amirshnll/custom-d
 
 ## srcset의 브라우저 호환성 챙기기
 
-caniuse라는 사이트에서 [srcset](https://caniuse.com/?search=srcset)의 호환성에 대해 확인해보면 지원 현황이 매우 좋습니다.
+`srcset`의 [브라우저 호환성에 대해 확인](https://caniuse.com/?search=srcset)해보면 지원 현황이 매우 좋습니다.
 
 하지만 여전히 `srcset`이 지원되지 않는 브라우저를 위해 `src`는 꼭 추가해줍시다.
 
@@ -173,7 +173,7 @@ caniuse라는 사이트에서 [srcset](https://caniuse.com/?search=srcset)의 �
 />
 ```
 
-# 이미지 리사이징 서버 만들기
+# 실시간 이미지 리사이징 서버 만들기
 
 > 백엔드 주제에 관심이 없으신 분들은 `여담 - Next.js` 파트로 가주시면 됩니다.
 
@@ -201,8 +201,6 @@ AWS와 Node.js 환경을 기반으로 이미지 리사이징 서버를 만들어
 먼저 Lambda 함수 부터 만들어 볼텐데, 이는 [Serverless Framework](https://www.serverless.com/)를 사용해 정말 쉽게 할 수 있습니다.
 
 아래의 간단한 설정 파일 하나면 함수 생성, Function URL 생성, 배포 모두 끝납니다.
-
-Lambda 관련 설정 파일 작성은 [이 가이드](https://www.serverless.com/framework/docs/providers/aws/guide/functions)를 참고하시면 됩니다.
 
 ```yml
 service: image-optimize-lambda
@@ -274,7 +272,7 @@ image.resize({ width: 200, height: 200 });
 
 위 예제에서 동적으로 변하는 정보들인 이미지 URL, 이미지 가로/세로 크기만 쿼리 파라미터로 받아 동적으로 바꿀 수 있게 하면 완성입니다.
 
-물론 실제로는 쿼리 파라미터 파싱, 화질 조정, base64 인코딩 및 Content-Type 헤더 추가 등 로직이 조금 더 필요합니다. 모두 반영된 함수 코드는 [여기](https://github.com/HoseungJang/blog.hoseung.me-example/blob/1d8f3f6bec1bfd4e5e04836b32ef5613f7a19409/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)서 확인하실 수 있습니다.
+물론 실제로는 쿼리 파라미터 파싱, 화질 조정, base64 인코딩 및 Content-Type 헤더 추가 등 로직이 조금 더 필요합니다. 모두 반영된 함수 코드는 [여기](https://github.com/HoseungJang/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)서 확인하실 수 있습니다.
 
 아래와 같이 요청하도록 만들었습니다.
 
@@ -338,10 +336,15 @@ Next.js를 사용하시는 경우, [next/image의 Image 컴포넌트](https://ne
 
 - `srcset`, `sizes` attribute
   - [반응형 이미지 - MDN](https://developer.mozilla.org/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
-- AWS Lambda
-  - [Lambda 개념](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-concepts.html)
-  - [Lambda URL](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-urls.html)
-- AWS CloudFront
-  - [CloudFront 배포에 다양한 원본 사용](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
-  - [쿼리 문자열 기반의 콘텐츠 캐싱](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/QueryStringParameters.html)
-  - [캐시 정책 이해](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache-key.html#cache-key-understand-cache-policy)
+- 실시간 이미지 리사이징 서버
+  - [전체 코드](https://github.com/HoseungJang/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)
+  - Serverless Framework
+    - [공식 사이트](https://www.serverless.com/)
+    - [Lambda Function 설정 파일 작성 가이드](https://www.serverless.com/framework/docs/providers/aws/guide/functions)
+  - AWS Lambda
+    - [Lambda 개념](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/gettingstarted-concepts.html)
+    - [Lambda URL](https://docs.aws.amazon.com/ko_kr/lambda/latest/dg/lambda-urls.html)
+  - AWS CloudFront
+    - [CloudFront 배포에 다양한 원본 사용](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/DownloadDistS3AndCustomOrigins.html)
+    - [쿼리 문자열 기반의 콘텐츠 캐싱](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/QueryStringParameters.html)
+    - [캐시 정책 이해](https://docs.aws.amazon.com/ko_kr/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache-key.html#cache-key-understand-cache-policy)
