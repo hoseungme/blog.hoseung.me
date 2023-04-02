@@ -343,7 +343,7 @@ function Image() {
       ]
         .map(([url, dpr]) => `${url} ${dpr}x`)
         .join(", ")}
-      src="900w.png"
+      src={imageURL}
       alt=""
       width={300}
     />
