@@ -137,15 +137,15 @@
       --color-code-highlight-border: rgba(255, 255, 255, 0.2);
     }
 
-    pre,
-    code {
-      font-size: 13px;
-      line-height: 1.65;
-      font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-      background-color: var(--color-code-block);
-    }
     pre {
       border: 1px solid var(--grey3);
+      background-color: var(--color-code-block);
+
+      * {
+        font-size: 13px;
+        line-height: 1.65;
+        font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+      }
     }
     pre.grvsc-container {
       margin: 0.8rem 0;
