@@ -137,7 +137,7 @@ Node.js의 복잡한 세계에 타입스크립트 컴파일러 만으로 뛰어�
 먼저 라이브러리 개발자 입장에서 가장 중요한 것은 CommonJS, ESM 어느 환경에서 설치하더라도 문제 없이 동작하는 것임을 배웠기 때문에, 그것에 집중하여 이런 저런 `Rollup` plugin을 찾아보게 됩니다.
 
 - `Babel` 트랜스파일링을 위한 `@rollup/plugin-babel`
-- Module Resolution과 Tree shaking을 위한 `@rollup/plugin-node-resolve`
+- Module Resolution을 위한 `@rollup/plugin-node-resolve`
 - CommonJS 코드를 ESM 코드로 변환하기 위한 `@rollup/plugin-commonjs`
 
 ```javascript
