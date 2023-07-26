@@ -20,6 +20,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
                 }
                 publicURL
               }
+              locale
               tags
             }
             html
@@ -32,7 +33,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
 
   function normalizePostNodesToPosts(nodes) {
     return nodes.map((node) => ({
-      id: node.fields.slug,
+      id: node.fields.slug.split("/")[1],
       title: node.frontmatter.title,
       description: node.frontmatter.description,
       thumbnail:
@@ -42,31 +43,27 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
               optimized: node.frontmatter.thumbnail?.childImageSharp.gatsbyImageData.images.fallback ?? null,
             }
           : null,
+      locale: node.frontmatter.locale ?? "ko",
       tags: node.frontmatter.tags,
-      url: node.fields.slug,
+      url: `/${node.fields.slug.split("/")[1]}`,
       publishedAt: new Date(node.frontmatter.date).valueOf(),
       html: node.html,
     }));
   }
 
-  function createPostPages({ posts }) {
-    const PostPage = path.resolve(`./src/templates/post.tsx`);
+  function normalizePostsToPostsByLocale({ posts }) {
+    const postsByLocale = {};
 
     posts.forEach((post) => {
-      createPage({
-        path: post.id,
-        component: PostPage,
-        context: {
-          og: {
-            title: post.title,
-            description: post.description,
-            url: `https://blog.hoseung.me${post.id}`,
-            thumbnail: post.thumbnail != null ? `https://blog.hoseung.me${post.thumbnail.public}` : undefined,
-          },
-          post,
-        },
-      });
+      const locale = post.locale;
+      if (postsByLocale[locale] == null) {
+        postsByLocale[locale] = [post];
+      } else {
+        postsByLocale[locale].push(post);
+      }
     });
+
+    return postsByLocale;
   }
 
   function normalizePostsToPostsByTagName(posts) {
@@ -89,7 +86,28 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     return Object.entries(postsByTagName).map(([tagName, posts]) => ({ name: tagName, numberOfPosts: posts.length }));
   }
 
-  function createTagPostsPages({ tags, postsByTagName }) {
+  function createKoPostPages({ posts }) {
+    const PostPage = path.resolve(`./src/templates/post.tsx`);
+
+    posts.forEach((post) => {
+      createPage({
+        path: post.url,
+        component: PostPage,
+        context: {
+          og: {
+            title: post.title,
+            description: post.description,
+            url: `https://blog.hoseung.me${post.url}`,
+            thumbnail: post.thumbnail != null ? `https://blog.hoseung.me${post.thumbnail.public}` : undefined,
+          },
+          post,
+          locale: "ko",
+        },
+      });
+    });
+  }
+
+  function createKoTagPostsPages({ tags, postsByTagName }) {
     const PostsPage = path.resolve(`./src/templates/posts.tsx`);
 
     tags.forEach((tag) => {
@@ -104,12 +122,13 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
           allTags: tags,
           currentTag: tag,
           posts: postsByTagName[tag.name],
+          locale: "ko",
         },
       });
     });
   }
 
-  function createIndexPage({ posts, tags }) {
+  function createKoIndexPage({ posts, tags }) {
     const PostsPage = path.resolve(`./src/templates/posts.tsx`);
 
     createPage({
@@ -123,8 +142,88 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
         allTags: tags,
         currentTag: null,
         posts,
+        locale: "ko",
       },
     });
+  }
+
+  function createKoPages({ posts }) {
+    const postsByTagName = normalizePostsToPostsByTagName(posts);
+    const tags = normalizePostsByTagNameToTags(postsByTagName);
+
+    createKoIndexPage({ posts, tags });
+    createKoPostPages({ posts });
+    createKoTagPostsPages({ tags, postsByTagName });
+  }
+
+  function createEnPostPages({ posts }) {
+    const PostPage = path.resolve(`./src/templates/post.tsx`);
+
+    posts.forEach((post) => {
+      createPage({
+        path: `/en${post.url}`,
+        component: PostPage,
+        context: {
+          og: {
+            title: post.title,
+            description: post.description,
+            url: `https://blog.hoseung.me/en${post.url}`,
+            thumbnail: post.thumbnail != null ? `https://blog.hoseung.me${post.thumbnail.public}` : undefined,
+          },
+          post,
+          locale: "en",
+        },
+      });
+    });
+  }
+
+  function createEnTagPostsPages({ tags, postsByTagName }) {
+    const PostsPage = path.resolve(`./src/templates/posts.tsx`);
+
+    tags.forEach((tag) => {
+      createPage({
+        path: `/en/tags/${tag.name}`,
+        component: PostsPage,
+        context: {
+          og: {
+            title: `Posts of ${tag.name} Tag`,
+            url: `https://blog.hoseung.me/en/tags/${encodeURIComponent(tag.name)}`,
+          },
+          allTags: tags,
+          currentTag: tag,
+          posts: postsByTagName[tag.name],
+          locale: "en",
+        },
+      });
+    });
+  }
+
+  function createEnIndexPage({ posts, tags }) {
+    const PostsPage = path.resolve(`./src/templates/posts.tsx`);
+
+    createPage({
+      path: `/en`,
+      component: PostsPage,
+      context: {
+        og: {
+          title: "Hoseung.me: development blog",
+          description: "Do my best to write high-quality article",
+        },
+        allTags: tags,
+        currentTag: null,
+        posts,
+        locale: "en",
+      },
+    });
+  }
+
+  function craeteEnPages({ posts }) {
+    const postsByTagName = normalizePostsToPostsByTagName(posts);
+    const tags = normalizePostsByTagNameToTags(postsByTagName);
+
+    createEnIndexPage({ posts, tags });
+    createEnPostPages({ posts });
+    createEnTagPostsPages({ tags, postsByTagName });
   }
 
   const postNodes = await fetchPostNodes();
@@ -134,14 +233,26 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
   }
 
   const posts = normalizePostNodesToPosts(postNodes);
+  const postsByLocale = normalizePostsToPostsByLocale({ posts });
 
-  createPostPages({ posts });
+  const koPosts = postsByLocale.ko;
+  const enPosts = postsByLocale.en;
 
-  const postsByTagName = normalizePostsToPostsByTagName(posts);
-  const tags = normalizePostsByTagNameToTags(postsByTagName);
+  createKoPages({ posts: koPosts });
+  craeteEnPages({ posts: enPosts });
+};
+exports.onCreatePage = async ({ page, actions }) => {
+  const { createPage, deletePage } = actions;
 
-  createTagPostsPages({ tags, postsByTagName });
-  createIndexPage({ posts, tags });
+  if (page.path.match(/^\/[a-z]{2}\/404\/$/)) {
+    const newPage = { ...page };
+    const locale = page.path.split(`/`)[1];
+
+    newPage.matchPath = `/${locale}/*`;
+
+    deletePage(page);
+    createPage(newPage);
+  }
 };
 
 exports.onCreateNode = ({ node, actions, getNode }) => {

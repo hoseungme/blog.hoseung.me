@@ -3,37 +3,41 @@ import { Link, PageProps } from "gatsby";
 
 import { Post } from "../models/post";
 import { Tag } from "../models/tag";
+import { Locale } from "../models/locale";
 
 import { Layout } from "../components/Layout";
 import { Seo, SeoProps } from "../components/Seo";
 import { PostList } from "../components/PostList";
 
-import "../styles/templates/posts.scss";
 import { classNames } from "../utils/classNames";
+import { path } from "../utils/path";
+
+import "../styles/templates/posts.scss";
 
 interface PageContext {
   og: SeoProps;
   allTags: Tag[];
   currentTag: Tag | null;
   posts: Post[];
+  locale: Locale;
 }
 
 export default function Page({ pageContext, location }: PageProps<{}, PageContext>) {
-  const { og, allTags, currentTag, posts } = pageContext;
+  const { og, allTags, currentTag, posts, locale } = pageContext;
 
   return (
-    <Layout>
+    <Layout locale={locale}>
       <Seo {...og} />
       <div className="template-posts">
         <ul className="tag-list">
           <li className={classNames("tag-list-item", { selected: currentTag == null })}>
-            <Link className="link" to={`/`}>
-              <div className="name">전체보기</div>
+            <Link className="link" to={path("/", locale)}>
+              <div className="name">{locale === "ko" ? "전체보기" : "All Posts"}</div>
             </Link>
           </li>
           {allTags.map((tag) => (
             <li key={tag.name} className={classNames("tag-list-item", { selected: currentTag?.name === tag.name })}>
-              <Link className="link" to={`/tags/${tag.name}`}>
+              <Link className="link" to={path(`/tags/${tag.name}`, locale)}>
                 <div className="name">#{tag.name}</div>
                 <div className="number-of-posts">{tag.numberOfPosts}</div>
               </Link>

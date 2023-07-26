@@ -8,7 +8,7 @@ import "../styles/pages/404.scss";
 
 export default function Page() {
   return (
-    <Layout>
+    <Layout locale="ko">
       <Seo title="Not Found" />
       <div className="page-404">
         <img className="image" src="/404.png" alt="404 NOT FOUND" />

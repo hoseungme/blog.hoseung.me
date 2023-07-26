@@ -8,6 +8,8 @@ import { Layout } from "../components/Layout";
 import { Seo, SeoProps } from "../components/Seo";
 import { Utterances } from "../components/Utterances";
 
+import { path } from "../utils/path";
+
 import "../styles/templates/post.scss";
 
 interface PageContext {
@@ -21,7 +23,7 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
   const yearsAfterPublished = differenceInYears(Date.now(), post.publishedAt);
 
   return (
-    <Layout>
+    <Layout locale={post.locale}>
       <Seo {...og} />
       <article className="template-post" itemScope itemType="http://schema.org/Article">
         <header>
@@ -32,7 +34,7 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
           <ul className="tag-list">
             {post.tags.map((tag) => (
               <li key={tag} className="tag-list-item">
-                <Link className="link" to={`/tags/${tag}`}>
+                <Link className="link" to={path(`/tags/${tag}`, post.locale)}>
                   #{tag}
                 </Link>
               </li>

@@ -2,16 +2,19 @@ import * as React from "react";
 import { useInView } from "react-intersection-observer";
 import { Link } from "gatsby";
 
-import "../../styles/components/layout.scss";
+import { Locale } from "../../models/locale";
 
-export function Layout({ children }) {
+import "../../styles/components/layout.scss";
+import { path } from "../../utils/path";
+
+export function Layout({ locale, children }: { locale: Locale; children: React.ReactNode }) {
   const [ref, isScrollTop] = useInView({ initialInView: true });
   return (
     <>
       <div ref={ref} />
       <div className="component-layout">
         <header className={!isScrollTop ? "scrolled" : undefined}>
-          <Link className="link-to-home" to="/">
+          <Link className="link-to-home" to={path("/", locale)}>
             hoseung.me
           </Link>
           <a className="link-to-about" href="https://about.hoseung.me">

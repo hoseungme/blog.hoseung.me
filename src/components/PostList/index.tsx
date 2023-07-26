@@ -6,6 +6,8 @@ import { wrapSessionStorage } from "storage-cover";
 
 import { Post } from "../../models/post";
 
+import { path } from "../../utils/path";
+
 import "../../styles/components/post.scss";
 
 const sessionStorage = wrapSessionStorage();
@@ -32,7 +34,7 @@ export function PostList({ posts, pathname }: { posts: Post[]; pathname: string 
       <ul className="component-post-list">
         {slicedPosts.map((post) => (
           <li key={post.url} className="post-list-item">
-            <Link to={post.url} itemProp="url">
+            <Link to={path(post.url, post.locale)} itemProp="url">
               <article itemScope itemType="http://schema.org/Article">
                 <header>
                   {post.thumbnail && (

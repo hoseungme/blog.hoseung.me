@@ -1,3 +1,5 @@
+import { Locale } from "./locale";
+
 export interface Post {
   id: string;
   title: string;
@@ -10,6 +12,7 @@ export interface Post {
       sizes: string;
     };
   } | null;
+  locale: Locale;
   tags: string[];
   url: string;
   publishedAt: number;
