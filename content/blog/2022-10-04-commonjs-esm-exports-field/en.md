@@ -225,7 +225,7 @@ If you use conditional exports, you should use the correct file extension depend
 - In CJS pacakge
 
 ```json
-// ESM은 .mjs로 명시해야함
+// ESM should be .mjs
 {
   "exports": {
     ".": {
@@ -239,7 +239,7 @@ If you use conditional exports, you should use the correct file extension depend
 - In ESM package
 
 ```json
-// CJS는 .cjs로 명시해야함
+// CJS should be .cjs
 {
   "type": "module"
   "exports": {
