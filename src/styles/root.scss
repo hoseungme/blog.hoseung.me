@@ -1,5 +1,8 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
+@import "prismjs/themes/prism-solarizedlight.css";
+@import "prismjs/themes/prism-tomorrow.css" (prefers-color-scheme: dark);
+
 :root {
   --white_fixed: rgba(255, 255, 255, 1);
   --black_fixed: rgba(36, 36, 36, 1);
