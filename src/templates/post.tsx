@@ -30,7 +30,9 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
           <h1 className="title" itemProp="headline">
             {post.title}
           </h1>
-          <p className="published-at">{format(post.publishedAt, "yyyy년 M월 d일")}</p>
+          <p className="published-at">
+            {format(post.publishedAt, post.locale === "ko" ? "yyyy년 M월 d일" : "yyyy-MM-dd")}
+          </p>
           <ul className="tag-list">
             {post.tags.map((tag) => (
               <li key={tag} className="tag-list-item">
@@ -42,11 +44,23 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
           </ul>
           {yearsAfterPublished >= 1 && (
             <div className="outdated-note">
-              <p className="title">주의 ⛔️</p>
-              <ul className="descriptions">
-                <li>이 글이 작성된지 {yearsAfterPublished}년이 넘었어요.</li>
-                <li>누구나 숨기고 싶은 흑역사가 있답니다.</li>
-              </ul>
+              {post.locale === "ko" ? (
+                <>
+                  <p className="title">주의 ⛔️</p>
+                  <ul className="descriptions">
+                    <li>이 글이 작성된지 {yearsAfterPublished}년이 넘었어요.</li>
+                    <li>누구나 숨기고 싶은 흑역사가 있답니다.</li>
+                  </ul>
+                </>
+              ) : (
+                <>
+                  <p className="title">Caution ⛔️</p>
+                  <ul className="descriptions">
+                    <li>I worte this post more than {yearsAfterPublished} years ago.</li>
+                    <li>Everyone has a shameful past.</li>
+                  </ul>
+                </>
+              )}
             </div>
           )}
           {post.thumbnail && (
