@@ -10,7 +10,7 @@
   "dependencies": {
     "dark-theme-github": "github:remorses/dark-github-theme",
     "date-fns": "^2.29.3",
-    "gatsby": "^4.7.1",
+    "gatsby": "^4.25.7",
     "gatsby-plugin-feed": "^4.7.0",
     "gatsby-plugin-gatsby-cloud": "^4.7.0",
     "gatsby-plugin-google-gtag": "^4.8.0",
