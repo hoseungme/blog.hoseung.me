@@ -12,27 +12,26 @@
 
   > .message {
     width: 100%;
-    color: var(--grey0);
+    color: var(--text0);
     font-size: 1.6rem;
     text-align: center;
   }
 
-  > .links {
-    display: flex;
+  > .link-to-home {
+    padding: 0.7rem 2rem;
 
-    > .link-to-home {
-      padding: 0.7rem 2rem;
-      border: 1px solid var(--grey2);
-      border-radius: 24px;
-      font-size: 1.3rem;
-      text-align: center;
-      transition: text-shadow 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border1);
+    border-radius: 24px;
 
-      @media screen and (min-width: 800px) {
-        &:hover {
-          box-shadow: 0px 0px 6px var(--grey3);
-          text-shadow: 1px 1px 3px var(--grey3);
-        }
+    font-size: 1.3rem;
+    text-align: center;
+
+    transition: text-shadow 0.2s, box-shadow 0.2s;
+
+    @media screen and (min-width: 800px) {
+      &:hover {
+        box-shadow: 0px 0px 6px var(--shadow0);
+        text-shadow: 1px 1px 3px var(--shadow0);
       }
     }
   }

@@ -63,14 +63,6 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
               )}
             </div>
           )}
-          {post.thumbnail && (
-            <img
-              className="thumbnail"
-              src={post.thumbnail.optimized.src}
-              srcSet={post.thumbnail.optimized.srcSet}
-              sizes={post.thumbnail.optimized.sizes}
-            />
-          )}
         </header>
         <section className="markdown" dangerouslySetInnerHTML={{ __html: post.html }} itemProp="articleBody" />
         <Utterances />

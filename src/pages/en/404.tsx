@@ -13,11 +13,9 @@ export default function Page() {
       <div className="page-404">
         <img className="image" src="/404.png" alt="404 NOT FOUND" />
         <p className="message">Not Found</p>
-        <div className="links">
-          <Link className="link-to-home" to="/en">
-            Go to Home
-          </Link>
-        </div>
+        <Link className="link-to-home" to="/en">
+          Go to Home
+        </Link>
       </div>
     </Layout>
   );

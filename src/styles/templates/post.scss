@@ -5,58 +5,69 @@
     width: 100%;
 
     > .title {
-      margin-bottom: 0.8rem;
-      font-size: 2rem;
+      margin-top: 2rem;
+      margin-bottom: 0.4rem;
+
+      font-size: 2.4rem;
     }
 
     > .published-at {
-      margin-bottom: 0.8rem;
-      color: var(--grey0);
-      font-size: 0.9rem;
+      margin-top: 0;
+      margin-bottom: 0.4rem;
+
+      color: var(--text2);
+      font-size: 1rem;
     }
 
     > .tag-list {
       width: 100%;
+
       display: flex;
-      margin-bottom: 0.8rem;
+
+      margin-top: 0;
       padding: 0;
+
       list-style: none;
 
       > .tag-list-item {
+        margin-bottom: 0.5rem;
+        padding-bottom: 1px;
+
         &:not(:last-child) {
-          margin-right: 0.4rem;
+          margin-right: 1rem;
+        }
+
+        &:hover {
+          > .link {
+            color: var(--text2);
+          }
         }
 
         > .link {
           display: flex;
-          padding: 0.2rem 0.8rem;
-          border: 1px solid var(--grey2);
-          border-radius: 24px;
-          transition: box-shadow 0.25s;
+          align-items: center;
 
-          @media screen and (min-width: 800px) {
-            &:hover {
-              box-shadow: 0px 0px 6px var(--grey3);
+          color: var(--text1);
 
-              > .name,
-              > .number-of-posts {
-                text-shadow: 1px 1px 3px var(--grey3);
-              }
-            }
-          }
+          transition: color 0.15s;
         }
       }
     }
 
     > .outdated-note {
       position: relative;
+
       margin: 2rem 0;
-      background-color: var(--orange1);
-      font-size: 1.2rem;
       padding: 1.2rem;
       padding-left: calc(10px + 1.2rem);
+
+      background-color: var(--primary0);
+
       border-radius: 12px;
-      color: var(--black_fixed);
+
+      font-size: 1.1rem;
+      color: var(--black);
+
       overflow: hidden;
 
       &:before {
@@ -65,8 +76,10 @@
         top: 0;
         left: 0;
         bottom: 0;
+
         width: 10px;
-        background-color: var(--orange0);
+
+        background-color: var(--primary1);
       }
 
       > .title {
@@ -75,24 +88,21 @@
 
       > .descriptions {
         margin: 0;
-        padding-left: 2rem;
         margin-top: 0.6rem;
+        padding-left: 2rem;
       }
-    }
-
-    > .thumbnail {
-      width: 100%;
-      border: 1px solid var(--grey5);
-      border-radius: 12px;
-      margin: 2rem 0;
     }
   }
 
   > .markdown {
-    font-size: 16px;
+    margin: 2rem 0 4rem;
+
+    > p {
+      line-height: 1.6;
+    }
 
     h1 {
-      font-size: 1.75em;
+      font-size: 1.8rem;
     }
 
     ul,
@@ -106,41 +116,40 @@
     }
 
     a {
-      color: var(--blue0);
+      color: var(--primary2);
       font-weight: 700;
+      text-decoration: underline;
+
       transition: color 0.2s;
 
-      @media screen and (min-width: 800px) {
-        &:hover {
-          color: var(--blue1);
-        }
+      &:hover {
+        color: var(--primary3);
       }
     }
 
     blockquote {
       margin: 0;
-      padding: 0.1rem 1.5rem;
+      padding: 1rem 1.2rem;
+
       border-radius: 10px;
-      background-color: var(--grey4);
+
+      background-color: var(--background1);
+
+      color: var(--text1);
       font-family: inherit;
-    }
 
-    --color-code: #f2f2f2;
-    --color-code-block: #fafafa;
-    --color-code-highlight: rgba(0, 0, 0, 0.05);
-    --color-code-highlight-border: rgba(0, 0, 0, 0.2);
-
-    @media (prefers-color-scheme: dark) {
-      --color-code: #3a3a3a;
-      --color-code-block: #242424;
-      --color-code-highlight: rgba(255, 255, 255, 0.05);
-      --color-code-highlight-border: rgba(255, 255, 255, 0.2);
+      > p {
+        margin: 0;
+      }
     }
 
     pre {
-      border: 1px solid var(--grey3);
+      margin: 1rem 0;
+
+      border: 1px solid var(--border1);
       border-radius: 10px;
-      background-color: var(--color-code-block);
+
+      background-color: var(--background1);
 
       -ms-overflow-style: none;
       overflow: -moz-scrollbars-none;
@@ -154,27 +163,26 @@
         font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
       }
     }
-    pre.grvsc-container {
-      margin: 0.8rem 0;
-    }
-
-    .grvsc-line-highlighted::before {
-      background-color: var(--color-code-highlight) !important;
-      box-shadow: inset 4px 0 0 0 var(--color-code-highlight-border) !important;
-    }
 
     *:not(pre) > code {
-      background-color: var(--color-code);
-      padding: 0.2rem 0.4rem;
       margin: 0;
+      padding: 0.2rem 0.5rem;
+
       border-radius: 4px;
+
+      background-color: var(--background1);
+
+      color: var(--primary4);
       font-family: inherit;
     }
 
     .iframe-container {
       position: relative;
+
       width: 100%;
+
       padding-bottom: 56.25%;
+
       box-sizing: border-box;
 
       > iframe {
