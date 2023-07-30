@@ -26,9 +26,9 @@
     font-size: 1.3rem;
     text-align: center;
 
-    transition: text-shadow 0.2s, box-shadow 0.2s;
+    @media (hover: hover) {
+      transition: text-shadow 0.2s, box-shadow 0.2s;
 
-    @media screen and (min-width: 800px) {
       &:hover {
         box-shadow: 0px 0px 6px var(--shadow0);
         text-shadow: 1px 1px 3px var(--shadow0);

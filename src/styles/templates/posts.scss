@@ -17,13 +17,34 @@
 
       border-bottom: 1px solid transparent;
 
-      transition: border-bottom 0.15s;
-
       &:not(:last-child) {
         margin-right: 1rem;
       }
 
-      &:hover,
+      @media (hover: hover) {
+        transition: border-bottom 0.15s;
+
+        > .link {
+          transition: color 0.15s;
+
+          > .number-of-posts {
+            transition: color 0.15s;
+          }
+        }
+
+        &:hover {
+          border-bottom: 1px solid var(--border1);
+
+          > .link {
+            color: var(--text0);
+
+            > .number-of-posts {
+              color: var(--text1);
+            }
+          }
+        }
+      }
+
       &.selected {
         border-bottom: 1px solid var(--border1);
 
@@ -42,8 +63,6 @@
 
         color: var(--text1);
         font-weight: 400;
-
-        transition: color 0.15s;
 
         > .number-of-posts {
           margin-left: 0.4rem;

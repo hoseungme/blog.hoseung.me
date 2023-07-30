@@ -46,10 +46,12 @@
           font-size: 1.5rem;
           font-weight: 700;
 
-          transition: color 0.15s;
+          @media (hover: hover) {
+            transition: color 0.15s;
 
-          &:hover {
-            color: var(--primary1);
+            &:hover {
+              color: var(--primary1);
+            }
           }
         }
       }
@@ -62,10 +64,12 @@
         font-size: 1.2rem;
         font-weight: 400;
 
-        transition: color 0.15s;
+        @media (hover: hover) {
+          transition: color 0.15s;
 
-        &:hover {
-          color: var(--text2);
+          &:hover {
+            color: var(--text2);
+          }
         }
       }
     }
@@ -104,8 +108,12 @@
       > a {
         font-weight: 700;
 
-        &:hover {
-          color: var(--text1);
+        @media (hover: hover) {
+          transition: color 0.15s;
+
+          &:hover {
+            color: var(--text1);
+          }
         }
       }
     }

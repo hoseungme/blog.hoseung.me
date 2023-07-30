@@ -38,9 +38,15 @@
           margin-right: 1rem;
         }
 
-        &:hover {
+        @media (hover: hover) {
           > .link {
-            color: var(--text2);
+            transition: color 0.15s;
+          }
+
+          &:hover {
+            > .link {
+              color: var(--text2);
+            }
           }
         }
 
@@ -49,8 +55,6 @@
           align-items: center;
 
           color: var(--text1);
-
-          transition: color 0.15s;
         }
       }
     }
@@ -121,10 +125,12 @@
       font-weight: 700;
       text-decoration: underline;
 
-      transition: color 0.2s;
+      @media (hover: hover) {
+        transition: color 0.2s;
 
-      &:hover {
-        color: var(--primary3);
+        &:hover {
+          color: var(--primary3);
+        }
       }
     }
 
