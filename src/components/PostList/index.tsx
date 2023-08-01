@@ -51,7 +51,9 @@ export function PostList({ posts, pathname }: { posts: Post[]; pathname: string 
               <h2 className="title">
                 <span itemProp="headline">{post.title}</span>
               </h2>
-              <p className="published-at">{format(post.publishedAt, "yyyy년 M월 d일")}</p>
+              <p className="published-at">
+                {format(post.publishedAt, post.locale === "ko" ? "yyyy년 M월 d일" : "yyyy-MM-dd")}
+              </p>
               <p className="description">{post.description}</p>
             </Link>
           </li>
