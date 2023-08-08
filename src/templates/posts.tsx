@@ -36,8 +36,8 @@ export default function Page({ pageContext, location }: PageProps<{}, PageContex
             </Link>
           </li>
           {allTags.map((tag) => (
-            <li key={tag.name} className={classNames("tag-list-item", { selected: currentTag?.name === tag.name })}>
-              <Link className="link" to={path(`/tags/${tag.name}`, locale)}>
+            <li key={tag.name} className={classNames("tag-list-item", { selected: currentTag?.id === tag.id })}>
+              <Link className="link" to={path(`/tags/${encodeURIComponent(tag.id)}`, locale)}>
                 <div className="name">#{tag.name}</div>
                 <div className="number-of-posts">{tag.numberOfPosts}</div>
               </Link>

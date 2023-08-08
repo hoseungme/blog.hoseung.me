@@ -31,6 +31,10 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     return postsQuery.data.allMarkdownRemark.nodes;
   }
 
+  function normalizeTag({ tag }) {
+    return { id: tag.toLowerCase(), name: tag };
+  }
+
   function normalizePostNodesToPosts(nodes) {
     return nodes.map((node) => ({
       id: node.fields.slug.split("/")[1],
@@ -44,7 +48,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
             }
           : null,
       locale: node.frontmatter.locale ?? "ko",
-      tags: node.frontmatter.tags,
+      tags: node.frontmatter.tags.map((tag) => normalizeTag({ tag })),
       url: `/${node.fields.slug.split("/")[1]}`,
       publishedAt: new Date(node.frontmatter.date).valueOf(),
       html: node.html,
@@ -66,24 +70,36 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     return postsByLocale;
   }
 
-  function normalizePostsToPostsByTagName(posts) {
-    const postsByTagName = {};
+  function normalizePostsToPostsByTagId(posts) {
+    const postsByTagId = {};
 
     posts.forEach((post) => {
-      post.tags.map((tagName) => {
-        if (postsByTagName[tagName] == null) {
-          postsByTagName[tagName] = [post];
+      post.tags.map((tag) => {
+        if (postsByTagId[tag.id] == null) {
+          postsByTagId[tag.id] = [post];
         } else {
-          postsByTagName[tagName].push(post);
+          postsByTagId[tag.id].push(post);
         }
       });
     });
 
-    return postsByTagName;
+    return postsByTagId;
   }
 
-  function normalizePostsByTagNameToTags(postsByTagName) {
-    return Object.entries(postsByTagName).map(([tagName, posts]) => ({ name: tagName, numberOfPosts: posts.length }));
+  function uniqBy(list, callback) {
+    const map = {};
+    list.forEach((item) => {
+      const key = callback(item);
+      if (map[key] == null) {
+        map[key] = item;
+      }
+    });
+    return Object.values(map);
+  }
+
+  function normalizePostsByTagIdToTags({ posts, postsByTagId }) {
+    const tags = uniqBy(posts.map(({ tags }) => tags).flat(), (tag) => tag.id);
+    return tags.map((tag) => ({ ...tag, numberOfPosts: postsByTagId[tag.id].length }));
   }
 
   function createKoPostPages({ posts }) {
@@ -107,21 +123,21 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     });
   }
 
-  function createKoTagPostsPages({ tags, postsByTagName }) {
+  function createKoTagPostsPages({ tags, postsByTagId }) {
     const PostsPage = path.resolve(`./src/templates/posts.tsx`);
 
     tags.forEach((tag) => {
       createPage({
-        path: `/tags/${tag.name}`,
+        path: `/tags/${tag.id}`,
         component: PostsPage,
         context: {
           og: {
             title: `${tag.name} 태그의 포스트`,
-            url: `https://blog.hoseung.me/tags/${encodeURIComponent(tag.name)}`,
+            url: `https://blog.hoseung.me/tags/${encodeURIComponent(tag.id)}`,
           },
           allTags: tags,
           currentTag: tag,
-          posts: postsByTagName[tag.name],
+          posts: postsByTagId[tag.id],
           locale: "ko",
         },
       });
@@ -148,12 +164,12 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
   }
 
   function createKoPages({ posts }) {
-    const postsByTagName = normalizePostsToPostsByTagName(posts);
-    const tags = normalizePostsByTagNameToTags(postsByTagName);
+    const postsByTagId = normalizePostsToPostsByTagId(posts);
+    const tags = normalizePostsByTagIdToTags({ posts, postsByTagId });
 
     createKoIndexPage({ posts, tags });
     createKoPostPages({ posts });
-    createKoTagPostsPages({ tags, postsByTagName });
+    createKoTagPostsPages({ tags, postsByTagId });
   }
 
   function createEnPostPages({ posts }) {
@@ -177,21 +193,21 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     });
   }
 
-  function createEnTagPostsPages({ tags, postsByTagName }) {
+  function createEnTagPostsPages({ tags, postsByTagId }) {
     const PostsPage = path.resolve(`./src/templates/posts.tsx`);
 
     tags.forEach((tag) => {
       createPage({
-        path: `/en/tags/${tag.name}`,
+        path: `/en/tags/${tag.id}`,
         component: PostsPage,
         context: {
           og: {
             title: `Posts of ${tag.name} Tag`,
-            url: `https://blog.hoseung.me/en/tags/${encodeURIComponent(tag.name)}`,
+            url: `https://blog.hoseung.me/en/tags/${encodeURIComponent(tag.id)}`,
           },
           allTags: tags,
           currentTag: tag,
-          posts: postsByTagName[tag.name],
+          posts: postsByTagId[tag.id],
           locale: "en",
         },
       });
@@ -218,12 +234,12 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
   }
 
   function craeteEnPages({ posts }) {
-    const postsByTagName = normalizePostsToPostsByTagName(posts);
-    const tags = normalizePostsByTagNameToTags(postsByTagName);
+    const postsByTagId = normalizePostsToPostsByTagId(posts);
+    const tags = normalizePostsByTagIdToTags({ posts, postsByTagId });
 
     createEnIndexPage({ posts, tags });
     createEnPostPages({ posts });
-    createEnTagPostsPages({ tags, postsByTagName });
+    createEnTagPostsPages({ tags, postsByTagId });
   }
 
   const postNodes = await fetchPostNodes();

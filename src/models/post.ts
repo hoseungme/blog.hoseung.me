@@ -1,4 +1,5 @@
 import { Locale } from "./locale";
+import { Tag } from "./tag";
 
 export interface Post {
   id: string;
@@ -13,7 +14,7 @@ export interface Post {
     };
   } | null;
   locale: Locale;
-  tags: string[];
+  tags: Omit<Tag, "numberOfPosts">[];
   url: string;
   publishedAt: number;
   html: string;

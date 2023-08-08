@@ -35,9 +35,9 @@ export default function Page({ pageContext }: PageProps<{}, PageContext>) {
           </p>
           <ul className="tag-list">
             {post.tags.map((tag) => (
-              <li key={tag} className="tag-list-item">
-                <Link className="link" to={path(`/tags/${tag}`, post.locale)}>
-                  #{tag}
+              <li key={tag.id} className="tag-list-item">
+                <Link className="link" to={path(`/tags/${encodeURIComponent(tag.id)}`, post.locale)}>
+                  #{tag.name}
                 </Link>
               </li>
             ))}
