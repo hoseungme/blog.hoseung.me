@@ -22,7 +22,7 @@ tags:
 
 따라서 이 글에서는 서비스 워커와 웹 푸시의 동작 방식과 개발 과정을 정리해보려고 합니다.
 
-## 웹 푸시의 동작
+# 웹 푸시의 동작
 
 아래는 웹 푸시가 어떻게 동작하는지를 표현한 간단한 다이어그램입니다.
 
@@ -32,14 +32,15 @@ tags:
 
 - 서버
 
-  - 본인의 개인 서버를 말합니다. 데이터베이스에 PushSubscription이라는 웹 푸시 구독 정보를 저장하고, 필요할 때 그 정보를 활용해 푸시 알림을 보내기 위해 필요합니다.
+  - 서버를 말합니다. 데이터베이스에 PushSubscription이라는 웹 푸시 구독 정보를 저장하고, 필요할 때 그 정보를 활용해 푸시 알림을 보내기 위해 필요합니다.
 
 - 푸시 서비스
+
   - 브라우저가 웹 푸시를 제공하기 위해 사용하는 서비스입니다. Chrome의 경우 [FCM](https://firebase.google.com/docs/cloud-messaging)을 사용하고 있습니다. 즉, 브라우저마다 사용하는 푸시 서비스가 다를 수 있습니다. 하지만 모두 같은 프로토콜을 따르기 때문에 특정 브라우저가 사용하는 푸시 서비스가 무엇인지는 신경쓰지 않아도 됩니다.
 
 그리고 각각의 동작 과정에 대해서 정리하겠습니다.
 
-### 1. Push Manager 구독
+## 1. Push Manager 구독
 
 가장 첫 번째 단계는 유저가 푸시 매니저를 구독하게 만드는겁니다.
 
@@ -53,29 +54,27 @@ PushSubscription은 [Push API](https://developer.mozilla.org/en-US/docs/Web/API/
 
 PushSubscription에는 푸시 알림을 보낼 주소(endpoint)와, 암호화에 필요한 key들이 들어있습니다. endpoint는 유저 하나에 고유하고, key들은 [Web Push Protocal](https://developers.google.com/web/fundamentals/push-notifications/web-push-protocol)에 맞춰서 Push Message를 암호화하기 위해 필요합니다.
 
-### 2. PushSubscription을 서버에 저장
+## 2. PushSubscription을 서버에 저장
 
 1번 단계에서 PushSubscription을 얻었다면, 그걸 서버에 저장하면 됩니다. 이 때, 웹 푸시를 보내기 위해선 VAPID keys를 서버가 갖고있어야 합니다. 환경 변수를 사용하거나, 하드코딩해서 저장해두면 됩니다.
 
-### 3. Push Message 전송
+## 3. Push Message 전송
 
 이제 서비스 특성에 따라 자유롭게 알림을 전송해주면 됩니다. 예를 들어, 이커머스 서비스라면 포인트 적립이나 상품 재입고 등을 알림으로 전송할 수 있겠죠.
 
-### 4. Push Event 트리거
+## 4. Push Event 트리거
 
 푸시 서비스로 Push Message가 전달되면, 서비스 워커에 [Push Event](https://developer.mozilla.org/en-US/docs/Web/API/PushEvent)가 트리거됩니다.
 
 서비스 워커 스크립트에 Push Event의 핸들러를 작성하여 적절한 처리를 해줄 수 있습니다. 유저가 알림을 클릭했을 때 특정 URL이 열리도록 할 수도 있고, 푸시 알림을 보여주지 않을 수도 있습니다.
 
-### 5. 알림을 보여줌
+## 5. 알림을 보여줌
 
 위의 모든 단계를 거쳐서 최종적으로는 유저에게 푸시 알림이 보여지게 됩니다.
 
-## Demo 웹사이트 만들기
+# 개발 과정
 
-웹 푸시에 대한 전반적인 개념을 익혔으니, 개발에 들어가 봅시다.
-
-### 푸시 메시지 형식 설계
+## 푸시 메시지 형식 설계
 
 우선 푸시 메시지를 어떤 형식으로 보낼지 정해야 합니다.
 
@@ -95,7 +94,7 @@ title, body는 알림의 내용이고, link는 유저가 알림을 클릭했을 
 
 이 때, 푸시 메시지는 string으로 보내야 하는데, Javascript에서 JSON은 자유롭게 stringify/parse가 가능하므로 괜찮습니다.
 
-### 서비스 워커 스크립트 작성
+## 서비스 워커 스크립트 작성
 
 이제 서비스 워커 스크립트를 작성해봅시다.
 
@@ -123,14 +122,14 @@ self.addEventListener("install", () => {
 
 3가지 이벤트에 대해 핸들러를 등록했는데, 각각을 설명드리면,
 
-- push
-  - 위에서 언급했던 푸시 서비스가 메시지를 받았을 때 트리거하는 이벤트입니다. data를 JSON으로 다시 바꾼 후, showNotification으로 유저에게 보내줬습니다.
-- notificationclick
-  - 유저가 푸시 알림을 클릭했을 때 발생하는 이벤트입니다. push 이벤트의 핸들러에서 showNotification을 실행할 때 data로 link를 넘겨주는걸 볼 수 있는데, notificationclick 핸들러에서 그 data를 그대로 사용할 수 있습니다.
-- install
-  - 서비스 워커가 설치됬을 때 발생하는 이벤트입니다. 이미 서비스 워커가 실행되고 있고, 수정된 서비스 워커가 새롭게 다운로드 된 경우, 새로운 서비스 워커는 웹 사이트가 닫혀야 활성화되는데, 이 때 skipWaiting을 실행하면 새로운 서비스 워커를 설치 직후 즉시 활성화 할 수 있습니다.
+- `push`
+  - 위에서 언급했던 푸시 서비스가 메시지를 받았을 때 트리거하는 이벤트입니다. data를 JSON으로 다시 바꾼 후, `showNotification`으로 유저에게 보내줬습니다.
+- `notificationclick`
+  - 유저가 푸시 알림을 클릭했을 때 발생하는 이벤트입니다. push 이벤트의 핸들러에서 `showNotification`을 실행할 때 data로 link를 넘겨주는걸 볼 수 있는데, `notificationclick` 핸들러에서 그 data를 그대로 사용할 수 있습니다.
+- `install`
+  - 서비스 워커가 설치됬을 때 발생하는 이벤트입니다. 이미 서비스 워커가 실행되고 있고, 수정된 서비스 워커가 새롭게 다운로드 된 경우, 새로운 서비스 워커는 웹 사이트가 닫혀야 활성화되는데, 이 때 `skipWaiting`을 실행하면 새로운 서비스 워커를 설치 직후 즉시 활성화 할 수 있습니다.
 
-### 서비스 워커 등록
+## 서비스 워커 등록
 
 이제 브라우저에 서비스 워커를 등록해줘야 하는데, 우선 브라우저가 서비스 워커와 웹 푸시를 지원하는지 확인해야 합니다.
 
@@ -150,13 +149,13 @@ async function registerServiceWorker(): Promise<ServiceWorkerRegistration> {
 }
 ```
 
-저는 서비스 워커 스크립트를 public/service-worker.js에 위치시켰기 때문에 register 메소드의 인자를 저렇게 넘겨주었는데, 본인 상황에 따라 바꿔주시면 됩니다.
+저는 서비스 워커 스크립트를 `public/service-worker.js`에 위치시켰기 때문에 register 메소드의 인자를 저렇게 넘겨주었는데, 본인 상황에 따라 바꿔주시면 됩니다.
 
-### Push Manager 구독
+## Push Manager 구독
 
 다음은 Push Manager를 구독해서 PushSubscription을 얻어올 차례입니다.
 
-위에서 registerServiceWorker를 실행하고 얻은 ServiceWorkerRegistration을 사용해 Push Manager를 구독하면 됩니다.
+위에서 `registerServiceWorker`를 실행하고 얻은 `ServiceWorkerRegistration`을 사용해 Push Manager를 구독하면 됩니다.
 
 ```typescript
 async function subscribePushManager(
@@ -169,7 +168,7 @@ async function subscribePushManager(
 }
 ```
 
-### 서버에서 푸시 메시지 전송
+## 서버에서 푸시 메시지 전송
 
 이제 모든 준비가 끝났고, 푸시 메시지를 전송하기만 하면 유저에게 알림이 보여질겁니다.
 
@@ -187,13 +186,13 @@ webpush.generateVAPIDKeys();
 
 ```typescript
 webpush.setVapidDetails(
-  "mailto:hsjang.dev@gmail.com",
+  "mailto:hoseungjang@catchfashion.com",
   /* Public VAPID Key */,
   /* Private VAPID Key */,
 );
 ```
 
-1번째 인자는 이 VAPID키의 소유자의 연락처가 담긴 페이지의 URL이나, mailto 주소가 들어가야 합니다. 전 mailto 주소로 제 이메일을 남겼습니다.
+1번째 인자는 이 VAPID키의 소유자의 연락처가 담긴 페이지의 URL이나, mailto 주소가 들어가야 합니다. 전 mailto 주소로 제 회사 이메일을 남겼습니다.
 
 그리고 2, 3번째 인자는 각각 Public / Private VAPID Key를 넘겨주면 됩니다.
 
@@ -205,7 +204,7 @@ webpush.sendNotification(
   JSON.stringify({
     title: "안녕하세요",
     body: "제가 누군지 궁금하시면 눌러보세요!",
-    link: "https://about.hoseung.me",
+    link: "https://www.catchfashion.com",
   }),
   {
     TTL: 3600 * 12,
@@ -223,8 +222,8 @@ webpush.sendNotification(
 
 전 12시간 내에 전달되지 못할 경우 삭제하도록 설정했습니다.
 
-## 결과
+# 결과
 
-로컬에서 테스트해보니 알림이 잘 오는걸 확인할 수 있네요!
+로컬에서 테스트해보니 알림이 잘 오는걸 확인할 수 있었습니다.
 
 ![](./result.png)
