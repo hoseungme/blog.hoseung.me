@@ -4,7 +4,7 @@ import { useInView } from "react-intersection-observer";
 import { Link } from "gatsby";
 import { wrapSessionStorage } from "storage-cover";
 
-import { Post } from "../../models/post";
+import { PostSummary } from "../../models/post";
 
 import { path } from "../../utils/path";
 
@@ -12,7 +12,7 @@ import "../../styles/components/post-list.scss";
 
 const sessionStorage = wrapSessionStorage();
 
-export function PostList({ posts, pathname }: { posts: Post[]; pathname: string }) {
+export function PostList({ posts, pathname }: { posts: PostSummary[]; pathname: string }) {
   const [ref, inView] = useInView();
 
   const [fetchedCount, fetchMore] = React.useReducer((prev) => {

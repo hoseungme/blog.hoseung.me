@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, PageProps } from "gatsby";
 
-import { Post } from "../models/post";
+import { PostSummary } from "../models/post";
 import { Tag } from "../models/tag";
 import { Locale } from "../models/locale";
 
@@ -18,7 +18,7 @@ interface PageContext {
   og: SeoProps;
   allTags: Tag[];
   currentTag: Tag | null;
-  posts: Post[];
+  posts: PostSummary[];
   locale: Locale;
 }
 

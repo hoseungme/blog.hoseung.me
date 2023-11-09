@@ -19,3 +19,5 @@ export interface Post {
   publishedAt: number;
   html: string;
 }
+
+export type PostSummary = Omit<Post, "html">;

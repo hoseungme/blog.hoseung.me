@@ -55,6 +55,10 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
     }));
   }
 
+  function normalizePostsToPostSummaries(posts) {
+    return posts.map((post) => ({ ...post, html: undefined }));
+  }
+
   function normalizePostsToPostsByLocale({ posts }) {
     const postsByLocale = {};
 
@@ -137,7 +141,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
           },
           allTags: tags,
           currentTag: tag,
-          posts: postsByTagId[tag.id],
+          posts: normalizePostsToPostSummaries(postsByTagId[tag.id]),
           locale: "ko",
         },
       });
@@ -157,7 +161,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
         },
         allTags: tags,
         currentTag: null,
-        posts,
+        posts: normalizePostsToPostSummaries(posts),
         locale: "ko",
       },
     });
@@ -207,7 +211,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
           },
           allTags: tags,
           currentTag: tag,
-          posts: postsByTagId[tag.id],
+          posts: normalizePostsToPostSummaries(postsByTagId[tag.id]),
           locale: "en",
         },
       });
@@ -227,7 +231,7 @@ exports.createPages = async ({ graphql, actions: { createPage } }) => {
         },
         allTags: tags,
         currentTag: null,
-        posts,
+        posts: normalizePostsToPostSummaries(posts),
         locale: "en",
       },
     });
