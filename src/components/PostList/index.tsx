@@ -59,7 +59,7 @@ export function PostList({ posts, pathname }: { posts: Post[]; pathname: string 
           </li>
         ))}
       </ul>
-      <div ref={ref} />
+      <div ref={ref} style={{ width: "100%", height: 10 }} />
     </>
   );
 }
