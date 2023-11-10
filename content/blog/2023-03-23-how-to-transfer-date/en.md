@@ -9,76 +9,110 @@ tags:
   - Back-end
 ---
 
-There are many cases to handle date in front-end development.
+When creating products, there are many tasks related to managing dates.
 
-- Remaining time until the end of verification
-- Remaining time until the end of event
-- etc.
+- Time remaining until authentication expiration
+- Time remaining until the end of an event
+- And so on...
 
-And there are many cases to exchange date between client and server. So, what is the correct format for them in those cases?
+So handling these dates with external things, such as exchanging dates between a client and a server, becomes a common occurrence. What is the best way to represent and exchange dates?
 
-Let's learn about `ISO 8601`, the standard for representing and exchanging date, and `UTC`, the time standard.
+First, let's explore the ISO 8601 standard, which contains the standard for representing dates and times, and UTC (Coordinated Universal Time), an international standard time.
 
-## ISO 8601 and UTC
+## ISO 8601 Standard and UTC
 
-`UTC` is the worldwide time standard that was implemented in 1972. Date will be calculated from UTC.
+UTC is the Coordinated Universal Time established in 1972, serving as the basis for time calculations worldwide.
 
-ISO 8601 is the worldwide standard for representing and exchanging date as string:
+Computers calculate time based on UTC and represent that time as data based on the [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standard.
 
-```
+The following examples represent time based on the ISO 8601 standard:
+
+```plaintext
 "2022-09-21"
 "2022-09-21T12:00:00"
 ```
 
-## How to represent time difference?
+## How is the Difference from UTC Represented?
 
-The time difference refers to the difference between the current time and UTC, and it is called `UTC offset`.
+The difference between UTC and local time is called UTC offset. In the ISO 8601 standard, the UTC offset is represented in the following format:
 
-It will be represented in `ISO 8601` format:
-
-```
+```plaintext
 "2022-09-21T12:00:00±[hh]:[mm]"
 ```
 
-For example, the standard time of South Korea is 9 hours later than UTC. So, September 21, 2022 at 12:00 PM will be represented:
+For instance, the time in Korea (KST) is 9 hours ahead of UTC, so `September 21, 2022, at 12:00 PM KST` can be represented as:
 
-```
+```plaintext
 "2022-09-21T12:00:00+09:00"
 ```
 
-`+09:00` means that this time is 9 hours later than UTC.
+The classification of UTC offsets by country/region (e.g. KST) is called **time zone**. We can use this time zone information to interpret dates according to local time.
 
-And `UTC offset` of a nation or a region is called time zone. You can always see the correct time because of it.
+## How Can UTC be Represented?
 
-To directly represent UTC, you should add `Z` or `+00:00` at the end of the ISO 8601 string:
+When representing UTC directly, always append either `Z` or UTC offset `+00:00` at the end:
 
-```
+```plaintext
 "2022-09-21T12:00:00Z"
 "2022-09-21T12:00:00+00:00"
 ```
 
-## If there's no specified time zone
+Although they differ by only one character (Z), the following JavaScript code produces different results:
 
-I think now you may know date should be represented following ISO 8601, and time zone must be specified when you exchange them, like:
+```tsx
+// Fri May 06 2022 00:00:00 GMT+0900 (Korean Standard Time)
+new Date("2022-09-21T00:00:00").toString();
 
+// Fri May 06 2022 09:00:00 GMT+0900 (Korean Standard Time)
+new Date("2022-09-21T00:00:00Z").toString();
 ```
-1. ISO 8601 string with UTC offset
+
+Since `"2022-09-21T00:00:00"` lacks explicit specification that it is in UTC, it is automatically assumed to be in the local time zone (KST) during calculation.
+
+On the other hand, `"2022-09-21T00:00:00Z"` explicitly specifies that it is in UTC, so when converted to the local time zone (KST), it adds 9 hours.
+
+## Exchanging Dates with External Things
+
+If you've read the explanations above, you've likely noticed that when exchanging dates with external things, it's important to **always specify the time zone**:
+
+```plaintext
+1. Specify UTC offset
 "2022-09-21T12:00:00+09:00"
 
-2. ISO 8601 string in UTC
+2. UTC ISO string
 "2022-09-21T03:00:00Z"
 
-3. Unix Timestamp (UTC)
+3. Unix Timestamp
 1663729200000
 ```
 
-If not, it will make too many confusion. If a server responds with `"2022-09-21T12:00:00"` to a client, the client cannot correctly represent the date because it doesn't know the time difference from the date to UTC.
+The Unix Timestamp represents the number of milliseconds that have elapsed since UTC midnight on January 1, 1970.
 
-However, someone may have a question: "My server is always located in the USA, so I think the client should consider the server date as the the USA standard time, shouldn't it?".
+## What Happens If the Time Zone Is Not Specified?
 
-But many other nations including the USA have implemented daylight saving time(DST), the rule to advance their standard time in specific period. Therefore it is better that the server specify time zone, than the client consider DST and calculate current time.
+For example, assume handling September 21, 2022, at 12:00 PM in KST without specifying the time zone.
 
-I think there must have been an apparent reason why the worldwide standard was created after decades of discussions, so I recommend you to follow.
+```plaintext
+"2022-09-21T12:00:00"
+```
+
+- If a server in Korea responds with "2022-09-21T12:00:00" to a user living in the United States, the date must be converted to U.S. time. However, since the date does not explicitly specifies that it is in KST, it cannot be correctly converted to U.S. time.
+
+- Conversely, if a user in Korea sends a request with "2022-09-21T12:00:00" to a server in the United States for date comparison, unifying the time zones is necessary for proper comparison. However, since the user-sent date lacks time zone specification, correct comparison is not possible.
+
+- If a server in Korea needs to store "2022-09-21T12:00:00" in a database located in the United States, the date must be converted to U.S. time. But it is not possible and may result in significant time discrepancies.
+
+In conclusion, when communicating with external things, it is necessary to tell them where I am.
+
+For example, there might be an opinion like, "Since my server is always located in the United States, can't you assume and use it in U.S. time even if I don't specify the time zone?"
+
+However, countries including the United States follow daylight saving time, advancing the standard time during certain periods each year. Instead of writing logic to calculate the time difference considering daylight saving time, specifying the time zone is a better approach.
+
+The same applies even to countries without daylight saving time. Rather than managing "Which time zone is this server located in?", specifying the time zone is better.
+
+I believe there are valid reasons for the international standards being developed after decades of effort, and I recommend following them.
+
+If there is not awareness of time zone specification in your organization, why don't you suggest to do it?
 
 ## References
 
