@@ -10,17 +10,17 @@ tags:
   - Typescript
 ---
 
-I'm Hoseung Jang, front-end developer of Toss.
+> This is an article I wrote for the Toss technology blog, where I am currently employed. [Original link (Korean)](https://toss.tech/article/commonjs-esm-exports-field)
 
-In front-end team of Toss, we have been making a new library to greatly improve our productivity. Therefore, now we maintains 100+ libraries.
+In the Toss Frontend Chapter, we continuously move repeated code into libraries to improve development productivity. As a result, we are currently maintaining more than 100 libraries.
 
-Since Node.js 12, a new module system called ECMAScript Modules(ESM) was released. So there are two kinds of module systems in Node.js, CommonJS(CJS) and ESM.
+Since Node.js 12, a new module system called ECMAScript Modules (ESM) has been added, alongside the existing CommonJS module system (CJS). This means that libraries now need to support both module systems.
 
-We supports it using `exports` field in `package.json`. Let's learn about each of those systems and the field.
+At Toss, we support this through the `exports` field in the `package.json`. Let's take a closer look at each module system and the `exports` field.
 
-# Two Module Systems of Node.js
+# Two Module Systems in Node.js
 
-There are the two system in Node.js, CJS and ESM.
+Node.js has two module systems: CommonJS (CJS) and ECMAScript Modules (ESM).
 
 ## CommonJS (CJS)
 
@@ -48,106 +48,109 @@ import { add } from "./add.js";
 add(1, 2);
 ```
 
-- CJS uses `require` / `module.exports` statement, ESM uses `import` / `export` statement.
-- CJS module loader works synchronously, ESM module loader works asynchronously
+- CJS uses `require` / `module.exports`, while ESM uses `import` / `export` statements.
+- The CJS module loader works synchronously, while the ESM module loader works asynchronously.
   - Because ESM supports [Top-level Await](https://nodejs.org/api/esm.html#top-level-await).
-- So you can `import` CJS in ESM but you cannot `require` ESM in CJS, because CJS doesn't support Top-level Await.
-- And then each of those systems works differently.
-- Therefore it is difficult to make them compatible.
+- Therefore while ESM can import CJS, the reverse is not possible because CJS does not support Top-level Await.
+- Additionally, the two module systems have different default behaviors, making them difficult to be compatible.
 
-## Why did we have to support both of the systems?
+## Why Support Two Module Systems?
 
-They are difficult to be compatible each other, but why?
+Why should we support two module systems that are challenging to make compatible? Why not just choose one? Why does Toss consider this important?
 
-In Toss, it is very important to support CJS because our front-end project is based on Server-side Rendering(SSR).
+Toss actively uses Server-side Rendering (SSR), so we should support CJS for Node.js environment.
 
-And supporting those systems affects to performance in browser. It is related to tree shaking.
+Module system support also relates to performance in the browser environment. In the browser, rapid page rendering is important and especially JavaScript is one of the resources that stops the rendering during loading.
 
-It is very important to reduce a JavaScript bundle to make the time of critical-rendering-path faster, so we need tree-shaking. Tree-shaking is the operation to remove unused parts of modules.
+Therefore it is important to reduce the size of JavaScript bundles, to minimize the time rendering is interrupted. To do so, Tree-shaking, the process of eliminating unnecessary and unused code, is essential.
 
-CJS is difficult to tree-shake but ESM is easy, because CJS doesn't restrict to use `require` / `module.exports` dynamically:
+CJS makes tree-shaking challenging, while ESM makes it more straightforward.
+
+CJS allows to dynamically use `require` / `module.exports`:
 
 ```jsx
 // require
-const utilName = /* Dynamic value */
+const utilName = /* dynamic value */;
 const util = require(`./utils/${utilName}`);
 
 // module.exports
 function foo() {
-  if (/* Dynamic condition */) {
+  if (/* dynamic condition */) {
     module.exports = /* ... */;
   }
 }
 foo();
 ```
 
-Therefore it is difficult to statically analyze CJS at the build time.
+Therefore, CJS is challenging to apply static analysis during build time, so module relationships are only determined at runtime.
 
-But ESM restricts to statically depend between modules. You cannot use dynamic value in `import` path and you can use `export` statement only on top-level scope.
+On the other hand, ESM enforces a static structure, disallowing dynamic values in `import` path and restricting use of `exports` to the top-level scope:
 
 ```jsx
-import util from `./utils/${utilName}.js`; // Impossible
+import util from `./utils/${utilName}.js`; // Not allowed
 
-import { add } from "./utils/math.js"; // Possible
+import { add } from "./utils/math.js"; // Allowed
 
 function foo() {
-  export const value = "foo"; // Impossible
+  export const value = "foo"; // Not allowed
 }
 
-export const value = "foo"; // Possible
+export const value = "foo"; // Allowed
 ```
 
-Therefore it is able to statically analyze ESM at the build time so bundlers can tree-shake easily.
+This allows ESM to perform static analysis during the build, making tree-shaking easier.
 
-It is why we had to support.
+Given these considerations, Toss decided to maintain libraries that support both CJS and ESM.
 
-## How to detect if `.js` is CJS or ESM?
+## Determining If a File Is CJS or ESM
 
-Module system of `.js` is decided by `type` field in `package.json`
+With the two module systems and the need to support both, how can we determine whether a `.js` file is CJS or ESM? This is done by looking at the `type` field in `package.json` or the file extension.
 
-- If `type` field is set to `"commonjs"`, `.js` will be resolved as CJS.
-  - It defaults to `"commonjs"`.
-- If `type` field is set to `"module"`, `.js` will be resolved as ESM.
-- `.cjs` will be always resolved as CJS.
-- `.mjs` will be always resolved as ESM.
+- The module system of a `.js` file is determined by the `type` field in `package.json`.
+  - The default value of the `type` field is `"commonjs"`, interpreting `.js` as CJS.
+  - Another option is `"module"`, where `.js` is interpreted as ESM.
+- `.cjs` files are always interpreted as CJS.
+- `.mjs` files are always interpreted as ESM.
 
-Since TypeScript 4.7, the above rule also applies if `moduleResolution` field in `tsconfig.json` is set to `nodenext` or `node16`.
+TypeScript also applies the same rules when the `moduleResolution` option in `tsconfig.json` is set to `nodenext` or `node16`, starting from 4.7.
 
-- If `type` field is set to `"commonjs"`, `.ts` will be resolved as CJS.
-- If `type` field is set to `"module"`, `.ts` will be resolved as ESM.
-- `.cts` will be always resolved as CJS.
-- `.mts` will be always resolved as ESM.
+- When the `type` field is `"commonjs"`, `.ts` files are interpreted as CJS.
+- When the `type` field is `"module"`, `.ts` files are interpreted as ESM.
+- `.cts` files are always interpreted as CJS.
+- `.mts` files are always interpreted as ESM.
 
-# `exports` field in `package.json`
+# package.json's exports field
 
-Now you know about the difference between CJS and ESM, the way to set default module system of package, and `.cjs` and `.mjs` extensions. So how to support CJS and ESM at the same time, in one package?
+Now we have understood the differences between CJS and ESM, like how to set the default module system for a package, and how extensions work.
 
-The answer is `exports` field.
+But how can a single package smoothly provide both CJS and ESM?
 
-## Entry point for the package
+The answer is the `exports` field. What problems does the `exports` field solve, and what is its role?
 
-Basically it does the same thing with `main` field in `package.json`.
+## Package Entry Point Specification
 
-## Subpath exports
+By default, the `exports` field does the same role of the `main` field in `package.json`. It allows specifying the package's entry point.
 
-Module resolution works based on file system, if `exports` field isn't set. So you can access to any `.js` files in a package, and import path cannot be set different from the file path.
+## Subpath Exports Support
+
+In the previous filesystem-based approach, accessing any JS file within a package was possible, and the actual location of the files and import path could not differ.
 
 ```jsx
-// file system
+// Directory structure
 /modules
   a.js
   b.js
   c.js
 index.js
 
-require("package/a"); // Impossible
-require("package/modules/a"); // Possible
+require("package/a"); // Not allowed
+require("package/modules/a"); // Allowed
 ```
 
-But if `exports` field is set, you can only import modules specified in `exports` field.
+By using the `exports` field and making imaginary subpath, the import path can differ from the actual location of the files:
 
 ```json
-// CJS Package
+// CJS package
 {
   "name": "cjs-package",
   "exports": {
@@ -158,18 +161,19 @@ But if `exports` field is set, you can only import modules specified in `exports
 ```
 
 ```tsx
-// Access ./modules/a.js
-// Not ./a.js
+// Imports ./modules/a.js, not ./a.js
 require("cjs-package/a");
 
 // Error
-// ./b isn't specified in exports field.
+// ./b is not specified in the exports field.
 require("cjs-package/b");
 ```
 
-## Conditional exports
+## Conditional Exports Support
 
-Module resolution based on file system makes it difficult to support CJS and ESM at the same time. But with `exports` field, you can make modules being resolved conditionally.
+In the past, making a Dual CJS/ESM package was challenging due to filesystem-based operations.
+
+With the `exports` field, you can use the same import path to provide different modules based on specific conditions:
 
 ```json
 {
@@ -185,21 +189,21 @@ Module resolution based on file system makes it difficult to support CJS and ESM
 
 ```tsx
 // In CJS environment
-// Access ./dist/index.cjs
+// Imports ./dist/index.cjs
 const pkg = require("cjs-package");
 
 // In ESM environment
-// Access ./esm/index.mjs
+// Imports ./esm/index.mjs
 import pkg from "cjs-package";
 ```
 
-## Correct exports field
+## Writing the Correct Exports Field
 
-Let's learn about what you need to be careful to write `exports` field correctly.
+To correctly write the `exports` field for a Dual CJS/ESM package, there are some points to consider:
 
-### Relative path
+### Use Relative Paths
 
-Paths in `exports` field should be relatvie, starting with `.`.
+All paths in the `exports` field must start with `.` representing relative paths:
 
 ```json
 // X
@@ -218,14 +222,14 @@ Paths in `exports` field should be relatvie, starting with `.`.
 }
 ```
 
-### Correct file extension depending on module system
+### Use the Correct Extension Based on the Module System
 
-If you use conditional exports, you should use the correct file extension depending on the current module system of your project.
+When using conditional exports, you must use the correct extension based on the module system that the package follows(the `type` field in `package.json`):
 
-- In CJS pacakge
+- For CJS packages:
 
 ```json
-// ESM should be .mjs
+// ESM must specify .mjs
 {
   "exports": {
     ".": {
@@ -236,12 +240,12 @@ If you use conditional exports, you should use the correct file extension depend
 }
 ```
 
-- In ESM package
+- For ESM packages:
 
 ```json
-// CJS should be .cjs
+// CJS must specify .cjs
 {
-  "type": "module"
+  "type": "module",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
@@ -251,12 +255,12 @@ If you use conditional exports, you should use the correct file extension depend
 }
 ```
 
-If you didn't follow the rule, what would happen? Assumes that:
+Not following this rule and using `.js` for all extensions may lead to unexpected behaviors. Let's consider a scenario:
 
 - `cjs-package` is a CJS package.
-  - Beacuse `type` field is set to `"commonjs"`.
-- `./dist/index.js` is a module written with CJS syntax(`require` / `module.exports`).
-- `./esm/index.js` is a module written with ESM syntax(`import` / `export`).
+  - Because its `type` field is set to `"commonjs"`.
+- `./dist/index.js` is a CJS module.
+- `./esm/index.js` is an ESM module.
 
 ```jsx
 {
@@ -271,39 +275,37 @@ If you didn't follow the rule, what would happen? Assumes that:
 }
 ```
 
-If you `require` `cjs-package` in CJS enviroment, it works. CJS module loader will be used because `./dist/index.js` has the extension `.js` and `type` field in the nearest package.json is set to `"commonjs"`.
+In CJS environment, requiring `cjs-package` works fine because `./dist/index.js` is a CJS module and the extension is `.js`, so the CJS Module Loader is used:
 
 ```jsx
-// It works.
-// Access ./dist/index.js using CommonJS module loader.
+// Works fine.
+// Imports ./dist/index.js with CommonJS Module Loader.
 const pkg = require("cjs-package");
 ```
 
-But if you `import` `cjs-package` in ESM environment, it doesn't work. Even if `./esm/index.js` is ESM, CJS module loader will be used because the file extension is `.js` and `type` filed in the nearest package.json is set to `"commonjs"`.
+However, in ESM environment, importing `cjs-package` leads to an error. Because `./esm/index.js` is an ESM module but the extension is `.js`, so the CJS Module Loader is used:
 
 ```jsx
-// Error
-// ./esm/index.js is written with ESM syntax
+// Error occurs.
+// Reads ./esm/index.js with CJS Module Loader.
 import * as pkg from "cjs-package";
 ```
 
-### Support TypeScript
+### TypeScript Support
 
-TypeScript finds type definition for imported module, based on file system.
+In the past, TypeScript also works based on filesystem:
 
-```tsx
-// Find ./sub-module.d.ts
+```typescript
+// Imports ./sub-module.d.ts
 import subModule from "package/sub-module";
 ```
 
-But since TypeScript 4.7, you can set `moduleResolution` to `node16` and `nodenext`. `node16` and `nodenext` tells TypeScript to find type definition based on `exports` field. In addition, it distinguishes CJS TypeScript(`.cts`, `.d.cts`) and ESM TypeScript(`.mts`, `.d.mts`).
+But starting from 4.7, the `moduleResolution` option now includes `node16` and `nodenext`, which make it find Type Definitions based on the `exports` field and distinguishes between CJS TypeScript (`.cts`) and ESM TypeScript (`.mts`).
 
-In `exports` field, TypeScript accesses `types` condition. And you should use correct extension(`.cts`/`.d.cts` or `.mts`/`.d.mts`) depending on `type` field.
-
-- CJS package
+- For CJS packages:
 
 ```json
-// ESM TS should be .mts
+// ESM TS must specify mts
 {
   "exports": {
     ".": {
@@ -320,10 +322,10 @@ In `exports` field, TypeScript accesses `types` condition. And you should use co
 }
 ```
 
-- ESM package
+- For ESM packages:
 
 ```tsx
-// CJS TS should be .cts
+// CJS TS must specify cts
 {
   "type": "module",
   "exports": {
@@ -341,11 +343,10 @@ In `exports` field, TypeScript accesses `types` condition. And you should use co
 }
 ```
 
-If you didn't follow the rule, what would happen? Assumes that:
+What happens if these rules are not followed? Let's consider a scenario:
 
-- `esm-package` is a ESM package.
-  - Beacuse `type` field is set to `"module"`.
-- `.cts` uses `esm-package`.
+- `esm-package` is an ESM package.
+  - Because its `type` field is set to `"module"`.
 
 ```jsx
 {
@@ -361,32 +362,33 @@ If you didn't follow the rule, what would happen? Assumes that:
 }
 ```
 
-Then a type error will be occurred because `esm-package` only provides `index.d.ts`.So both CJS and ESM TypeScript access to `index.d.ts`.
-
-But `index.d.ts` is always resolved as ESM TypeScript, because `type` field in the nearest `package.json` is set to `"module"`. Therefore `esm-package` cannot be `require`d by CJS TypeScript.
+In this case, attempting to require `esm-package` in `.cts` (CJS TypeScript) results in a type error because `esm-package` only supports `./index.d.ts`, which is interpreted as ESM TypeScript:
 
 ```jsx
 // index.cts
 
-// Module 'esm-package' cannot be imported using this construct. The specifier only resolves to an ES module, which cannot be imported with 'require'. Use an ECMAScript import instead.
+// Type Error: esm-package is identified as an ES module that cannot be synchronously imported.
+// This error occurs because .d.cts for CJS TypeScript is not supported.
 import * as esmPkg from "esm-package";
 ```
 
-# End
+# Conclusion
 
-Ecosystem of JavaScript and TypeScript continues to evolve, but there are only a few libraries which completely supports CJS, ESM, and even TypeScript.
+Recently, libraries at Toss have been deployed with the correct `exports` field. They not only support CJS/ESM JavaScript but also TypeScript seamlessly.
 
-So why don't you contribute to the ecosystem, by making such libraries?
+While the JavaScript/TypeScript ecosystem continues to evolve, libraries that support TypeScript well are still challenging to find, even among well-known ones.
+
+So, why don't we become the starting point for this change? Toss always welcomes those who want to solve such technical challenges together. We want to contribute to building a thriving ecosystem together.
 
 # References
 
-- About CJS and ESM of Node.js
+- About Node.js CJS/ESM:
   - [CJS](https://nodejs.org/api/modules.html)
   - [ESM](https://nodejs.org/api/esm.html)
   - [Determining Module System](https://nodejs.org/api/packages.html#determining-module-system)
-- About `exports` field
+- About the `exports` field:
   - [package.json export field](https://nodejs.org/api/packages.html#exports)
   - [Subpath exports](https://nodejs.org/api/packages.html#subpath-exports)
   - [Conditional exports](https://nodejs.org/api/packages.html#conditional-exports)
-- About support CJS and ESM of TypeScript
+- About TypeScript support for CJS and ESM:
   - [4.7 Release Note](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-7.html)
