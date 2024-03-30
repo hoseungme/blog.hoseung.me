@@ -202,7 +202,7 @@ export interface Post {
 
 ## 전체 코드
 
-다른 코드는 그냥 설계 단계에서 정한 룰대로 operation들을 추출하는 것 뿐이어서, 궁금하시다면 [여기](https://github.com/HoseungJang/oas-api-client/tree/master/src)서 전체 코드를 확인하실 수 있습니다. ~~많이 더럽습니다~~
+다른 코드는 그냥 설계 단계에서 정한 룰대로 operation들을 추출하는 것 뿐이어서, 궁금하시다면 [여기](https://github.com/hoseungme/oas-api-client/tree/master/src)서 전체 코드를 확인하실 수 있습니다. ~~많이 더럽습니다~~
 
 ## 사용법
 
@@ -216,7 +216,7 @@ npx oas-api-client generate -f ./openapi.json
 npx oas-api-client generate -u https://example.com/openapi
 ```
 
-자동 생성된 결과물의 예시는 [여기](https://github.com/HoseungJang/oas-api-client/tree/master/example)서 확인하실 수 있습니다.
+자동 생성된 결과물의 예시는 [여기](https://github.com/hoseungme/oas-api-client/tree/master/example)서 확인하실 수 있습니다.
 
 ## 마무리
 

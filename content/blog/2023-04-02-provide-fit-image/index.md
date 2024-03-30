@@ -272,7 +272,7 @@ image.resize({ width: 200, height: 200 });
 
 위 예제에서 동적으로 변하는 정보들인 이미지 URL, 이미지 가로/세로 크기만 쿼리 파라미터로 받아 동적으로 바꿀 수 있게 하면 완성입니다.
 
-물론 실제로는 쿼리 파라미터 파싱, 화질 조정, base64 인코딩 및 Content-Type 헤더 추가 등 로직이 조금 더 필요합니다. 모두 반영된 함수 코드는 [여기](https://github.com/HoseungJang/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)서 확인하실 수 있습니다.
+물론 실제로는 쿼리 파라미터 파싱, 화질 조정, base64 인코딩 및 Content-Type 헤더 추가 등 로직이 조금 더 필요합니다. 모두 반영된 함수 코드는 [여기](https://github.com/hoseungme/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)서 확인하실 수 있습니다.
 
 아래와 같이 요청하도록 만들었습니다.
 
@@ -364,7 +364,7 @@ Next.js를 사용하시는 경우, [next/image의 Image 컴포넌트](https://ne
 - `srcset`, `sizes` attribute
   - [반응형 이미지 - MDN](https://developer.mozilla.org/ko/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 - 실시간 이미지 리사이징 서버
-  - [전체 코드](https://github.com/HoseungJang/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)
+  - [전체 코드](https://github.com/hoseungme/blog.hoseung.me-example/blob/main/2023-03-25-provide-fit-image/image-optimizer-lambda/src/index.ts)
   - Serverless Framework
     - [공식 사이트](https://www.serverless.com/)
     - [Lambda Function 설정 파일 작성 가이드](https://www.serverless.com/framework/docs/providers/aws/guide/functions)

@@ -6,11 +6,11 @@ tags:
   - 오픈소스
 ---
 
-> [request-typer](https://github.com/HoseungJang/request-typer) v1.3.0 기준으로 작성되었습니다.
+> [request-typer](https://github.com/hoseungme/request-typer) v1.3.0 기준으로 작성되었습니다.
 
 이전에 개인 블로그를 만들면서 [OpenAPI Specification을 작성](/2021-03-27-open-api-specification)해서 [API Client를 자동 생성](/2021-05-01-api-client-sdk)하여 개발자 경험을 높히는 작업을 했던 적이 있었습니다.
 
-예전에 개발해서 배포했던 [oas-api-client](https://github.com/HoseungJang/oas-api-client)라는 오픈소스를 사용해 자동 생성된 API Client는 프론트엔드에서 아래와 같이 사용하고 있습니다.
+예전에 개발해서 배포했던 [oas-api-client](https://github.com/hoseungme/oas-api-client)라는 오픈소스를 사용해 자동 생성된 API Client는 프론트엔드에서 아래와 같이 사용하고 있습니다.
 
 ```typescript
 await client.getPostsByCursor({ count: 20 });
@@ -22,7 +22,7 @@ await client.getPostsByCursor({ count: 20 });
 
 근데 그것이 너무 비효율적이기도 하고, 직접 스펙을 작성하는건 많은 실수를 유발했습니다. 즉, 작업의 의도였던 "개발자의 실수를 줄이고 개발 환경의 구축을 자동화하는 것"이 변질되어 버렸습니다.
 
-따라서 완전한 자동화와 fully-typed된 프론트엔드 / 백엔드 시스템을 구축하기 위해서 [request-typer](https://github.com/HoseungJang/request-typer)라는 오픈소스 프로젝트를 시작하게 되었습니다.
+따라서 완전한 자동화와 fully-typed된 프론트엔드 / 백엔드 시스템을 구축하기 위해서 [request-typer](https://github.com/hoseungme/request-typer)라는 오픈소스 프로젝트를 시작하게 되었습니다.
 
 이 글에서는 request-typer의 기능과 개발 배경, 구현을 간단히 기록하려고 합니다.
 
@@ -118,7 +118,7 @@ const objectSchema = Schema.Object({
 type NumberSchema = Resolve<typeof objectSchema>;
 ```
 
-[테스트 코드](https://github.com/HoseungJang/request-typer/blob/master/src/__test__/schema.test.ts)
+[테스트 코드](https://github.com/hoseungme/request-typer/blob/master/src/__test__/schema.test.ts)
 
 ### JSON Schema Based Type Validator
 
@@ -171,7 +171,7 @@ public static validate(schema: AllSchema, value: any): ValidationResult {
 }
 ```
 
-[테스트 코드](https://github.com/HoseungJang/request-typer/blob/master/src/__test__/validator.test.ts)
+[테스트 코드](https://github.com/hoseungme/request-typer/blob/master/src/__test__/validator.test.ts)
 
 ### HTTP Request / Response Schema Builder
 
@@ -244,8 +244,8 @@ type PathParams = ResolvePathParameters<typeof request.parameters>;
 type RequestBody = ResolveRequestBody<typeof request.parameters>;
 ```
 
-[Parameter class 테스트 코드](https://github.com/HoseungJang/request-typer/blob/master/src/__test__/parameter.test.ts)
-[HTTP class 테스트 코드](https://github.com/HoseungJang/request-typer/blob/master/src/__test__/http.test.ts)
+[Parameter class 테스트 코드](https://github.com/hoseungme/request-typer/blob/master/src/__test__/parameter.test.ts)
+[HTTP class 테스트 코드](https://github.com/hoseungme/request-typer/blob/master/src/__test__/http.test.ts)
 
 ### OpenAPI Specification generator
 
@@ -399,13 +399,13 @@ private getResponseBodySchemaName(responseBody: ResponseBody): string | null {
 
 components object에 User schema가 생성되있고, updateUser에서 $ref로 참조하여 재사용하고 있는걸 볼 수 있습니다.
 
-[테스트 코드](https://github.com/HoseungJang/request-typer/blob/master/src/__test__/OASBuilder.test.ts)
+[테스트 코드](https://github.com/hoseungme/request-typer/blob/master/src/__test__/OASBuilder.test.ts)
 
 ## 다음 글 예고
 
-성공적인 개발과 배포를 마쳤으니, 다음 글에서는 [request-typer](https://github.com/HoseungJang/request-typer)를 사용해서 어떻게 express에서 fully-typed된 백엔드 시스템을 구축했는지에 대해 정리해볼 예정입니다.
+성공적인 개발과 배포를 마쳤으니, 다음 글에서는 [request-typer](https://github.com/hoseungme/request-typer)를 사용해서 어떻게 express에서 fully-typed된 백엔드 시스템을 구축했는지에 대해 정리해볼 예정입니다.
 
-혹시나 그전에 [request-typer](https://github.com/HoseungJang/request-typer)를 사용해보실 분들은 위에 예제를 참고해서 OpenAPI Specification을 생성하신 후, 제가 맨 위에서 언급했던 오픈소스인 [oas-api-client](https://github.com/HoseungJang/oas-api-client)와 함께 사용해보세요.
+혹시나 그전에 [request-typer](https://github.com/hoseungme/request-typer)를 사용해보실 분들은 위에 예제를 참고해서 OpenAPI Specification을 생성하신 후, 제가 맨 위에서 언급했던 오픈소스인 [oas-api-client](https://github.com/hoseungme/oas-api-client)와 함께 사용해보세요.
 
 OpenAPI Specificatoin이 들어있는 JSON 파일 또는 그걸 응답하는 HTTP URL을 넘겨주면 API Client library를 자동 생성해줍니다.
 

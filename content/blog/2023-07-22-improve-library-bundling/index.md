@@ -45,7 +45,10 @@ export function add(a, b) {
 다른 번들러를 사용하여 Minify, 트리 쉐이킹을 적용하면 아래와 같은 결과가 나옵니다.
 
 ```javascript
-function o(n,r){return n+r}export{o as add};
+function o(n, r) {
+  return n + r;
+}
+export { o as add };
 ```
 
 결과적으로 이는 해당 라이브러리를 설치해서 사용하는 프론트엔드 프로젝트의 번들 용량에도 영향을 주게 되는 것입니다.
@@ -290,7 +293,7 @@ export default [buildCJS("index.ts"), buildESM("index.ts"), buildCJSDTS("index.d
 tsup src/index.ts --format cjs,esm --dts --minify
 ```
 
-실제로 최근에 개인적으로 개발하고 있는 `flickable-scroll`이라는 오픈소스는 [위 커맨드 한 줄로 번들링](https://github.com/HoseungJang/flickable-scroll/blob/436fbd900c0d7c389b021c638092ffb2f7d41ece/package.json#L23)하고 있습니다.
+실제로 최근에 개인적으로 개발하고 있는 `flickable-scroll`이라는 오픈소스는 [위 커맨드 한 줄로 번들링](https://github.com/hoseungme/flickable-scroll/blob/436fbd900c0d7c389b021c638092ffb2f7d41ece/package.json#L23)하고 있습니다.
 
 번외로 사실 `tsup`의 존재는 1년 전부터 알고 있었는데, 그 당시에는 타입 정의 생성이 제대로 지원되지 않아서 도입을 못했었는데, 잊고 있던 사이에 개선이 되었네요.
 

@@ -171,6 +171,6 @@ GET function이 Generic 변수 P로 첫 번째 인자인 path의 값을 추론�
 
 [2021년 회고](/2022-01-02-2021-retrospect)에서 선언한 올해 목표 중 하나가 컴포트 존인 타입스크립트 생태계를 벗어나 보는 거였는데, 가면 갈수록 타입스크립트의 강력한 추론 기능의 매력에서 헤어나오질 못하겠네요.. 큰일입니다.
 
-최근에 express를 type-safe하게 사용하기 위한 오픈소스인 [typed-express](https://github.com/HoseungJang/typed-express)를 개발해서 배포했었는데, 거기에도 [1.1.0 릴리즈](https://github.com/HoseungJang/typed-express/releases/tag/v1.1.0)에 Template Literal Types를 사용한 path parameters 추론 기능을 추가해줬습니다.
+최근에 express를 type-safe하게 사용하기 위한 오픈소스인 [typed-express](https://github.com/hoseungme/typed-express)를 개발해서 배포했었는데, 거기에도 [1.1.0 릴리즈](https://github.com/hoseungme/typed-express/releases/tag/v1.1.0)에 Template Literal Types를 사용한 path parameters 추론 기능을 추가해줬습니다.
 
 타입스크립트가 또 어떤 기능을 내놓을지 앞으로도 기대되네요.

@@ -8,7 +8,7 @@ tags:
   - 오픈소스
 ---
 
-[이전 글](/2021-12-18-request-typer)에서 현재 저의 개인 블로그 백엔드 시스템의 문제를 간략히 언급하고, 그걸 개선하기 위해 [request-typer](https://github.com/HoseungJang/request-typer)라는 오픈소스를 만들었다는 내용을 적었었는데요.
+[이전 글](/2021-12-18-request-typer)에서 현재 저의 개인 블로그 백엔드 시스템의 문제를 간략히 언급하고, 그걸 개선하기 위해 [request-typer](https://github.com/hoseungme/request-typer)라는 오픈소스를 만들었다는 내용을 적었었는데요.
 
 이번 글에서는 기존 백엔드 코드의 문제를 더 자세히 정리하고, 그걸 어떻게 개선해냈는지 보여드리려고 합니다.
 
@@ -160,7 +160,7 @@ router.post(
 
 ## typed-express - 새로운 express 프레임워크
 
-위와 같은 문제파악을 통해 탄생한 것이 [이전 글](/2021-12-18-request-typer)에서 소개했던 [request-typer](https://github.com/HoseungJang/request-typer)와 [typed-express](https://github.com/HoseungJang/typed-express)라는 오픈소스입니다.
+위와 같은 문제파악을 통해 탄생한 것이 [이전 글](/2021-12-18-request-typer)에서 소개했던 [request-typer](https://github.com/hoseungme/request-typer)와 [typed-express](https://github.com/hoseungme/typed-express)라는 오픈소스입니다.
 
 request-typer를 먼저 만들었고, typed-express가 그 후에 request-typer를 기반으로 만들어졌습니다.
 
@@ -218,7 +218,7 @@ Route는 내부적으로 Typescript의 강력한 타입 추론을 적극 활용�
 
 Route가 개발자가 정의하여 넘긴 request parameters, response body 타입을 추론해서 넘겨주고 있습니다.
 
-request parameters 추론에는 request-typer를 개발할 때 만든 [ResolveQueryParameters](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L21), [ResolvePathParameters](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L30), [ResolveRequestBody](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L39)를 활용합니다. response body 추론에는 [Resolve](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/schema.ts#L76)를 활용합니다.
+request parameters 추론에는 request-typer를 개발할 때 만든 [ResolveQueryParameters](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L21), [ResolvePathParameters](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L30), [ResolveRequestBody](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/http.ts#L39)를 활용합니다. response body 추론에는 [Resolve](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/schema.ts#L76)를 활용합니다.
 
 따라서 개발자가 type assertion을 해주지 않아도 알아서 타입이 추론되므로, 위에서 언급했던 중복되고 장황해지는 코드를 개선할 수 있고, 개발자가 실수하지 않도록 할 수 있습니다.
 
@@ -238,7 +238,7 @@ typed-express의 Route에 그걸 내장시켜서, 개발자가 handler를 작성
 
 typed-express의 Route에는 request parameters validation이 내장되어있습니다.
 
-request-typer의 [Validator class](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/validator.ts#L18)를 사용하여 검사합니다.
+request-typer의 [Validator class](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/validator.ts#L18)를 사용하여 검사합니다.
 
 Validator class의 validate 메소드는 검사에 실패할 경우 에러 메시지를 응답합니다. Route는 그 메시지를 활용해 알아서 error message를 만들고, 400 Bad Request와 함께 응답합니다.
 
@@ -298,9 +298,9 @@ async (req, res) => {
 
 ### OpenAPI Specification Object 자동 생성
 
-typed-express에는 개발자가 선언한 Route를 모두 읽어들인 후, OpenAPI Specification Object를 자동 생성해주는 [OpenAPIRoute](https://github.com/HoseungJang/typed-express/blob/8145ad757879193b1bd76f05290a1530c343575f/src/openAPIRoute.ts#L5)가 있습니다.
+typed-express에는 개발자가 선언한 Route를 모두 읽어들인 후, OpenAPI Specification Object를 자동 생성해주는 [OpenAPIRoute](https://github.com/hoseungme/typed-express/blob/8145ad757879193b1bd76f05290a1530c343575f/src/openAPIRoute.ts#L5)가 있습니다.
 
-OpenAPIRoute는 request-typer의 [OASBuilder](https://github.com/HoseungJang/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/OASBuilder.ts#L5)를 사용합니다.
+OpenAPIRoute는 request-typer의 [OASBuilder](https://github.com/hoseungme/request-typer/blob/e2f3d8b0ab05be0d058673d164300e0f62e51893/src/OASBuilder.ts#L5)를 사용합니다.
 
 ```typescript
 import * as Entities from "./entities";

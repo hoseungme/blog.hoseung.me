@@ -8,7 +8,7 @@ tags:
 
 ## 개요
 
-얼마전, 개발하면서 알게된 개념들을 [wiki](https://github.com/HoseungJang/wiki)라는 repository에 markdown으로 정리하고, [https://hoseungjang.github.io/wiki-front](https://hoseungjang.github.io/wiki-front)에서 해당 repository의 내용들을 읽어서 웹으로 시각화하는 프로젝트를 진행했습니다.
+얼마전, 개발하면서 알게된 개념들을 [wiki](https://github.com/hoseungme/wiki)라는 repository에 markdown으로 정리하고, [https://hoseungjang.github.io/wiki-front](https://hoseungjang.github.io/wiki-front)에서 해당 repository의 내용들을 읽어서 웹으로 시각화하는 프로젝트를 진행했습니다.
 
 간단히 CRA로 initialize해서 개발한 후 Github Pages에 배포했는데, Github Pages는 SPA를 적용할 방법을 제공하지 않기 때문에 404 에러가 나오는 문제가 있었습니다.
 
@@ -141,6 +141,6 @@ hash 값을 읽어서 엘리먼트를 찾은 후, 해당 엘리먼트의 위치�
 
 페이지를 이동해도 404 에러가 더이상 나오지 않았고, Open Graph 데이터를 파싱하지 못하던 문제도 아래 사진과 같이 해결된 것을 확인할 수 있었습니다.
 
-전체 코드가 궁금하시다면 [wiki-front](https://github.com/HoseungJang/wiki-front)를 참고해주세요.
+전체 코드가 궁금하시다면 [wiki-front](https://github.com/hoseungme/wiki-front)를 참고해주세요.
 
 ![](./result.png)
