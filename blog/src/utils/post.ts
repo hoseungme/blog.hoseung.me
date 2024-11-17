@@ -25,7 +25,7 @@ export function getPost(id: string): Post {
   return {
     id,
     title: metadata.title,
-    description: metadata.title,
+    description: metadata.description,
     content,
     publishedAt: new Date(metadata.date).valueOf(),
   };
