@@ -1,13 +1,14 @@
-import React from "react";
+"use client";
+import { createRef, useEffect } from "react";
 
 export function Utterances() {
-  const root = React.createRef<HTMLDivElement>();
+  const root = createRef<HTMLDivElement>();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const element = document.createElement("script");
 
     element.setAttribute("src", "https://utteranc.es/client.js");
-    element.setAttribute("repo", "HoseungJang/blog.hoseung.me");
+    element.setAttribute("repo", "hoseungme/blog.hoseung.me");
     element.setAttribute("issue-term", "pathname");
     element.setAttribute("label", "comment");
     element.setAttribute(
