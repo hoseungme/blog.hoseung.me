@@ -1,10 +1,11 @@
 import "./style.scss";
+import { ReactNode } from "react";
 import { Layout } from "./content/Layout";
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
