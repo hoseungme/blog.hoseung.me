@@ -34,6 +34,7 @@
     "sass": "^1.49.7",
     "storage-cover": "^1.0.1",
     "styled-components": "^5.3.3",
+    "tailwind-merge": "^2.5.4",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75"
   },
