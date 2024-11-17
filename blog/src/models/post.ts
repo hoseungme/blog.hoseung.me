@@ -1,6 +1,3 @@
-import { Locale } from "./locale";
-import { Tag } from "./tag";
-
 export interface Post {
   id: string;
   title: string;
