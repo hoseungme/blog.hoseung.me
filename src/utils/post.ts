@@ -3,7 +3,7 @@ import { join } from "path";
 import { Post, PostSummary } from "@/models/post";
 
 export function getPosts(): PostSummary[] {
-  const dir = readdirSync(join(process.cwd(), "src/posts"));
+  const dir = readdirSync(join(process.cwd(), "posts"));
   const posts = dir.filter((file) => !file.startsWith(".")).sort((a, b) => (a < b ? 1 : -1));
   return posts.map(getPostSummary);
 }
@@ -19,7 +19,7 @@ function getPostSummary(id: string): PostSummary {
 }
 
 export function getPost(id: string): Post {
-  const file = readFileSync(join(process.cwd(), "src/posts", id, "index.md")).toString();
+  const file = readFileSync(join(process.cwd(), "posts", id, "index.md")).toString();
   const { metadata, content } = parsePost(file);
 
   return {
