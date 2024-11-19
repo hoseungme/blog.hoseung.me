@@ -3,7 +3,7 @@ import { Page } from "./content/Page";
 import { getPosts } from "@/actions/post";
 
 export default async function Home() {
-  return <Page posts={await getPosts({ limit: 100, offset: 0 })} />;
+  return <Page posts={await getPosts({ limit: 10, offset: 0 })} />;
 }
 
 const title = "hoseung.me";
