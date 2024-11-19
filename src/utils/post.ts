@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync, existsSync } from "fs";
 import { join } from "path";
 import { Post, PostSummary } from "@/models/post";
 
@@ -10,8 +10,10 @@ export function getPosts(): PostSummary[] {
 
 function getPostSummary(id: string): PostSummary {
   const post = getPost(id);
+
   return {
     id: post.id,
+    thumbnailURL: post.thumbnailURL,
     title: post.title,
     description: post.description,
     publishedAt: post.publishedAt,
@@ -19,11 +21,12 @@ function getPostSummary(id: string): PostSummary {
 }
 
 export function getPost(id: string): Post {
-  const file = readFileSync(join(process.cwd(), "posts", id, "index.md")).toString();
-  const { metadata, content } = parsePost(file);
+  const markdown = readFileSync(join(process.cwd(), "posts", id, "index.md")).toString();
+  const { metadata, content } = parsePostMarkdown(markdown);
 
   return {
     id,
+    thumbnailURL: getPostThumbnailURL(id),
     title: metadata.title,
     description: metadata.description,
     content,
@@ -37,11 +40,11 @@ interface Metadata {
   date: string;
 }
 
-function parsePost(fileContent: string) {
+function parsePostMarkdown(markdown: string) {
   let frontmatterRegex = /---\s*([\s\S]*?)\s*---/;
-  let match = frontmatterRegex.exec(fileContent);
+  let match = frontmatterRegex.exec(markdown);
   let frontMatterBlock = match![1];
-  let content = fileContent.replace(frontmatterRegex, "").trim();
+  let content = markdown.replace(frontmatterRegex, "").trim();
   let frontMatterLines = frontMatterBlock.trim().split("\n");
   let metadata: Partial<Metadata> = {};
 
@@ -53,4 +56,18 @@ function parsePost(fileContent: string) {
   });
 
   return { metadata: metadata as Metadata, content };
+}
+
+function getPostThumbnailURL(id: string) {
+  const dirPath = join(process.cwd(), "public/images/posts", id);
+  if (!existsSync(dirPath)) {
+    return null;
+  }
+
+  const thumbnailFilename = readdirSync(dirPath).find((filename) => filename.startsWith("thumbnail."));
+  if (!thumbnailFilename) {
+    return null;
+  }
+
+  return `/images/posts/${id}/${thumbnailFilename}`;
 }
