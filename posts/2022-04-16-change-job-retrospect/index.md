@@ -28,7 +28,7 @@ tags:
 
 ## 당근마켓
 
-![](./daangn-logo.png)
+![](./images/posts/2022-04-16-change-job-retrospect/daangn-logo.png)
 
 - 절차: 서류 -> 직무인터뷰 -> 컬쳐핏인터뷰 -> 최종 합격
 - 결과: 직무인터뷰 탈락
@@ -45,7 +45,7 @@ tags:
 
 ## 뱅크샐러드
 
-![](./banksalad-logo.png)
+![](./images/posts/2022-04-16-change-job-retrospect/banksalad-logo.png)
 
 - 절차: 서류 -> 과제 -> 대면인터뷰(실무 면접 + 컬쳐핏 면접) -> 최종 합격
 - 결과: 대면인터뷰 불참
@@ -58,7 +58,7 @@ tags:
 
 ## 모두싸인
 
-![](./modusign-logo.png)
+![](./images/posts/2022-04-16-change-job-retrospect/modusign-logo.png)
 
 - 절차: 서류 -> 직무인터뷰 + 구성원인터뷰 + 컬쳐핏인터뷰 -> 최종 합격
 - 결과: 최종 합격
@@ -87,7 +87,7 @@ tags:
 
 ## 토스
 
-![](./toss-logo.png)
+![](./images/posts/2022-04-16-change-job-retrospect/toss-logo.png)
 
 - 절차: 서류 -> 과제 -> 직무인터뷰 -> 문화적합성 인터뷰 -> 최종 합격
 - 결과: 최종 합격

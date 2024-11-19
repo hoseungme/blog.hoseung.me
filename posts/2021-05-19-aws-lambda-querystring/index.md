@@ -94,19 +94,19 @@ query string을 통해 array를 넘기는 방법은 아래와 같습니다.
 
 ### 1번 방법 결과
 
-![](./result-1.png)
+![](./images/posts/2021-05-19-aws-lambda-querystring/result-1.png)
 
 ### 2번 방법 결과
 
-![](./result-2.png)
+![](./images/posts/2021-05-19-aws-lambda-querystring/result-2.png)
 
 ### 3번 방법 결과
 
-![](./result-3.png)
+![](./images/posts/2021-05-19-aws-lambda-querystring/result-3.png)
 
 ### 4번 방법 결과
 
-![](./result-4.png)
+![](./images/posts/2021-05-19-aws-lambda-querystring/result-4.png)
 
 실험을 통해 알아낸 것들은 아래와 같습니다.
 

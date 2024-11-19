@@ -144,7 +144,7 @@ export const applyOpenAPIRouter = (rootRouter: Router) => {
 
 /openapi로 요청을 보내면 잘 오네요.
 
-![](./result.png)
+![](./images/posts/2021-03-27-open-api-specification/result.png)
 
 ## 마무리
 

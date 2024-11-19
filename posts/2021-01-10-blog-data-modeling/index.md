@@ -14,7 +14,7 @@ ERD는 Entity Relationship Diagram의 약자로, 데이터들의 관계를 그�
 
 ERD를 통해서 RDB의 데이터들을 모델링할 수 있습니다. 고유 표기법을 통해서 1:1, 1:n, n:n 관계를 깔끔하게 표현할 수 있습니다.
 
-![](./erd.png)
+![](./images/posts/2021-01-10-blog-data-modeling/erd.png)
 
 그리고 두 테이블 사이에 점선, 실선을 사용할 수 있는데, 점선은 비식별 관계, 실선은 식별 관계를 나타냅니다.
 
@@ -28,7 +28,7 @@ ERD를 통해서 RDB의 데이터들을 모델링할 수 있습니다. 고유 �
 
 ERD만 그릴 수 있는 것이 아니라, 아주 큰 국내 개발자 커뮤니티인 [OKKY](https://okky.kr/)를 비롯해 아주 많은 예시들을 보고 학습할 수 있습니다.
 
-![](./erd-cloud.png)
+![](./images/posts/2021-01-10-blog-data-modeling/erd-cloud.png)
 
 ## 포스트, 카테고리 모델링 하기
 
@@ -47,7 +47,7 @@ ERD만 그릴 수 있는 것이 아니라, 아주 큰 국내 개발자 커뮤니
 
 위 조건들에 따라서 테이블을 모델링한 결과는 아래와 같습니다.
 
-![](./result.png)
+![](./images/posts/2021-01-10-blog-data-modeling/result.png)
 
 post와 category 테이블에 필요한 필드를 정의해주고, 둘 사이에 1:n 관계를 정의해주었습니다. category 테이블은 스스로를 외래키로 참조하도록 정의했습니다.
 

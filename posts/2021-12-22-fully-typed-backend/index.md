@@ -224,9 +224,9 @@ request parameters 추론에는 request-typer를 개발할 때 만든 [ResolveQu
 
 아래는 실제로 request parameters와 response body의 타입 추론이 되는걸 보여주는 스크린샷들 입니다.
 
-![](./typed-express-1.png)
+![](./images/posts/2021-12-22-fully-typed-backend/typed-express-1.png)
 
-![](./typed-express-2.png)
+![](./images/posts/2021-12-22-fully-typed-backend/typed-express-2.png)
 
 ### Error Handling 로직 내장
 

@@ -37,7 +37,7 @@ Moment.js에 대해 이야기하기 전, 잠시 모던 프론트엔드의 빌드
 
 따라서 웹팩이 등장했습니다. 웹팩은 서로 분리된 Javascript 모듈 간의 의존 관계를 파악하고, 의존하는 것들끼리 합쳐 하나의 Javascript 파일로 만듭니다. 또한 Javascript에만 한정된 것이 아니라, CSS, 이미지 등 여러 리소스들에 대한 처리를 지원합니다.
 
-![](./webpack-bundle.png)
+![](./images/posts/2022-03-13-dayjs-instead-of-momentjs/webpack-bundle.png)
 
 그리고 웹팩이 하나로 합쳐준 Javascript 파일을 번들이라고 부르는데요. 번들 하나만 요청하면 되니까 HTTP 요청 수는 크게 줄어들었지만, 여러 Javascript 파일을 하나로 합치다 보니 이젠 번들의 크기가 너무 거대한 것이 문제가 되었습니다.
 
@@ -71,7 +71,7 @@ export function App() {
 
 moment를 import하고, format을 사용해 간단히 현재 시간을 보여주는 코드입니다. Moment.js의 전체 크기는 얼마이고, format만 사용했을 때 얼마나 큰 용량이 낭비되고 있을까요?
 
-![](./moment-lighthouse-result.png)
+![](./images/posts/2022-03-13-dayjs-instead-of-momentjs/moment-lighthouse-result.png)
 
 (잘 안보이시는 분들을 위해)전체 번들 크기가 60.7KB이고, Moment.js가 19KB를 차지합니다. 그리고 여기서 Moment.js에 의해 낭비되고 있는 크기는 12.9KB입니다.
 
@@ -120,7 +120,7 @@ dayjs.extend(duration);
 
 사실 Moment.js를 대체할 라이브러리를 조사하기 전, 먼저 노션에 현재 Moment.js의 모든 use case들부터 정리했었는데요.
 
-![](./moment-usecase-notion.png)
+![](./images/posts/2022-03-13-dayjs-instead-of-momentjs/moment-usecase-notion.png)
 
 Day.js를 선택한 아주 결정적인 이유는, 노션에 정리한 모든 use case들을 커버할 수 있었기 때문입니다.
 
@@ -128,7 +128,7 @@ Day.js를 선택한 아주 결정적인 이유는, 노션에 정리한 모든 us
 
 단순히 `moment`를 `dayjs`로 replace하고, type definition 수정 같은 작은 작업 몇 가지만 해주니 끝났습니다.
 
-![](./moment-dayjs-replace.png)
+![](./images/posts/2022-03-13-dayjs-instead-of-momentjs/moment-dayjs-replace.png)
 
 ## Day.js + Lighthouse CI
 
@@ -146,7 +146,7 @@ export function App() {
 
 dayjs를 import하고, format을 사용해 현재 시간을 보여주는 코드입니다. Moment.js와 사용법이 똑같은게 보이시나요?
 
-![](./dayjs-lighthouse-result.png)
+![](./images/posts/2022-03-13-dayjs-instead-of-momentjs/dayjs-lighthouse-result.png)
 
 전체 번들 사이즈가 44.6KB로 Moment.js를 사용할 때보다 약 30%나 줄었습니다. 게다가 Day.js의 사이즈는 2.1KB로, 번들의 약 4%만 차지하는걸 볼 수 있습니다.
 

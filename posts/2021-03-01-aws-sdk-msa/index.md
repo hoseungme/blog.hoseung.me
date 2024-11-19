@@ -14,7 +14,7 @@ tags:
 
 잠시 제 개인 블로그의 백엔드 아키텍처를 복습해보자면,
 
-![](./diagram.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/diagram.png)
 
 blog-api-gateway에서 Microservice SDK를 통해 서비스들을 호출하고 있습니다.
 
@@ -206,7 +206,7 @@ blog-api-gateway를 제외한 나머지 서비스들은 HTTP 콜 자체를 하�
 
 [이 글](/2020-12-29-serverless-framework)에서 소개했었던 serverless-offline을 사용한 로컬 테스트와 http event 설정을 blog-api-gateway를 제외한 모든 서비스에서 지워줬습니다.
 
-![](./change.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/change.png)
 
 ## 배포하기 전 테스트 하기
 
@@ -238,7 +238,7 @@ Mocking이 아니라 실제 호출이기 때문에, 정확한 값을 확인하�
 
 실제로 실행해보면 성공하는 것을 확인할 수 있네요.
 
-![](./test.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/test.png)
 
 ## 패키지 배포하고 설치해보기
 
@@ -254,9 +254,9 @@ Mocking이 아니라 실제 호출이기 때문에, 정확한 값을 확인하�
 
   - main: 패키지의 메인 export 지점을 어디로 둘지를 정하는 옵션입니다. [여기](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#main)를 보시면 빠르게 이해가 가실겁니다.
 
-![](./tsconfig.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/tsconfig.png)
 
-![](./packagejson.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/packagejson.png)
 
 tsconfig.json과 package.json를 각각 위와 같이 작성해주고, 배포해줬습니다.
 
@@ -270,4 +270,4 @@ npm publish
 npm install @hoseung-only/blog-microservice-sdk
 ```
 
-![](./result.png)
+![](./images/posts/2021-03-01-aws-sdk-msa/result.png)

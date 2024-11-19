@@ -38,7 +38,7 @@ tags:
 
 아래 사진처럼 환경 변수를 참조하도록 만들어야 상황에 따른 환경 분리가 가능합니다. (프로덕션 배포할 때, 테스트할 때, 개발서버 배포할 때 설정값을 모두 다르게 줄 수 있겠죠) 그리고 깃허브에서 public repository에 올라가있는 경우 이게 보안상으로도 좋습니다.
 
-![](./result-1.png)
+![](./images/posts/2021-02-10-docker-test/result-1.png)
 
 #### 도커
 
@@ -103,4 +103,4 @@ docker run --name blog-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password -e MYS
 
 MySQL이나 DynamoDB, Redis같은 것들을 도커로 가상화하면 매우 편리합니다.
 
-![](./result-2.png)
+![](./images/posts/2021-02-10-docker-test/result-2.png)

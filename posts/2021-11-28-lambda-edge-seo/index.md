@@ -32,7 +32,7 @@ Lambda@Edge(이하 람다엣지)는 기본적으로 일반 Lambda function(이�
 
 일반 람다함수와 다른 점은, 람다엣지는 CloudFront(이하 클라우드프론트)와 연결되는 특수한 함수로, Cloudfront에 요청이 들어왔을 때 실행됩니다.
 
-![](./cloudfront-lambda-edge.png)
+![](./images/posts/2021-11-28-lambda-edge-seo/cloudfront-lambda-edge.png)
 
 클라우드프론트를 사용할 때의 전체적인 구성 요소는 사진에 나오듯이 유저(End user), CDN(CloudFront cache), 오리진(Origin Server)이라고 할 수 있습니다.
 
@@ -221,15 +221,15 @@ return Response.render({
 
 Postman과 페이스북 메신저를 통해 테스트 해보겠습니다.
 
-![](./postman-1.png)
+![](./images/posts/2021-11-28-lambda-edge-seo/postman-1.png)
 
 Postman을 통해 User-Agent를 facebookexternalhit으로 설정하고 보내보니, Open Graph 컨텐츠가 응답된걸 볼 수 있었습니다.
 
-![](./postman-2.png)
+![](./images/posts/2021-11-28-lambda-edge-seo/postman-2.png)
 
 그리고 User-Agent를 덮어쓰지 않고 그냥 보냈을 땐 리액트 빌드 결과물이 응답된걸 볼 수 있었습니다.
 
-![](./result.png)
+![](./images/posts/2021-11-28-lambda-edge-seo/result.png)
 
 페이스북 메신저에서도 Open Graph 태그들을 잘 파싱해서 보여주는걸 볼 수 있었습니다.
 

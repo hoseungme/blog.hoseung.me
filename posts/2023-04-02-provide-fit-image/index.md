@@ -54,7 +54,7 @@ tags:
 
 아래 사진이 좋은 예시입니다. 더 높은 PPI를 가진 화면 위에서 그려진 오른쪽 원이 더 정밀하게 그려지는 것을 확인할 수 있습니다.
 
-![](./compare-circle.png)
+![](./images/posts/2023-04-02-provide-fit-image/compare-circle.png)
 
 # 디바이스의 픽셀과 CSS의 픽셀
 
@@ -98,7 +98,7 @@ Github의 [custom-device-emulation-chrome](https://github.com/amirshnll/custom-d
 
 예를 들어, `100vw`가 300 픽셀이고, DPR이 2인 디바이스에서는 아래와 같이 `600w.png`가 렌더링됩니다.
 
-![](./300px-2x-600w-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/300px-2x-600w-example.png)
 
 디바이스의 `100vw`인 300 픽셀이 CSS 상의 픽셀이고, DPR이 2이므로, 렌더링에 가장 적합한 600w.png가 선택된 것입니다.
 
@@ -112,7 +112,7 @@ Github의 [custom-device-emulation-chrome](https://github.com/amirshnll/custom-d
 
 똑같이 DPR이 2인 디바이스라고 가정했을 때 아래와 같이 `600w.png`가 선택됩니다.
 
-![](./300px-2x-600w-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/300px-2x-600w-example.png)
 
 이때, DPR이 2인 상황에서 CSS 350 픽셀을 화질 저하 없이 렌더링하기 위해서는 물리적 700 픽셀이 필요합니다.
 
@@ -133,13 +133,13 @@ Github의 [custom-device-emulation-chrome](https://github.com/amirshnll/custom-d
 
 만약 디바이스의 viewport width가 500px인 경우, `(max-width: 700px)`의 조건에 걸리기 때문에, 선택되는 사이즈는 `300px`입니다. 따라서 아래와 같이 `300w.png`가 렌더링됩니다.
 
-![](./300px-1x-300w-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/300px-1x-300w-example.png)
 
 그리고 디바이스의 viewport width가 800px, 1200px인 경우, 각각 `600px`, `900px`의 사이즈가 선택되어 아래와 같이 `600w.png`, `900w.png`가 렌더링되겠죠.
 
-![](./600px-1x-600w-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/600px-1x-600w-example.png)
 
-![](./900px-1x-900w-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/900px-1x-900w-example.png)
 
 ## 디바이스 DPR에 맞춰 선택되게 하기 - srcset의 x descriptor
 
@@ -246,7 +246,7 @@ Lambda Function URL을 통해 함수가 실행되면 인자인 event 객체가 [
 
 위 예제를 배포하고 생성된 Function URL로 요청을 보내보면, `GET /hello-world`에 대해 아래와 같이 잘 응답합니다.
 
-![](./lambda-hello-world-example.png)
+![](./images/posts/2023-04-02-provide-fit-image/lambda-hello-world-example.png)
 
 ## 이미지 리사이징 코드 작성
 
@@ -288,11 +288,11 @@ CloudFront 콘솔에서 배포 생성 페이지로 넘어가면, 오리진의 �
 
 거기에 Lambda Function URL의 도메인을 넣고 `뷰어 일치`를 선택해주면 오리진 연결은 끝납니다.
 
-![](./create-cloudfront-distribution-origin.png)
+![](./images/posts/2023-04-02-provide-fit-image/create-cloudfront-distribution-origin.png)
 
 이제부터 핵심인데, CloudFront에 들어온 요청을 오리진에 어떤 방식으로 전달할지, 오리진에서 그 요청을 처리해 응답한 결과는 어떻게 캐싱할지에 대해 정책을 정해주어야 합니다.
 
-![](./create-cloudfront-distribution-default-cache-policy.png.png)
+![](./images/posts/2023-04-02-provide-fit-image/create-cloudfront-distribution-default-cache-policy.png)
 
 `원본 요청 정책`은 `AllViewerExceptHostHeader`라고 되어있는데요. 오리진으로 요청을 넘길 때 Host를 제외한 다른 HTTP Request 헤더와 쿠키, 쿼리 파라미터를 모두 포함시킨다는 정책입니다. 우리는 Host 헤더는 필요 없고 쿼리 파라미터만 잘 넘어오면 되니까, 대충 기본값으로 써주겠습니다.
 
@@ -304,7 +304,7 @@ CloudFront 콘솔에서 배포 생성 페이지로 넘어가면, 오리진의 �
 
 만약 쿼리 파라미터가 캐싱 기준에 포함되지 않으면, 쿼리 파라미터가 변경되더라도 유저에게 캐싱된 응답이 전달됩니다.
 
-![](./create-cache-policy-ttl.png)
+![](./images/posts/2023-04-02-provide-fit-image/create-cache-policy-ttl.png)
 
 이제 `배포 생성` 버튼을 누르고 조금 기다리면 이미지 리사이징 서버가 완성됩니다. 이제 Lambda Function URL 도메인이 아니라 CloudFront 배포와 연결된 도메인으로 요청을 보내면 됩니다.
 
@@ -316,13 +316,13 @@ CloudFront 콘솔에서 배포 생성 페이지로 넘어가면, 오리진의 �
 /optimize-image?url={썸네일URL}&w=416&h=256
 ```
 
-![](./test-original-thumbnail.png)
+![](./images/posts/2023-04-02-provide-fit-image/test-original-thumbnail.png)
 
-![](./test-resized-thumbnail.png)
+![](./images/posts/2023-04-02-provide-fit-image/test-resized-thumbnail.png)
 
 응답이 CloudFront에 캐싱된 것인지 확인하고 싶으면, HTTP Response 헤더에서 `x-cache`의 값이 `Hit from cloudfront`인지 확인하면 됩니다.
 
-![](./test-response-headers.png)
+![](./images/posts/2023-04-02-provide-fit-image/test-response-headers.png)
 
 이제 `srcset` 작성을 위해 이미지를 크기 별로 준비할 필요 없이 이미지 리사이징 서버를 거치면 됩니다. 아래는 900 \* 900 이미지 하나를 리사이징하여 디바이스 해상도에 대응하는 예제입니다.
 

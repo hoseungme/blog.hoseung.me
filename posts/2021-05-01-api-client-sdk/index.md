@@ -14,7 +14,7 @@ tags:
 
 구글에게 프로그래밍에서 client가 뭐냐고 물어보면 아래처럼 답변이 나옵니다.
 
-![](./google.png)
+![](./images/posts/2021-05-01-api-client-sdk/google.png)
 
 간단히 요약하자면, 다른 무언가에게 요청을 보내는 프로그램 또는 컴퓨터가 client라고 할 수 있겠네요.
 

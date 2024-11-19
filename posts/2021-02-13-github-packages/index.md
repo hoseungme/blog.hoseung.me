@@ -44,7 +44,7 @@ Github Packages는 깃허브에서 제공하는 패키지 호스팅 서비스입
 
 저는 아래와 같이 작성해주었습니다.
 
-![](./result-1.png)
+![](./images/posts/2021-02-13-github-packages/result-1.png)
 
 repository의 owner와 name의 scope가 일치해야 publish할 때 오류가 안납니다.
 
@@ -72,7 +72,7 @@ scope옵션에는 아까 package.json에서 name에 적어준 scope 이름을 �
 
 npm publish 명령어를 통해서 배포할 수 있습니다.
 
-![](./result-2.png)
+![](./images/posts/2021-02-13-github-packages/result-2.png)
 
 ## 패키지 다운로드 받기
 

@@ -24,7 +24,7 @@ tags:
 
 Lambda 핸들러는 아래의 그림처럼 크게 4단계를 거쳐서 실행됩니다.
 
-![](./lambda-handler-execution.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-handler-execution.png)
 
 1. Download your code
 
@@ -44,7 +44,7 @@ Lambda 핸들러는 아래의 그림처럼 크게 4단계를 거쳐서 실행됩
 
 위 과정을 풀어서 다시 그려보면 아래와 같습니다.
 
-![](./lambda-handler-execution-diagram.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-handler-execution-diagram.png)
 
 위에서 파란색으로 표시한 1, 2, 3단계(Lambda 핸들러 코드가 실행될 수 있게 준비하는 과정)를 합쳐서 **cold start**라고 부릅니다. cold start를 거치면 Lambda 핸들러의 응답 시간을 짧게는 100ms 이하, 길게는 1초 이상까지 지연시키게 됩니다.
 
@@ -62,8 +62,8 @@ Lambda 핸들러는 아래의 그림처럼 크게 4단계를 거쳐서 실행됩
 
 간단한 타임라인을 통해 알아보겠습니다.
 
-![](./lambda-concurrent-request-timeline.png)
-![](./lambda-concurrent-invokation-timeline.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-concurrent-request-timeline.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-concurrent-invokation-timeline.png)
 
 특정 시점인 t3에 3개의 요청이 동시에 들어왔고, 요청 A, B, C 모두 cold start를 거친 모습입니다.
 
@@ -73,8 +73,8 @@ Lambda 핸들러는 아래의 그림처럼 크게 4단계를 거쳐서 실행됩
 
 그렇다면 아래 그림처럼 요청이 일정 간격을 두고 들어오면 어떻게 될까요?
 
-![](./lambda-sequential-request-timeline.png)
-![](./lambda-sequential-invokation-timeline.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-sequential-request-timeline.png)
+![](./images/posts/2022-02-27-lambda-global-variables/lambda-sequential-invokation-timeline.png)
 
 요청 A, B, C가 순차적으로 들어왔고, A, B는 cold start를 거치고, C는 warm start를 거친 모습입니다.
 
@@ -178,8 +178,8 @@ functions:
 
 첫 요청에서는 "cold start"를 응답받았지만, 그 이후로는 "warm start"를 응답받았습니다.
 
-![](./request-result-1.png)
-![](./request-result-2.png)
+![](./images/posts/2022-02-27-lambda-global-variables/request-result-1.png)
+![](./images/posts/2022-02-27-lambda-global-variables/request-result-2.png)
 
 동시에 여러번 요청을 보내는 경우도 테스트 해볼까요? warm start가 아닌 경우, 1초 동안 대기한 후 응답하도록 핸들러 코드를 수정했습니다.
 
@@ -219,7 +219,7 @@ ab -n 100 -c 20 [endpoint]
 
 요청을 보낸 후 로그를 찍어봤는데요. 동시에 들어간 일부 요청은 cold start 때문에 1초씩 딜레이가 걸렸고, 나머지 요청은 warm start를 거쳐 딜레이 없이 실행됬습니다..
 
-![](./request-result-3.png)
+![](./images/posts/2022-02-27-lambda-global-variables/request-result-3.png)
 
 ## 결론
 

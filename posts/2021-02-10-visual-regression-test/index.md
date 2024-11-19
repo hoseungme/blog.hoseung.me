@@ -23,7 +23,7 @@ visual regression test는 변경사항을 반영하고도 똑같은 UI가 유지
 
 ## 첫 번째 도전기 - Cypress
 
-![](./cypress.png)
+![](./images/posts/2021-02-10-visual-regression-test/cypress.png)
 
 [Cypress](https://www.cypress.io/)라는 E2E테스트 라이브러리가 있습니다.
 
@@ -37,7 +37,7 @@ Cypress로 페이지를 이동하면서 스크린샷을 찍으면 될거라고 �
 
 ## 두 번째 도전기 - Jest
 
-![](./jest.png)
+![](./images/posts/2021-02-10-visual-regression-test/jest.png)
 
 Cypress를 사용하면서 깨달은 문제점을 바탕으로, 아예 원하는 데이터로 컴포넌트를 완전히 mocking해서 그것만 따로 사진을 찍자고 생각했습니다.
 
@@ -146,7 +146,7 @@ react-screenshot-test는 가상 브라우저를 실행하기 전에 HTML style�
 
 결과적으로, 기존에 적용되지 않았던 scss 스타일들(텍스트 크기, 폰트 등)이 아래와 같이 적용되었습니다.
 
-![](./result-1.png)
+![](./images/posts/2021-02-10-visual-regression-test/result-1.png)
 
 #### 그러나.. 로컬과 CI환경의 플랫폼 차이, CRA의 제한
 
@@ -160,7 +160,7 @@ react-screenshot-test는 가상 브라우저를 실행하기 전에 HTML style�
 
 ## 세 번째 도전기 - Chromatic
 
-![](./chromatic.png)
+![](./images/posts/2021-02-10-visual-regression-test/chromatic.png)
 
 사실 회사에서는 이미 [Storybook](https://storybook.js.org/)이라는걸 사용해서 작은 UI component(버튼, 텍스트폼, 드롭다운 등등)들을 렌더링해서 확인해보고 있었습니다.
 
@@ -212,11 +212,11 @@ Storybook 빌드 결과가 Chromatic에 publish되면 UI Test가 실행됩니다
 
 실제 화면은 회사 프로덕션이기 때문에 첨부하기가 애매해서, Chromatic Documentation에서 해당 화면을 가져왔습니다. 아래와 같이 Storybook 코드상에서의 변경 사항과, (아래 사진에선 안나오지만) 실제 픽셀단위로 어디가 어떻게 변경되었는지 한눈에 보여줍니다.
 
-![](./result-2.png)
+![](./images/posts/2021-02-10-visual-regression-test/result-2.png)
 
 그리고 이 기능들의 status는 아래와같이 PR에서 한눈에 체크할 수 있습니다.
 
-![](./result-3.png)
+![](./images/posts/2021-02-10-visual-regression-test/result-3.png)
 
 그리고 그냥 적용하면 알람같은걸 받아볼 수 없는데, Slack이나 Custom Webhook을 통합하면 Chromatic의 Notification 서비스를 이용할 수 있습니다.
 

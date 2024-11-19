@@ -170,7 +170,7 @@ npm run deploy
 
 배포된 애플리케이션에 요청을 보내봅시다.
 
-![](./result.png)
+![](./images/posts/2020-12-29-serverless-framework/result.png)
 
 /hello로 요청을 보내주니 잘 응답하는걸 볼 수 있네요.
 

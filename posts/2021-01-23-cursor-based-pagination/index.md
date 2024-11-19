@@ -106,17 +106,17 @@ response json에서 다음 요청을 위한 cursor를 응답하고 있고, 클�
 
 저는 (~~RDS를 사용할 돈이 없어서...~~)GCP의 VM 인스턴스를 데이터베이스 서버 용도로 쓰고있습니다.
 
-![](./result-1.png)
+![](./images/posts/2021-01-23-cursor-based-pagination/result-1.png)
 
 41개 정도 넣어뒀으니, 이제 요청을 보내봅시다.
 
-![](./result-2.png)
+![](./images/posts/2021-01-23-cursor-based-pagination/result-2.png)
 
 우선 첫 요청에서는 15개의 데이터를 불러온 후 nextCursor를 얻을 수 있네요.
 
 그럼 40번째 게시글부터 가져오도록 요청을 보내보겠습니다.
 
-![](./result-3.png)
+![](./images/posts/2021-01-23-cursor-based-pagination/result-3.png)
 
 40, 41번째 게시글 두 개가 불러와지고, 더 이상 불러올 데이터가 없기 때문에 nextCursor가 null로 온 것을 확인할 수 있습니다.
 

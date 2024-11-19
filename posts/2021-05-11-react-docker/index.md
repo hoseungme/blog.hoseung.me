@@ -114,4 +114,4 @@ run-s는 [npm run all](https://www.npmjs.com/package/npm-run-all)이 제공하�
 
 localhost:5000에 접속해보면 잘 되는걸 확인할 수 있습니다.
 
-![](./result.png)
+![](./images/posts/2021-05-11-react-docker/result.png)

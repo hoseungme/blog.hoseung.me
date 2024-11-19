@@ -28,7 +28,7 @@ scan 작업에서 조건을 걸 수는 있지만, 그건 조건에 맞는 데이
 
 포스트는 아래 사진, 코드와 같이 여러 블록으로 이루어져 있습니다.
 
-![](./post-blocks.png)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/post-blocks.png)
 
 ```typescript
 type BlockSchema = |
@@ -119,7 +119,7 @@ DynamoDB Stream도 연결된 트리거에서 에러를 throw할 경우, 데이�
 
 즉, 간략한 플로우를 그려보면 아래와 같습니다. (~~아이패드로 대충 그렸습니다~~)
 
-![](./dynamodb-stream-diagram.png)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/dynamodb-stream-diagram.png)
 
 ## DyanmoDB Stream 트리거 만들기
 
@@ -334,7 +334,7 @@ DynamoDB 테이블 세팅에서 `Exports and streams`탭으로 이동한 후, `D
 
 그리고 위에서 만들었던 AWS Lambda Function을 트리거에 추가해주면, 테이블에 변경이 일어날 때마다 변경 사항이 전달됩니다.
 
-![](./dynamodb-stream-enable.png)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/dynamodb-stream-enable.png)
 
 ## 마무리
 

@@ -91,10 +91,10 @@ npm install -D serverless-offline
 
 그리고 npm start를 입력해주고 조금 기다리면 로컬 환경에서 테스트할 수 있게 됩니다.
 
-![](./result-1.png)
+![](./images/posts/2021-01-01-aws-lambda-express/result-1.png)
 
 ## 결과
 
 응답이 잘 오네요!
 
-![](./result-2.png)
+![](./images/posts/2021-01-01-aws-lambda-express/result-2.png)

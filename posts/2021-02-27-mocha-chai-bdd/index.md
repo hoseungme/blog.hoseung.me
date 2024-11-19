@@ -108,7 +108,7 @@ app.post("/login", async (req, res, next) => {
 
 그리고 실제로 테스트를 실행시켜보면? 아래와 같이 테스트에 통과합니다.
 
-![](./result.png)
+![](./images/posts/2021-02-27-mocha-chai-bdd/result.png)
 
 ## 팀 내에서는 유의미 할까?
 

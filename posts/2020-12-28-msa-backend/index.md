@@ -14,10 +14,10 @@ MSA는 MicroService Architecture의 약자로, 독립적으로 자신의 기능�
 MSA는 모놀리식 아키텍처와 반대되는 개념이라고 볼 수 있습니다. 아래 두 사진을 보시면 이해가 빠르실 것 같습니다.
 
 1. 모놀리식 아키텍처
-   ![](./monolithic.png)
+   ![](./images/posts/2020-12-28-msa-backend/monolithic.png)
 
 2. MSA
-   ![](./msa.png)
+   ![](./images/posts/2020-12-28-msa-backend/msa.png)
 
 1번 사진(모놀리식)을 보시면 하나의 애플리케이션(육각형) 내부에 billing, payments 등 모든 비즈니스 로직이 포함되어 있습니다.즉, 모놀리식 아키텍처는 하나의 애플리케이션이 거대한 아키텍처를 포함하고 있는 형태라고 할 수 있습니다.
 
@@ -29,7 +29,7 @@ MSA는 모놀리식 아키텍처와 반대되는 개념이라고 볼 수 있습�
 
 전체 설계도의 초안은 아래와 같습니다. (사진이 잘 안보이네요..)
 
-![](./diagram.png)
+![](./images/posts/2020-12-28-msa-backend/diagram.png)
 
 (언제든지 설계가 변경될 수 있습니다. ~~돈이 부족할 것 같네요~~)
 

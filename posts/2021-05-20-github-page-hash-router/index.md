@@ -143,4 +143,4 @@ hash 값을 읽어서 엘리먼트를 찾은 후, 해당 엘리먼트의 위치�
 
 전체 코드가 궁금하시다면 [wiki-front](https://github.com/hoseungme/wiki-front)를 참고해주세요.
 
-![](./result.png)
+![](./images/posts/2021-05-20-github-page-hash-router/result.png)

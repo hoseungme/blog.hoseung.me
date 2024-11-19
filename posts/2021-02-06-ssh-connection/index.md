@@ -70,7 +70,7 @@ passphrase를 입력하는 절차가 있을텐데, 나중에 접속할 때마다
 
 그러면 아래와 같이 ~/.ssh 디렉토리에 gcp_rsa, gcp_rsa.pub가 생성됩니다. 여기서 gcp_rsa.pub가 GCP에 등록해줘야 하는 공개키입니다.
 
-![](./result-1.png)
+![](./images/posts/2021-02-06-ssh-connection/result-1.png)
 
 ## GCP에 공개키 등록하기
 
@@ -82,15 +82,15 @@ cat gcp_rsa.pub
 
 그리고 GCP에서 Compute Engine 콘솔에 들어가주시고, 설정 -> 메타데이터로 들어가줍시다.
 
-![](./result-2.png)
+![](./images/posts/2021-02-06-ssh-connection/result-2.png)
 
 그리고 SSH 키 탭으로 들어가면 키를 추가할 수 있습니다. 여기에 복사한 공개키를 붙여넣어줍시다.
 
-![](./result-3.png)
+![](./images/posts/2021-02-06-ssh-connection/result-3.png)
 
 이 때, 사용자 이름을 기억해둡시다.
 
-![](./result-4.png)
+![](./images/posts/2021-02-06-ssh-connection/result-4.png)
 
 ## 인스턴스 접속하기
 
@@ -112,7 +112,7 @@ ssh -i ~/.ssh/gcp_rsa hsjang.dev@0.0.0.0
 
 아래와 같이 접속이 잘 되었네요.
 
-![](./result-5.png)
+![](./images/posts/2021-02-06-ssh-connection/result-5.png)
 
 ## 쉘 스크립트 파일 만들어주기
 

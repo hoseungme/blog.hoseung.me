@@ -21,7 +21,7 @@ app.use(cors());
 
 ## CORS?
 
-![](./cors-1.png)
+![](./images/posts/2021-05-10-cors/cors-1.png)
 
 출처: [mdn](https://developer.mozilla.org/ko/docs/Web/HTTP/CORS)
 
@@ -33,7 +33,7 @@ app.use(cors());
 
 만약 domain-b.com에서 domain-a.com으로부터 오는 요청을 허용하지 않았다면, 프론트엔드 개발자 분들이 끔찍하게도 많이 겪어보셨을:
 
-![](./cors-2.png)
+![](./images/posts/2021-05-10-cors/cors-2.png)
 
 이런 모양새의 에러에 마주하며 데이터를 불러오지 못하게 됩니다.
 
@@ -106,4 +106,4 @@ app.use((req, res, next) => {
 
 설정했던 CORS 허용 헤더들이 잘 넘어오고 있고, 문제없이 잘 동작하네요.
 
-![](./result.png)
+![](./images/posts/2021-05-10-cors/result.png)

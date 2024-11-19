@@ -119,14 +119,14 @@ CloudFront를 통해 S3 객체를 가져와봅시다.
 
 맨 위에 있는 0_gHOjr-KEd8erJZyR.png를 요청해 보겠습니다.
 
-![](./result-1.png)
+![](./images/posts/2021-08-06-cloudfront-s3-private/result-1.png)
 
 CloudFront를 통해 요청을 보내면 이미지를 확인할 수 있습니다.
 
-![](./result-2.png)
+![](./images/posts/2021-08-06-cloudfront-s3-private/result-2.png)
 
 그러나 S3 URL로 직접 접근하면, 버킷에 대한 public access를 허용하지 않았기 때문에 403을 응답합니다.
 
-![](./result-3.png)
+![](./images/posts/2021-08-06-cloudfront-s3-private/result-3.png)
 
 의도한대로 S3 객체에 CloudFront로만 엑세스할 수 있으니 성공입니다.

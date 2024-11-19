@@ -26,7 +26,7 @@ tags:
 
 아래는 웹 푸시가 어떻게 동작하는지를 표현한 간단한 다이어그램입니다.
 
-![](./diagram.png)
+![](./images/posts/2021-11-28-web-push-notification/diagram.png)
 
 우선 구성 요소들 중에 '서버'와 '푸시 서비스'가 뭔지 헷갈리실텐데, 각각을 정리하면,
 
@@ -226,4 +226,4 @@ webpush.sendNotification(
 
 로컬에서 테스트해보니 알림이 잘 오는걸 확인할 수 있었습니다.
 
-![](./result.png)
+![](./images/posts/2021-11-28-web-push-notification/result.png)

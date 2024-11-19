@@ -29,7 +29,7 @@ In this situation, which is the correct choice between RDB and a search engine?
 
 Posts consist of various blocks like:
 
-![](./post-blocks.png)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/post-blocks.png)
 
 ```typescript
 type BlockSchema = |
@@ -110,7 +110,7 @@ It is pretty simple to use. You just write Lambda function and register it as a 
 
 In summary, the flow can be represented as follows:
 
-![](./dynamodb-stream-diagram-en.jpg)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/dynamodb-stream-diagram-en.jpg)
 
 ## Creating a DynamoDB Stream Trigger
 
@@ -301,7 +301,7 @@ indexAllPosts();
 
 Enabling DynamoDB Streams was straightforward. I just did it with a few clicks, following the [official documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Streams.html#Streams.Enabling).
 
-![](./dynamodb-stream-enable.png)
+![](./images/posts/2022-02-19-dynamodb-stream-elasticsearch/dynamodb-stream-enable.png)
 
 ## Conclusion
 

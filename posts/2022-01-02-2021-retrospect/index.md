@@ -40,7 +40,7 @@ tags:
 
 지금 다니는 회사는 명품 이커머스 [캐치패션](https://www.catchfashion.com/)을 개발하는 곳이다.
 
-![](./tree.png)
+![](./images/posts/2022-01-02-2021-retrospect/tree.png)
 
 (귀여운 트리도 설치하는 따스한 팀이다)
 
@@ -191,7 +191,7 @@ eslint를 고치기도 했다. 대표적으로 Typescript에서 빈 객체를 �
 
 코스를 짜서 간단히 런닝하는 것부터 시작해서, 헬스를 시작했고, 특히 주짓수라는 운동에 주 5일 모두 나갈 정도로 빠져있다.
 
-![](./juijitsu.png)
+![](./images/posts/2022-01-02-2021-retrospect/juijitsu.png)
 
 (2달 전쯤 관장님께 3그랄을 받고있는 사진이다)
 
@@ -211,9 +211,9 @@ eslint를 고치기도 했다. 대표적으로 Typescript에서 빈 객체를 �
 
 그리고 나중에 돌아보면 빨간 글씨가 조금씩 줄어드는걸 볼 수 있다고 하셨다.
 
-![](./english-before.png)
+![](./images/posts/2022-01-02-2021-retrospect/english-before.png)
 
-![](./english-after.png)
+![](./images/posts/2022-01-02-2021-retrospect/english-after.png)
 
 위 사진이 예전에 받아적은 페이지고, 아래 사진이 가장 최근에 받아적은 페이지다.
 
@@ -255,4 +255,4 @@ eslint를 고치기도 했다. 대표적으로 Typescript에서 빈 객체를 �
 
 마지막은 지난 크리스마스에 고등학교 친구들과 스키장에 2박3일간 여행가서 찍었던 사진이다. 내년에도 남은 연차 몰빵하고, 기분 좋은 휴가를 보낼 수 있길 바라는 의미에서...
 
-![](./ski.png)
+![](./images/posts/2022-01-02-2021-retrospect/ski.png)
