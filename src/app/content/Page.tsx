@@ -2,7 +2,7 @@
 
 import { getPosts } from "@/actions/post";
 import { PostSummary } from "@/models/post";
-import { format } from "date-fns";
+import { formatUTC } from "@/utils/date";
 import Link from "next/link";
 import { useState } from "react";
 import { ImpressionArea } from "./ImpressionArea";
@@ -16,7 +16,7 @@ export function Page({ posts }: { posts: PostSummary[] }) {
         <li key={post.id} className="py-4">
           <Link href={`/${post.id}`}>
             <h2 className="text-xl mb-1 font-semibold">{post.title}</h2>
-            <p className="font-light">{format(post.publishedAt, "yyyy-MM-dd")}</p>
+            <p className="font-light">{formatUTC(post.publishedAt, "yyyy-MM-dd")}</p>
           </Link>
         </li>
       ))}
