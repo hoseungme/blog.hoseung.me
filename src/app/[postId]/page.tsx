@@ -1,4 +1,4 @@
-import { getPost } from "@/utils/post";
+import { getPost } from "@/actions/post";
 import { Page } from "./content/Page";
 import { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
@@ -9,7 +9,7 @@ interface Props {
 
 export default async function Post({ params }: Props) {
   try {
-    return <Page post={getPost((await params).postId)} />;
+    return <Page post={await getPost((await params).postId)} />;
   } catch (error) {
     console.log(error);
     permanentRedirect("/");
@@ -17,7 +17,7 @@ export default async function Post({ params }: Props) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getPost((await params).postId);
+  const post = await getPost((await params).postId);
 
   return {
     title: post.title,

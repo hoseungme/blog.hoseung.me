@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { Page } from "./content/Page";
-import { getPosts } from "@/utils/post";
+import { getPosts } from "@/actions/post";
 
-export default function Home() {
-  return <Page posts={getPosts()} />;
+export default async function Home() {
+  return <Page posts={await getPosts({ limit: 100, offset: 0 })} />;
 }
 
 const title = "hoseung.me";

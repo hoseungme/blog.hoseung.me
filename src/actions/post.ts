@@ -1,37 +1,60 @@
+"use server";
+
 import { readFileSync, readdirSync, existsSync } from "fs";
 import { join } from "path";
 import { Post, PostSummary } from "@/models/post";
 
-export function getPosts(): PostSummary[] {
-  const dir = readdirSync(join(process.cwd(), "posts"));
-  const posts = dir.filter((file) => !file.startsWith(".")).sort((a, b) => (a < b ? 1 : -1));
-  return posts.map(getPostSummary);
-}
-
-function getPostSummary(id: string): PostSummary {
-  const post = getPost(id);
-
-  return {
+export async function getPosts({ limit, offset }: { limit: number; offset: number }): Promise<PostSummary[]> {
+  return posts.slice(offset, offset + limit).map((post) => ({
     id: post.id,
     thumbnailURL: post.thumbnailURL,
     title: post.title,
     description: post.description,
     publishedAt: post.publishedAt,
-  };
+  }));
 }
 
-export function getPost(id: string): Post {
+export async function getPost(id: string): Promise<Post> {
+  const post = postById.get(id);
+  if (!post) {
+    throw new Error("Post doesn't exist");
+  }
+  return post;
+}
+
+const posts = readdirSync(join(process.cwd(), "posts"))
+  .filter((filename) => !filename.startsWith("."))
+  .map((filename) => readPost(filename))
+  .sort((a, b) => b.publishedAt - a.publishedAt);
+
+const postById = new Map(posts.map((post) => [post.id, post]));
+
+function readPost(id: string): Post {
   const markdown = readFileSync(join(process.cwd(), "posts", id, "index.md")).toString();
   const { metadata, content } = parsePostMarkdown(markdown);
 
   return {
     id,
-    thumbnailURL: getPostThumbnailURL(id),
+    thumbnailURL: readPostThumbnailURL(id),
     title: metadata.title,
     description: metadata.description,
     content,
     publishedAt: new Date(metadata.date).valueOf(),
   };
+}
+
+function readPostThumbnailURL(id: string) {
+  const dirPath = join(process.cwd(), "public/images/posts", id);
+  if (!existsSync(dirPath)) {
+    return null;
+  }
+
+  const thumbnailFilename = readdirSync(dirPath).find((filename) => filename.startsWith("thumbnail."));
+  if (!thumbnailFilename) {
+    return null;
+  }
+
+  return `/images/posts/${id}/${thumbnailFilename}`;
 }
 
 interface Metadata {
@@ -56,18 +79,4 @@ function parsePostMarkdown(markdown: string) {
   });
 
   return { metadata: metadata as Metadata, content };
-}
-
-function getPostThumbnailURL(id: string) {
-  const dirPath = join(process.cwd(), "public/images/posts", id);
-  if (!existsSync(dirPath)) {
-    return null;
-  }
-
-  const thumbnailFilename = readdirSync(dirPath).find((filename) => filename.startsWith("thumbnail."));
-  if (!thumbnailFilename) {
-    return null;
-  }
-
-  return `/images/posts/${id}/${thumbnailFilename}`;
 }
