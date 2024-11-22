@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ImpressionArea } from "./ImpressionArea";
 
-export function Page({ posts }: { posts: PostSummary[] }) {
-  const postsQuery = usePostsQuery(posts);
+export function Page({ initialPosts }: { initialPosts: PostSummary[] }) {
+  const postsQuery = usePostsQuery(initialPosts);
 
   return (
     <ul className="w-full flex flex-col m-0 p-0">
@@ -20,6 +20,16 @@ export function Page({ posts }: { posts: PostSummary[] }) {
           </Link>
         </li>
       ))}
+      {postsQuery.isFetching &&
+        Array.from({ length: 10 }).map((_, index) => (
+          <li key={index} className="py-4">
+            <div
+              className="mb-1 bg-gray-700 animate-pulse rounded-lg"
+              style={{ maxWidth: 300, width: "100%", height: 28 }}
+            />
+            <div className="bg-gray-700 animate-pulse rounded-lg" style={{ maxWidth: 87, width: "100%", height: 24 }} />
+          </li>
+        ))}
       {postsQuery.hasNext && (
         <ImpressionArea onImpressed={postsQuery.fetchMore}>
           <div style={{ height: 1 }} />
