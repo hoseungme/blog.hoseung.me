@@ -4,14 +4,15 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 :root {
-  --background: #0d1117;
-  --foreground: #ededed;
+  --black: #0d1117;
+  --white: #ededed;
+  --blue: #60aae0;
 }
 
 html,
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--white);
+  background: var(--black);
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 }
