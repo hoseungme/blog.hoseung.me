@@ -9,7 +9,7 @@ tags:
   - Typescript
 ---
 
-> 이 글은 토스 기술 블로그에도 게재되었습니다. [원문 링크](https://toss.tech/article/commonjs-esm-exports-field)
+> 이 글은 토스 기술 블로그에도 업로드 되었습니다. [원문 링크](https://toss.tech/article/commonjs-esm-exports-field)
 
 토스 프론트엔드 챕터에서는 개발 생산성을 극대화하기 위해 코드를 지속적으로 라이브러리로 만들고 있습니다. 그 결과 지금은 100개가 넘는 라이브러리를 운영하고 있습니다.
 
