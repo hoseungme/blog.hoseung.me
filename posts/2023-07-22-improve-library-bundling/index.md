@@ -284,13 +284,11 @@ export default [buildCJS("index.ts"), buildESM("index.ts"), buildCJSDTS("index.d
 
 또한 `esbuild`는 기본적으로 트리 쉐이킹을 하기 때문에, `tsup` 또한 트리 쉐이킹이 알아서 되며, Minify도 지원합니다.
 
-그리고 가장 중요한 점은, 위 모든 요구사항을 커맨드 한 줄로 충족할 수 있다는 점입니다.
+그리고 가장 중요한 점은, 위 모든 요구사항을 커맨드 한 줄로 충족할 수 있습니다.
 
 ```
 tsup src/index.ts --format cjs,esm --dts --minify
 ```
-
-실제로 최근에 개인적으로 개발하고 있는 `flickable-scroll`이라는 오픈소스는 [위 커맨드 한 줄로 번들링](https://github.com/hoseungme/flickable-scroll/blob/436fbd900c0d7c389b021c638092ffb2f7d41ece/package.json#L23)하고 있습니다.
 
 번외로 사실 `tsup`의 존재는 1년 전부터 알고 있었는데, 그 당시에는 타입 정의 생성이 제대로 지원되지 않아서 도입을 못했었는데, 잊고 있던 사이에 개선이 되었네요.
 

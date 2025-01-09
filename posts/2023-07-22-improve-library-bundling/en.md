@@ -267,8 +267,6 @@ And the most important thing is that you can get them with a single command.
 tsup src/index.ts --format cjs,esm --dts --minify
 ```
 
-Recently I developed a open source project `filckable-scroll`, and I actually used `tsup` [to bundle it](https://github.com/hoseungme/flickable-scroll/blob/436fbd900c0d7c389b021c638092ffb2f7d41ece/package.json#L23).
-
 P.S. In fact I found `tsup` a year ago, but at that time it lacked proper support for creating type definitions so I wasn't able to use it. But now there is no problem because it was updated.
 
 # Conclusion
