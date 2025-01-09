@@ -45,10 +45,7 @@ export function add(a, b) {
 다른 번들러를 사용하여 Minify, 트리 쉐이킹을 적용하면 아래와 같은 결과가 나옵니다.
 
 ```javascript
-function o(n, r) {
-  return n + r;
-}
-export { o as add };
+function o(n,r){return n+r}export{o as add};
 ```
 
 결과적으로 이는 해당 라이브러리를 설치해서 사용하는 프론트엔드 프로젝트의 번들 용량에도 영향을 주게 되는 것입니다.

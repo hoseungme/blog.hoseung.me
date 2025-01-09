@@ -44,10 +44,7 @@ export function add(a, b) {
 However, using other common bundler will result in:
 
 ```javascript
-function o(n, r) {
-  return n + r;
-}
-export { o as add };
+function o(n,r){return n+r}export{o as add};
 ```
 
 This significantly impacts the bundled size in frontend projects using the library.
