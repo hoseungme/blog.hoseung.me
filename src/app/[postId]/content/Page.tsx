@@ -1,8 +1,10 @@
 import "github-markdown-css/github-markdown-dark.css";
+import "highlight.js/styles/github-dark.css";
 import "./style.scss";
 
 import { Post } from "@/models/post";
 import { formatUTC } from "@/utils/date";
+import hljs from "highlight.js";
 import Markdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { Utterances } from "./Utterances";
@@ -17,7 +19,23 @@ export function Page({ post }: { post: Post }) {
         <p>{formatUTC(post.publishedAt, "yyyy-MM-dd")}</p>
       </header>
       <main className="my-8">
-        <Markdown className="markdown-body" rehypePlugins={[rehypeRaw]}>
+        <Markdown
+          className="markdown-body"
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            code: (props) => {
+              return (
+                <code
+                  dangerouslySetInnerHTML={{
+                    __html: hljs.highlight(props.children?.toString() ?? "", {
+                      language: props.className?.match(/language-(\w+)/)?.[1] ?? "text",
+                    }).value,
+                  }}
+                />
+              );
+            },
+          }}
+        >
           {post.content}
         </Markdown>
       </main>
