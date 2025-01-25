@@ -1,6 +1,6 @@
 ---
 title: linear-gradient에 transition animation 적용하기
-date: 2025-01-22T00:00:00+09:00
+date: 2025-01-10T00:00:00+09:00
 description: CSS transition이 적용되지 않는 linear-gradient에 JavaScript로 직접 transition을 적용해봅시다. 색 모델, 색 공간 등 기본적인 개념도 알아봅시다.
 tags:
   - 프론트엔드
