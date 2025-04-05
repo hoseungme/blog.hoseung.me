@@ -1,10 +1,13 @@
 .markdown-body {
+  color: var(--black);
+  background: var(--white);
+
   a {
     color: var(--blue);
-    text-decoration: underline;
+    font-weight: 600;
 
     &:hover {
-      opacity: 0.75;
+      opacity: 0.85;
     }
   }
 

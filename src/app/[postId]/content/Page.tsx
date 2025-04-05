@@ -1,4 +1,4 @@
-import "github-markdown-css/github-markdown-dark.css";
+import "github-markdown-css/github-markdown-light.css";
 import "highlight.js/styles/github-dark.css";
 import "./style.scss";
 

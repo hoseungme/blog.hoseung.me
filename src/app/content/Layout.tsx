@@ -7,7 +7,7 @@ export function Layout({ children }: { children: ReactNode }) {
       <header className="w-full sticky top-0 left-0 right-0 z-[9999] px-5 py-4 flex justify-center backdrop-blur-md">
         <div className="max-w-[700px] w-full flex items-center">
           <Link className="mr-auto" href="/">
-            <h1 className="text-xl font-bold">hoseung.me</h1>
+            <h1 className="text-xl font-bold text-blue">hoseung.me</h1>
           </Link>
           <a className="mr-3 text-base" href="https://about.hoseung.me">
             about
