@@ -1,5 +1,5 @@
 import "github-markdown-css/github-markdown-light.css";
-import "highlight.js/styles/github-dark.css";
+import "highlight.js/styles/github.css";
 import "./style.scss";
 
 import { Post } from "@/models/post";
