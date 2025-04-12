@@ -292,13 +292,11 @@ return null;
 
 ## 여담
 
-위에서 Embedding Vector가 Mirror 온보딩에 사용하기엔 어울리지 않았다고 했는데요.
+온보딩에는 Embdding Vector를 사용하지 않았지만, 과거에 이모지 추천 기능을 구현할 때 사용했던 적이 있습니다.
 
-"여행"을 이모지로 어떻게 표현할 수 있을까요? ✈️, 🚗 처럼 교통수단으로 표현할 수도 있고, 여행 국가에 따라서 🇯🇵, 🇨🇦 등 국기로 표현할 수도 있고, 여행 지역의 특징에 따라서 🏝️, ⛰️ 처럼 표현할 수도 있을 것입니다.
+유저가 "도쿄 여행"을 입력하면 🗼(도쿄 타워)를 추천해주고, "해외 여행"을 입력하면 🌎(미대륙이 보이는 지구)를 추천해주는 기능인데, 이런게 아주 모범적인 Embedding Vector 활용 사례라고 할 수 있습니다.
 
-"도쿄 여행"을 Embedding Vector로 변환하고, 모든 유니코드 이모지를 Embedding Vector로 변환하여 비교했을 때, 좋은 Embedding Vector 모델을 사용한 경우 "도쿄 여행"과 가장 유사한 이모지는 ✈️, 🇯🇵 같은게 아니라 🗼(도쿄 타워)로 나옵니다.
-
-이 내용과 관련하여 저희 팀 동료가 발표를 한 적이 있는데, 처음 개념을 파악할 때 큰 도움이 되었던 자료이니 여러분도 시간 있으실 때 보시면 좋을 것 같습니다.
+그리고 그 시기에 팀 동료가 했던 발표가 있는데, 처음 AI에 대한 개념을 파악할 때 큰 도움이 되었던 자료이니 여러분도 시간 있으실 때 보시면 좋을 것 같습니다.
 
 <div class="iframe-container">
   <iframe src="https://www.youtube.com/embed/7pRItmvbXLM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
