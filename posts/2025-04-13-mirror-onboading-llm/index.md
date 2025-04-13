@@ -89,7 +89,7 @@ LLM은 잘못된 정보를 생성할 수 있고, 미리 학습된 데이터에 �
 ]
 ```
 
-결과적으로, LLM이 생성한 description을 Embedding Vector로 변환하여 Vector DB에 미리 넣어두고, 유저가 입력한 직업을 Embedding Vector로 변환한 후 Vector DB에 쿼리하여 가장 관련성 높은 웹사이트 20개를 뽑아내고, 그 웹사이트들을 LLM에 넘겨서 한번 더 필터링하여 결과를 만들도록 RAG를 구성했습니다.
+결과적으로, LLM이 생성한 description을 Embedding Vector로 변환하여 Vector DB에 미리 넣어두고, 유저가 직업을 입력하면 그걸 Embedding Vector로 변환한 후 Vector DB에 쿼리하여 가장 관련성 높은 웹사이트 20개를 뽑아내고, 그 웹사이트들을 LLM에 넘겨서 한번 더 필터링하여 결과를 만들도록 RAG를 구성했습니다.
 
 ![](./images/posts/2025-04-13-mirror-onboading-llm/embedding-vector-rag-diagram.jpg)
 
@@ -130,7 +130,7 @@ LLM은 잘못된 정보를 생성할 수 있고, 미리 학습된 데이터에 �
 
 또한 한국어로 검색했을 때가 영어로 검색했을 때보다 결과 퀄리티가 훨씬 안좋았는데, 왜냐하면 Embedding Vector 모델들의 다국어 처리 성능이 좋지 않았기 때문입니다. 같은 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것 보다, 서로 다른 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것이 퀄리티가 더 떨어졌습니다.
 
-결국 처음으로 돌아와 Embedding Vector를 여기에 사용하는 것이 근본적으로 적합한 선택인지부터 고민해보게 되었습니다.
+결국 처음으로 돌아와 Embedding Vector를 사용하는 것이 근본적으로 적합한 선택인지부터 고민해보게 되었습니다.
 
 처음에 Embedding Vector를 도입했던 이유는, 텍스트의 관련성을 연산할 수 있다면 당연히 웹사이트와 직업의 관련성 정도는 제 머릿속에 있는 대로 결과가 나올 것이라고 생각했기 때문인데요. 이게 굉장히 안일한 판단이었습니다.
 
