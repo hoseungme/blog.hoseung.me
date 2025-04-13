@@ -71,13 +71,25 @@ LLM은 잘못된 정보를 생성할 수 있고, 미리 학습된 데이터에 �
 
 따라서 이제 "개발자"와 특정 웹사이트의 유사도를 계산할 수만 있다면 원하는 결과를 얻을 수 있는데, 텍스트는 숫자와 다르게 그 자체만으로는 크고 작음을 비교하거나 거리를 계산하는 등 유사성을 판단하는 연산이 불가능합니다. 텍스트를 비교 가능한 숫자 값으로 변환할 수 있다면 어떨까요? 의미가 비슷한 텍스트끼리는 서로 가까운 숫자 값으로 변환할 수 있다면 어떨까요?
 
-그것을 가능하게 하는 것이 Embedding Vector 입니다. 예를 들어, "개발자"를 Embedding Vector로 변환한 후, "google.com"과 "github.com"을 Embedding Vector로 변환하여 각각 비교했을 때, "github.com"의 Embedding Vector 값이 "개발자"의 Embedding Vector 값과 가장 가깝게 나옵니다. OpenAI, Anthropic 등 AI 벤더들은 텍스트를 Embedding Vector로 변환하는 모델도 다양하게 지원하고 있습니다.
+그것을 가능하게 하는 것이 Embedding Vector 입니다. 예를 들어, "개발자"를 Embedding Vector로 변환하고, "google.com"과 "github.com"을 Embedding Vector로 변환하여 각각 비교했을 때, "github.com"이 "개발자"와 가장 가깝게 나왔습니다.
 
-정리하면, 처음 구현은 아래와 같았습니다.
+다만, 위처럼 웹사이트 URL만을 Embedding Vector 변환에 사용하는 경우 직업과의 관련성을 비교하긴 어렵다고 판단했고, 아래와 같이 LLM에게 웹사이트에 대한 설명을 생성시켰습니다.
 
-1. 가장 많이 방문한 웹사이트 1000개를 Embedding Vector로 변환하여 Vector DB에 미리 넣어둠
-2. 유저가 직업을 입력하면 그걸 Embedding Vector로 변환하고, 1단계에서 만든 Vector DB에서 가장 유사한 웹사이트 20개를 검색함
-3. 유저의 직업과 2단계에서 나온 검색 결과를 각각 LLM에 넘겨주어 결과를 생성하게 함
+```json
+[
+  {
+    "url": "https://www.google.com",
+    "description": "Google is a web-based search engine that allows users to search for information across the internet using keywords and phrases.",
+  },
+  {
+    "url": "https://www.naver.com",
+    "description": "Naver is a South Korean online platform that provides a search engine, news, and various web services including blogs, shopping, and a Q&A platform.",
+  },
+  // ...
+]
+```
+
+결과적으로, LLM이 생성한 description을 Embedding Vector로 변환하여 Vector DB에 미리 넣어두고, 유저가 입력한 직업을 Embedding Vector로 변환한 후 Vector DB에 쿼리하여 가장 관련성 높은 웹사이트 20개를 뽑아내고, 그 웹사이트들을 LLM에 넘겨서 한번 더 필터링하여 결과를 만들도록 RAG를 구성했습니다.
 
 ![](./images/posts/2025-04-13-mirror-onboading-llm/embedding-vector-rag-diagram.jpg)
 
@@ -116,27 +128,9 @@ LLM은 잘못된 정보를 생성할 수 있고, 미리 학습된 데이터에 �
 
 두 번째 문제는 결과를 언어에 따라 컨트롤할 수 없다는 점입니다. Mirror 브라우저는 글로벌 유저를 타겟으로 하기 때문에 온보딩에서 다양한 언어로 입력이 일어날 수 있는데, 특정 웹사이트가 어떤 언어로 쓰여졌는지는 Embedding Vector 비교로는 판단할 수가 없습니다. 예를 들어, 영어로 검색했어도 한국 웹사이트가 결과에 포함될 수 있습니다.
 
-또한 한국어로 검색했을 때가 영어로 검색했을 때보다 결과 퀄리티가 훨씬 안좋았는데, 왜냐하면 Embedding Vector 모델들의 다국어 처리 성능이 좋지 않았기 때문입니다. 같은 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것 보다, 서로 다른 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것이 퀄리티가 더 떨어집니다.
+또한 한국어로 검색했을 때가 영어로 검색했을 때보다 결과 퀄리티가 훨씬 안좋았는데, 왜냐하면 Embedding Vector 모델들의 다국어 처리 성능이 좋지 않았기 때문입니다. 같은 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것 보다, 서로 다른 언어로 적힌 텍스트를 Embedding Vector로 변환하여 비교하는 것이 퀄리티가 더 떨어졌습니다.
 
-이러한 문제를 개선하기 위해 웹사이트를 Embedding Vector로 변환할 때 넣는 텍스트를 바꿔보았습니다. 이전에는 웹사이트의 URL만 Embedding Vector 변환에 사용한 반면, LLM을 사용해 아래와 같이 웹사이트 각각에 대한 설명을 만들어 Embedding Vector 변환에 함께 사용하도록 수정했습니다.
-
-```json
-[
-  {
-    "url": "https://www.google.com",
-    "description": "Google is a web-based search engine that allows users to search for information across the internet using keywords and phrases.",
-  },
-  {
-    "url": "https://www.naver.com",
-    "description": "Naver is a South Korean online platform that provides a search engine, news, and various web services including blogs, shopping, and a Q&A platform.",
-  },
-  // ...
-]
-```
-
-하지만 이 방식으로는 위의 문제들을 전혀 해결할 수 없었습니다. 게다가 웹사이트 설명을 LLM을 통해 생성했기 때문에, 기껏 RAG를 해놓고선 오히려 위에 설명했던 LLM의 단점을 똑같이 가져가는 꼴이었습니다.
-
-결국 처음으로 돌아와 Embedding Vector를 사용하는 것이 근본적으로 올바른 선택인지부터 고민해보게 되었습니다.
+결국 처음으로 돌아와 Embedding Vector를 여기에 사용하는 것이 근본적으로 적합한 선택인지부터 고민해보게 되었습니다.
 
 처음에 Embedding Vector를 도입했던 이유는, 텍스트의 관련성을 연산할 수 있다면 당연히 웹사이트와 직업의 관련성 정도는 제 머릿속에 있는 대로 결과가 나올 것이라고 생각했기 때문인데요. 이게 굉장히 안일한 판단이었습니다.
 
@@ -148,7 +142,7 @@ Embedding Vector 모델의 역할은 텍스트가 가진 의미 자체를 수치
 
 이걸 깨닫는 과정에서, 인간이 사고를 할 때 사실 굉장히 복잡한 문맥과 경험이 고려되지만 그걸 본인이 자각하진 못한다는 것 또한 다시한번 상기시키게 되었습니다.
 
-우리가 🍎를 보면 "사과"라고 생각하지, "저것은 빨간 껍질과 초록색 잎을 가진 채소거나 과일이야. 채소라면 토마토일 거고, 과일이라면 사과일거야. 그런데 저렇게 위아래에 굴곡이 있고, 위에 잎 하나만 달려있는 것은 보통 사과니까, 저건 사과야."라고 생각하진 않습니다. 게다가 사과를 처음 학습하는 순간 조차도 "이렇게 생긴게 사과구나"라고 생각하지, 저렇게 복잡하게 생각하지 않습니다.
+우리가 🍎를 보면 "사과"라고 생각하지, "저것은 빨간 껍질과 초록색 잎을 가진 채소거나 과일이야. 채소라면 토마토일 거고, 과일이라면 사과일거야. 그런데 저렇게 위아래에 굴곡이 있고, 위에 잎 하나만 달려있는 것은 보통 사과니까, 저건 사과야."라고 생각하진 않습니다. 게다가 사과를 처음 학습하는 순간 조차도 "이렇게 생긴게 사과구나"라고 생각하지, 저렇게 복잡하게 분석하진 않습니다.
 
 제가 "개발자"와 관련성 높은 웹사이트로 `stackoverflow.com`이 나와야 하고, `blog.naver.com`은 나오면 안된다고 판단한 것도 위와 같은 원리일 겁니다.
 
@@ -214,9 +208,7 @@ Custom Search API를 사용하면 크롤링하다가 구글에게 블락당할 �
 
 Programmable Search Engine은 나만의 개인화된 검색 엔진을 생성할 수 있게 해주는 기능입니다. 검색 엔진을 하나 생성하여 해당 검색 엔진이 특정 웹사이트만 검색 결과에 포함하게 하거나, 특정 웹사이트는 검색 결과에서 제외하게 하는 등 여러가지 커스텀이 가능합니다. 사실 Custom Search API도 Programmable Search Engine에서 제공하는 API입니다.
 
-저도 온보딩에 사용할 검색 엔진을 하나 만들어서 온보딩 결과의 퀄리티를 떨어뜨릴 수 있는 웹사이트들은 전부 제외시키도록 설정해 두었습니다.
-
-결과적으로 도메인 검증 스크립트는 아래와 같이 간단하게 작성했습니다.
+저도 온보딩에 사용할 검색 엔진을 하나 만들어서 온보딩 결과의 퀄리티를 떨어뜨릴 수 있는 웹사이트들은 전부 제외시키도록 설정해 두었고, 아래와 같이 간단하게 후검증 스크립트를 작성했습니다.
 
 ```typescript
 const query = input.replace(/\s/g, "");
@@ -256,13 +248,13 @@ if (matched) {
 return null;
 ```
 
-다만 한 가지 문제가 있었는데, Programmable Search Engine을 Custom Search API를 통해 사용하는 경우, 하루에 10000번 밖에 사용하지 못한다는 것이었습니다. 하지만 이는 큰 문제가 되진 않았습니다.
+다만 한 가지 문제가 있었는데, Programmable Search Engine을 Custom Search API를 통해 사용하는 경우, 하루에 10000번 밖에 사용하지 못한다는 것이었습니다. 물론 이는 큰 문제가 되진 않았습니다.
 
 기존 온보딩에서도 유저가 자신의 직업이 선택지에 없는 경우 "기타"를 선택하고 직업을 직접 입력할 수 있었고, 지난 2년간 유저가 직접 입력한 직업을 모두 DB에 쌓아두었습니다.
 
-따라서 그 데이터를 활용해 아래와 같이 검증된 웹사이트 도메인 데이터셋을 미리 만들어둘 수 있었고, 유저가 온보딩을 진행할 땐 Custom Search API를 사용하지 않고 해당 데이터셋을 통해 검증하도록 구현했습니다.
+따라서 그 데이터를 활용해 아래와 같이 검증된 웹사이트 도메인 데이터셋을 미리 만들어둘 수 있었습니다. 이렇게 미리 데이터셋을 만드는 경우 최신화를 해줘야 하는 문제가 있는데, 주기적으로 유저의 온보딩 완료 이벤트를 읽어서 데이터셋을 업데이트하면 되기 때문에 크게 우려하진 않았습니다.
 
-이를 통해 하루 사용 제한 문제를 우회할 수 있었고, 유저들이 온보딩을 더 빠르게 진행할 수 있게 되었습니다. 또한 주기적으로 유저의 온보딩 이벤트를 읽어서 데이터셋을 업데이트 해주면 온보딩 결과의 퀄리티 유지도 가능합니다.
+결과적으로 유저가 온보딩을 진행할 땐 Custom Search API를 사용하지 않고 해당 데이터셋을 통해 검증하게 되었고, 하루 사용 제한 문제도 우회하고 유저가 온보딩도 더 빠르게 진행할 수 있게 되었습니다.
 
 ```json
 {
