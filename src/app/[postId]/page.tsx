@@ -27,5 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.description,
       images: post.thumbnailURL ? { url: `https://blog.hoseung.me${post.thumbnailURL}` } : undefined,
     },
+    alternates: {
+      canonical: `https://blog.hoseung.me/${post.id}`,
+    },
   };
 }

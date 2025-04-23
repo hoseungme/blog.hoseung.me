@@ -16,4 +16,7 @@ export const metadata: Metadata = {
     title,
     description,
   },
+  alternates: {
+    canonical: "https://blog.hoseung.me",
+  },
 };
