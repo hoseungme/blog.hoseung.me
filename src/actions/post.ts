@@ -4,6 +4,10 @@ import { readFileSync, readdirSync, existsSync } from "fs";
 import { join } from "path";
 import { Post, PostSummary } from "@/models/post";
 
+export async function getAllPosts() {
+  return posts;
+}
+
 export async function getPosts({ limit, offset }: { limit: number; offset: number }): Promise<PostSummary[]> {
   return posts.slice(offset, offset + limit).map((post) => ({
     id: post.id,
