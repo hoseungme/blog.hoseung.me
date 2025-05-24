@@ -1,9 +1,9 @@
 .markdown-body {
-  color: var(--black);
-  background: var(--white);
+  color: theme("colors.gray.800");
+  background: theme("colors.white");
 
   a {
-    color: var(--blue);
+    color: theme("colors.blue.600");
     font-weight: 600;
 
     &:hover {

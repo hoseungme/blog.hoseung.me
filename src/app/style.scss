@@ -3,22 +3,10 @@
 @tailwind utilities;
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-:root {
-  --black: #0d1117;
-  --white: #ededed;
-  --blue: #1e88e5;
-}
-
-@theme {
-  --color-black: var(--black);
-  --color-white: var(--white);
-  --color-blue: var(--blue);
-}
-
 html,
 body {
-  color: var(--black);
-  background: var(--white);
+  color: theme("colors.gray.800");
+  background: theme("colors.white");
   font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI",
     "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
 }

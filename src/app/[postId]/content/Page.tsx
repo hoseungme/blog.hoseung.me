@@ -13,10 +13,10 @@ export function Page({ post }: { post: Post }) {
   return (
     <article className="w-full" itemScope itemType="http://schema.org/Article">
       <header className="mt-4">
-        <h1 className="text-3xl font-bold mb-1" itemProp="headline">
+        <h1 className="text-3xl font-bold mb-3" itemProp="headline">
           {post.title}
         </h1>
-        <p>{formatUTC(post.publishedAt, "yyyy-MM-dd")}</p>
+        <p className="text-gray-500">{formatUTC(post.publishedAt, "PP")}</p>
       </header>
       <main className="my-8">
         <Markdown
