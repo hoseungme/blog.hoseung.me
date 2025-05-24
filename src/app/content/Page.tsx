@@ -16,7 +16,7 @@ export function Page({ initialPosts }: { initialPosts: PostSummary[] }) {
         <li key={post.id} className="py-4">
           <Link href={`/${post.id}`}>
             <h2 className="text-xl mb-1 font-medium">{post.title}</h2>
-            <p className="text-gray-500">{formatUTC(post.publishedAt, "PP")}</p>
+            <p className="text-gray-500 text-sm font-mono">{formatUTC(post.publishedAt, "PP")}</p>
           </Link>
         </li>
       ))}
