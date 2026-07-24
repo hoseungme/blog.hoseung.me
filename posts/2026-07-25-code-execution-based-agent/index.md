@@ -1,7 +1,7 @@
 ---
 title: Tool Calling 대신 JavaScript 코드 실행으로 동작하는 AI 에이전트 만들기
 date: 2026-07-25T00:00:00+09:00
-description: Tool Calling은 LLM의 동작 원리상 구조적인 한계가 명확합니다. 이를 JavaScript로 Tool을 사용하게 하여 해결한 경험을 공유합니다.
+description: Tool Calling은 LLM의 동작 원리상 구조적인 한계가 명확합니다. LLM이 JavaScript로 Tool을 사용하게 하여 그 문제를 해결한 경험을 공유합니다.
 ---
 
 Tool Calling은 AI 에이전트를 만들 때 아주 유용한 기능입니다. LLM이 상황에 맞게 외부 기능을 사용할 수 있게 해줍니다. 동작 방식이 아주 직관적이고 구현도 어렵지 않아 많은 팀에서 Tool Calling 기반으로 제품을 개발합니다.
