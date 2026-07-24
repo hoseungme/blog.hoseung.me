@@ -3,7 +3,7 @@ import "highlight.js/styles/github.css";
 import "./style.scss";
 
 import { Post } from "@/models/post";
-import { formatUTC } from "@/utils/date";
+import { formatKST } from "@/utils/date";
 import { differenceInYears } from "date-fns";
 import hljs from "highlight.js";
 import Markdown from "react-markdown";
@@ -19,7 +19,7 @@ export function Page({ post }: { post: Post }) {
         <h1 className="text-3xl font-bold mb-3" itemProp="headline">
           {post.title}
         </h1>
-        <p className="text-gray-500 font-mono">{formatUTC(post.publishedAt, "PP")}</p>
+        <p className="text-gray-500 font-mono">{formatKST(post.publishedAt, "PP")}</p>
       </header>
       <main className="my-8">
         <Markdown
