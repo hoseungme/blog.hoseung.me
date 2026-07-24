@@ -50,8 +50,8 @@ Tool Calling의 문제를 이해하기 위해 LLM의 동작 방식을 먼저 알
 ```json
 [
   {
-    "name": "getCurrentTabId",
-    "description": "현재 유저가 보고있는 탭의 ID를 반환합니다.",
+    "name": "listTabs",
+    "description": "열려있는 탭 목록을 반환합니다.",
     "input_schema": {
       "type": "object",
       "properties": {},
@@ -76,10 +76,10 @@ Tool Calling의 문제를 이해하기 위해 LLM의 동작 방식을 먼저 알
 그러면 실제로 유저가 기능을 사용했을 때 아래와 같은 순서로 LLM을 호출하게 될 것입니다.
 
 1. 유저가 `이 페이지의 내용을 요약해줘.`라고 LLM에게 입력
-2. LLM은 `getCurrentTabId` 실행
-3. `getCurrentTabId`의 결과인 `tab-12345`를 LLM에게 전달
-4. LLM은 `tab-12345`를 사용해 `getTabContent` 실행
-5. `getTabContent` 결과인 현재 페이지의 HTML을 LLM에게 전달
+2. LLM은 `listTabs` 실행 요청
+3. `listTabs` 실행 결과를 LLM에게 전달
+4. LLM은 `getTabContent` 실행 요청
+5. `getTabContent` 실행 결과를 LLM에게 전달
 6. LLM이 HTML을 활용해 페이지 요약을 만들어 유저에게 답변
 
 ```json
@@ -99,7 +99,7 @@ Tool Calling의 문제를 이해하기 위해 LLM의 동작 방식을 먼저 알
       {
         "type": "tool_use",
         "id": "toolu_01ABC123",
-        "name": "getCurrentTabId",
+        "name": "listTabs",
         "input": {}
       }
     ]
@@ -110,9 +110,26 @@ Tool Calling의 문제를 이해하기 위해 LLM의 동작 방식을 먼저 알
       {
         "type": "tool_result",
         "tool_use_id": "toolu_01ABC123",
-        "content": {
-          "tabId": "tab-12345"
-        }
+        "content": [
+          {
+            "id": "1",
+            "title": "구글",
+            "url": "https://www.google.com",
+            "focused": false
+          },
+          {
+            "id": "2",
+            "title": "깃허브",
+            "url": "https://github.com",
+            "focused": true
+          },
+          {
+            "id": "3",
+            "title": "유튜브",
+            "url": "https://www.youtube.com",
+            "focused": false
+          }
+        ]
       }
     ]
   },
@@ -124,7 +141,7 @@ Tool Calling의 문제를 이해하기 위해 LLM의 동작 방식을 먼저 알
         "id": "toolu_02DEF456",
         "name": "getTabContent",
         "input": {
-          "tabId": "tab-12345"
+          "tabId": "2"
         }
       }
     ]
@@ -158,7 +175,7 @@ LLM 컨텍스트에 같은 내용이 두 번 들어가게 되므로 토큰 사�
 하지만 LLM이 Tool Calling 대신 아래와 같은 JavaScript를 작성하여 현재 페이지의 내용을 가져올 수 있다면 어떨까요?
 
 ```javascript
-const tabId = getCurrentTabId();
+const tabId = listTabs().find((tab) => tab.focused).id;
 const result = getTabContent({ tabId });
 complete(result);
 ```
@@ -168,9 +185,9 @@ Tool Calling과 다르게 `complete()`에 전달한 내용만 LLM 컨텍스트�
 결과적으로 LLM 호출 플로우를 아래와 같이 간단하게 만들 수 있게됩니다.
 
 1. 유저가 `이 페이지의 내용을 요약해줘.`라고 LLM에게 입력
-2. LLM은 유저의 요구사항에 맞게 JavaScript를 작성해서 `executeCode`로 실행
-3. `executeCode`로 해당 코드를 실행한 결과를 LLM에게 전달
-4. LLM이 HTML을 활용해 페이지 요약을 만들어 유저에게 답변
+2. LLM은 `listTabs`, `getTabContent`로 HTML을 가져오는 JavaScript를 작성하고 `executeCode`로 실행
+3. `executeCode` 결과를 LLM에게 전달
+4. LLM은 페이지 요약을 만들어 유저에게 답변
 
 ```json
 [
@@ -191,7 +208,7 @@ Tool Calling과 다르게 `complete()`에 전달한 내용만 LLM 컨텍스트�
         "id": "toolu_01ABC123",
         "name": "execute_code",
         "input": {
-          "code": "complete(getTabContent({tabId:getCurrentTabId()}));",
+          "code": "complete(getTabContent({tabId:listTabs().find((tab) => tab.focused).id}));",
         }
       }
     ]
