@@ -340,7 +340,7 @@ extension JavaScriptRuntime {
 ```swift
 for function in functions {
     jsContext.set(
-        object: javaScriptRuntime.createFunction(asyncFunction: function),
+        object: javaScriptRuntime.createFunction(asyncFunction: { function($0) }),
         forKey: function.name
     )
 }
