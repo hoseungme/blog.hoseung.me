@@ -2,7 +2,7 @@
 
 import { getPosts } from "@/actions/post";
 import { PostSummary } from "@/models/post";
-import { format } from "date-fns";
+import { formatUTC } from "@/utils/date";
 import Link from "next/link";
 import { useState } from "react";
 import { ImpressionArea } from "./ImpressionArea";
@@ -17,7 +17,7 @@ export function Page({ initialPosts }: { initialPosts: PostSummary[] }) {
           <Link href={`/${post.id}`}>
             <h2 className="text-xl mb-1 font-medium">{post.title}</h2>
             <p className="text-gray-500 text-sm mb-1 font-medium">{post.description}</p>
-            <p className="text-gray-500 text-xs font-mono">{format(post.publishedAt, "PP")}</p>
+            <p className="text-gray-500 text-xs font-mono">{formatUTC(post.publishedAt, "PP")}</p>
           </Link>
         </li>
       ))}
