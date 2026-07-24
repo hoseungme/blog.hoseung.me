@@ -206,7 +206,7 @@ Tool Calling과 다르게 `complete()`에 전달한 내용만 LLM 컨텍스트�
       {
         "type": "tool_use",
         "id": "toolu_01ABC123",
-        "name": "execute_code",
+        "name": "executeCode",
         "input": {
           "code": "complete(getTabContent({tabId:listTabs().find((tab) => tab.focused).id}));",
         }
